@@ -4,6 +4,7 @@ import { RouterProvider } from 'react-router-dom'
 import './index.css'
 import App from './App.jsx'
 import { router } from './Routes/Routes.jsx'
+import "preline/preline";
 
 createRoot(document.getElementById('root')).render(
   <div>
