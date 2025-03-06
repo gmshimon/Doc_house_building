@@ -11,9 +11,9 @@ import { Navigation } from 'swiper/modules'
 const PatientReview = () => {
   const data = [1, 2, 3]
   return (
-    <section className='mt-10'>
+    <section className='mt-16'>
       <h1 className='text-4xl font-semibold text-center'>Our Expert Doctors</h1>
-      <p className='text-center mt-2 my-5'>
+      <p className='text-center  my-8'>
         Sed ut perspiciatis unde omnis iste natus error sit voluptatem
         accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab
         illo inve ntore veritatis et quasi architecto beatae vitae dicta sunt
@@ -23,7 +23,7 @@ const PatientReview = () => {
       <Swiper navigation={true} modules={[Navigation]} className='mySwiper'>
         {data.map((item, index) => (
           <SwiperSlide key={index} className='w-full'>
-            <div className='md:flex md:space-x-5 md:space-y-0 mx-6 space-y-5'>
+            <div className='md:flex pb-1 md:space-x-5 md:space-y-0 mx-6 space-y-5'>
               <div className='border rounded-lg py-8 px-6'>
                 <div className='flex items-center justify-between'>
                   <div className='flex items-center'>

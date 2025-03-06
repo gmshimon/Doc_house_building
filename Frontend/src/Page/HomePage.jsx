@@ -3,6 +3,7 @@ import Banner from '../Component/Banner/Banner';
 import ServiceDetails from '../Component/ServiceDetails/ServiceDetails';
 import ContactBanner from '../Component/ContactBanner/ContactBanner';
 import PatientReview from '../Component/PatientReview/PatientReview';
+import ExpertDoctor from '../Component/ExpertDoctor/ExpertDoctor';
 
 const HomePage = () => {
     return (
@@ -12,6 +13,7 @@ const HomePage = () => {
                 <ServiceDetails/>
                 <ContactBanner/>
                 <PatientReview/>
+                <ExpertDoctor/>
             </div>
         </div>
     );
