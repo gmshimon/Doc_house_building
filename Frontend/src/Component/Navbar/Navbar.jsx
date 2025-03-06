@@ -1,7 +1,7 @@
 const Navbar = () => {
   return (
-    <section>
-      <header className='flex flex-wrap lg:justify-start lg:flex-nowrap z-50 w-full py-3'>
+    <section className=''>
+      <header className='absolute top-0 left-0 flex flex-wrap lg:justify-start lg:flex-nowrap z-50 w-full py-3'>
         <nav className='relative max-w-7xl w-full flex flex-wrap lg:grid lg:grid-cols-12 basis-full items-center px-4 md:px-6 lg:px-8 mx-auto'>
           <div className='lg:col-span-3 flex items-center'>
             <a
@@ -10,15 +10,15 @@ const Navbar = () => {
               aria-label='Preline'
             >
               <svg
-                width='234'
-                height='40'
+                width='150'
+                height='62'
                 viewBox='0 0 234 62'
                 fill='none'
                 xmlns='http://www.w3.org/2000/svg'
               >
                 <path
                   d='M59.9292 19.1854C58.7225 17.9788 57.0333 17.2146 55.1831 17.2146C52.2872 17.2146 49.6326 16.0481 47.7422 14.1175C45.8518 12.2272 44.6452 9.57258 44.6452 6.67667C44.6452 2.97635 41.6689 0 37.9685 0H23.8912C22.0411 0 20.3518 0.764198 19.1452 1.97083C17.9385 3.17745 17.1743 4.86673 17.1743 6.71689C17.1743 12.5489 12.4685 17.2548 6.63645 17.2548C3.01657 17.2146 0 20.1909 0 23.8912V37.9685C0 41.6689 3.01657 44.6452 6.67667 44.6452C9.57258 44.6452 12.2272 45.8116 14.1175 47.7422C16.0079 49.6326 17.2146 52.2872 17.2146 55.1831C17.2146 58.8834 20.1909 61.8598 23.8912 61.8598H37.9685C39.8187 61.8598 41.508 61.0956 42.7146 59.8889C43.9212 58.6823 44.6854 56.993 44.6854 55.1429C44.6854 52.247 45.8518 49.5924 47.7825 47.702C49.6728 45.8116 52.3274 44.605 55.2233 44.605C58.9236 44.605 61.9 41.5884 61.9 37.9283V23.851C61.9 22.0411 61.1358 20.392 59.9292 19.1854ZM30.9299 46.8172C22.1617 46.8172 15.0828 39.698 15.0828 30.9701C15.0828 22.2019 22.2019 15.1231 30.9299 15.1231C39.6578 15.1231 46.7769 22.2422 46.7769 30.9701C46.8172 39.698 39.698 46.8172 30.9299 46.8172Z'
-                  fill='black'
+                  fill='white'
                 />
                 <path
                   d='M31.0506 44.4836C38.4694 44.4836 44.4836 38.4694 44.4836 31.0506C44.4836 23.6317 38.4694 17.6176 31.0506 17.6176C23.6317 17.6176 17.6176 23.6317 17.6176 31.0506C17.6176 38.4694 23.6317 44.4836 31.0506 44.4836Z'
@@ -34,7 +34,7 @@ const Navbar = () => {
                 />
                 <path
                   d='M139.605 41.9066V19.0866H144.75V27.8716H152.625V19.0866H157.805V41.9066H152.625V32.3866H144.75V41.9066H139.605ZM170.224 42.3266C168.754 42.3266 167.377 41.9766 166.094 41.2766C164.81 40.5532 163.76 39.5149 162.944 38.1616C162.15 36.7849 161.754 35.1399 161.754 33.2266C161.754 31.3132 162.15 29.6799 162.944 28.3266C163.76 26.9499 164.81 25.9116 166.094 25.2116C167.377 24.4882 168.754 24.1266 170.224 24.1266C171.67 24.1266 173.035 24.4882 174.319 25.2116C175.602 25.9116 176.64 26.9499 177.434 28.3266C178.25 29.6799 178.659 31.3132 178.659 33.2266C178.659 35.1399 178.25 36.7849 177.434 38.1616C176.64 39.5149 175.602 40.5532 174.319 41.2766C173.035 41.9766 171.67 42.3266 170.224 42.3266ZM170.224 38.1616C170.924 38.1616 171.507 37.9632 171.974 37.5666C172.464 37.1699 172.825 36.5982 173.059 35.8516C173.292 35.1049 173.409 34.2299 173.409 33.2266C173.409 32.2232 173.292 31.3482 173.059 30.6016C172.825 29.8549 172.464 29.2832 171.974 28.8866C171.507 28.4899 170.924 28.2916 170.224 28.2916C169.5 28.2916 168.905 28.4899 168.439 28.8866C167.972 29.2832 167.622 29.8549 167.389 30.6016C167.155 31.3482 167.039 32.2232 167.039 33.2266C167.039 34.2299 167.155 35.1049 167.389 35.8516C167.622 36.5982 167.972 37.1699 168.439 37.5666C168.905 37.9632 169.5 38.1616 170.224 38.1616ZM187.398 42.3266C185.508 42.3266 184.131 41.7082 183.268 40.4716C182.428 39.2116 182.008 37.4966 182.008 35.3266V24.5466H187.153V34.6616C187.153 35.9216 187.328 36.7849 187.678 37.2516C188.028 37.7182 188.576 37.9516 189.323 37.9516C189.953 37.9516 190.501 37.7999 190.968 37.4966C191.435 37.1932 191.913 36.7032 192.403 36.0266V24.5466H197.548V41.9066H193.348L192.963 39.4916H192.858C192.135 40.3549 191.341 41.0432 190.478 41.5566C189.615 42.0699 188.588 42.3266 187.398 42.3266ZM207.185 42.3266C206.042 42.3266 204.864 42.1049 203.65 41.6616C202.437 41.2182 201.399 40.5766 200.535 39.7366L202.705 36.8316C203.499 37.4616 204.28 37.9049 205.05 38.1616C205.844 38.3949 206.602 38.5116 207.325 38.5116C208.095 38.5116 208.655 38.3832 209.005 38.1266C209.355 37.8466 209.53 37.4849 209.53 37.0416C209.53 36.6449 209.367 36.3182 209.04 36.0616C208.737 35.8049 208.329 35.5832 207.815 35.3966C207.325 35.1866 206.765 34.9649 206.135 34.7316C205.295 34.4282 204.525 34.0432 203.825 33.5766C203.125 33.1099 202.554 32.5499 202.11 31.8966C201.69 31.2432 201.48 30.4616 201.48 29.5516C201.48 27.9182 202.087 26.6116 203.3 25.6316C204.537 24.6282 206.147 24.1266 208.13 24.1266C209.39 24.1266 210.534 24.3366 211.56 24.7566C212.61 25.1532 213.509 25.6782 214.255 26.3316L212.05 29.2016C211.42 28.7582 210.79 28.4432 210.16 28.2566C209.53 28.0466 208.912 27.9416 208.305 27.9416C207.629 27.9416 207.127 28.0699 206.8 28.3266C206.474 28.5832 206.31 28.9099 206.31 29.3066C206.31 29.6332 206.427 29.9132 206.66 30.1466C206.894 30.3799 207.244 30.6016 207.71 30.8116C208.2 30.9982 208.807 31.2082 209.53 31.4416C210.417 31.7449 211.222 32.1299 211.945 32.5966C212.692 33.0399 213.275 33.5999 213.695 34.2766C214.115 34.9532 214.325 35.7699 214.325 36.7266C214.325 37.7766 214.045 38.7216 213.485 39.5616C212.949 40.4016 212.155 41.0782 211.105 41.5916C210.055 42.0816 208.749 42.3266 207.185 42.3266ZM225.363 42.3266C223.706 42.3266 222.213 41.9649 220.883 41.2416C219.553 40.5182 218.503 39.4799 217.733 38.1266C216.963 36.7732 216.578 35.1399 216.578 33.2266C216.578 31.3366 216.963 29.7149 217.733 28.3616C218.526 27.0082 219.553 25.9699 220.813 25.2466C222.073 24.4999 223.391 24.1266 224.768 24.1266C226.425 24.1266 227.801 24.4999 228.898 25.2466C229.995 25.9699 230.811 26.9616 231.348 28.2216C231.885 29.4816 232.153 30.8932 232.153 32.4566C232.153 32.8999 232.13 33.3432 232.083 33.7866C232.036 34.2066 231.99 34.5449 231.943 34.8016H220.568L220.498 31.2316H227.743C227.743 30.3216 227.521 29.5749 227.078 28.9916C226.635 28.3849 225.9 28.0816 224.873 28.0816C224.313 28.0816 223.765 28.2332 223.228 28.5366C222.691 28.8399 222.248 29.3649 221.898 30.1116C221.548 30.8582 221.385 31.8966 221.408 33.2266C221.431 34.5332 221.665 35.5599 222.108 36.3066C222.575 37.0532 223.158 37.5899 223.858 37.9166C224.558 38.2199 225.293 38.3716 226.063 38.3716C226.74 38.3716 227.381 38.2782 227.988 38.0916C228.618 37.8816 229.236 37.6016 229.843 37.2516L231.523 40.4016C230.66 41.0082 229.68 41.4866 228.583 41.8366C227.486 42.1632 226.413 42.3266 225.363 42.3266Z'
-                  fill='black'
+                  fill='white'
                 />
               </svg>
             </a>
@@ -47,12 +47,11 @@ const Navbar = () => {
             >
               Sign in
             </button>
-            
 
-            <div className='lg:hidden'>
+            <div className='lg:hidden ml-1'>
               <button
                 type='button'
-                className='hs-collapse-toggle size-9.5 flex justify-center items-center text-sm font-semibold rounded-xl border border-gray-200 text-black hover:bg-gray-100 focus:outline-hidden focus:bg-gray-100 disabled:opacity-50 disabled:pointer-events-none dark:text-white dark:border-neutral-700 dark:hover:bg-neutral-700 dark:focus:bg-neutral-700'
+                className='hs-collapse-toggle size-10 flex justify-center items-center text-lg font-semibold rounded-xl border border-gray-200 text-white hover:bg-gray-800 focus:outline-hidden focus:bg-gray-800 disabled:opacity-50 disabled:pointer-events-none dark:text-white dark:border-neutral-700 dark:hover:bg-neutral-700 dark:focus:bg-neutral-700'
                 id='hs-navbar-hcail-collapse'
                 aria-expanded='false'
                 aria-controls='hs-navbar-hcail'
@@ -95,13 +94,13 @@ const Navbar = () => {
           </div>
           <div
             id='hs-navbar-hcail'
-            className='hs-collapse hidden overflow-hidden transition-all duration-300 basis-full grow lg:block lg:w-auto lg:basis-auto lg:order-2 lg:col-span-6'
+            className='hs-collapse hidden overflow-hidden transition-all duration-300 basis-full pl-10 bg-white grow md:bg-transparent lg:block lg:w-auto lg:basis-auto lg:order-2 lg:col-span-6'
             aria-labelledby='hs-navbar-hcail-collapse'
           >
             <div className='flex flex-col gap-y-4 gap-x-0 mt-5 lg:flex-row lg:justify-center lg:items-center lg:gap-y-0 lg:gap-x-7 lg:mt-0'>
               <div>
                 <a
-                  className='relative inline-block text-black focus:outline-hidden before:absolute before:bottom-0.5 before:start-0 before:-z-1 before:w-full before:h-1 before:bg-lime-400 dark:text-white'
+                  className='relative inline-block text-lg pb-1 md:text-white focus:outline-hidden before:absolute before:bottom-0.5 before:start-0 before:-z-1 before:w-full before:h-1 before:bg-lime-400 dark:text-white hover:text-gray-400'
                   href='#'
                   aria-current='page'
                 >
@@ -110,7 +109,7 @@ const Navbar = () => {
               </div>
               <div>
                 <a
-                  className='inline-block text-black hover:text-gray-600 focus:outline-hidden focus:text-gray-600 dark:text-white dark:hover:text-neutral-300 dark:focus:text-neutral-300'
+                  className='relative inline-block text-lg pb-1 md:text-white focus:outline-hidden before:absolute before:bottom-0.5 before:start-0 before:-z-1 before:w-full before:h-1 before:bg-lime-400 dark:text-white hover:text-gray-400'
                   href='#'
                 >
                   About
@@ -118,13 +117,12 @@ const Navbar = () => {
               </div>
               <div>
                 <a
-                  className='inline-block text-black hover:text-gray-600 focus:outline-hidden focus:text-gray-600 dark:text-white dark:hover:text-neutral-300 dark:focus:text-neutral-300'
+                  className='relative inline-block text-lg pb-1 md:text-white focus:outline-hidden before:absolute before:bottom-0.5 before:start-0 before:-z-1 before:w-full before:h-1 before:bg-lime-400 dark:text-white hover:text-gray-400'
                   href='#'
                 >
                   Appointment
                 </a>
               </div>
-
             </div>
           </div>
         </nav>

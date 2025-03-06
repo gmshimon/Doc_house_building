@@ -4,7 +4,7 @@ import doc_2 from '../../assets/Doc_2.png'
 import doc_3 from '../../assets/Doc_3.png'
 const Banner = () => {
   return (
-    <div className='relative isolate overflow-hidden bg-[#07332F] px-6 text-white sm:py-32 lg:px-8 h-screen md:h-full'>
+    <div className='relative isolate overflow-hidden bg-[#07332F]  py-28  px-6 text-white  lg:px-8 h-screen md:h-full'>
       {/* Curved stroke in the top-left corner */}
       <div className='absolute left-0 top-0 w-32 h-32'>
         <svg

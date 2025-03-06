@@ -1,13 +1,16 @@
-import { Outlet } from "react-router-dom";
-import Navbar from "../Component/Navbar/Navbar";
+import { Outlet } from 'react-router-dom'
+import Navbar from '../Component/Navbar/Navbar'
 
 const Main = () => {
-    return (
-        <div className="w-full">
-            <Navbar/>
-            <Outlet/>
-        </div>
-    );
-};
+  return (
+    <div className=''>
+      {/* Overlapping Navbar */}
+      <Navbar />
 
-export default Main;
+      {/* Outlet (Banner, etc.) starts behind or just below the navbar */}
+      <Outlet />
+    </div>
+  )
+}
+
+export default Main
