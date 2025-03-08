@@ -1,5 +1,6 @@
 import { Outlet } from 'react-router-dom'
 import Navbar from '../Component/Navbar/Navbar'
+import Footer from '../Component/Footer/Footer'
 
 const Main = () => {
   return (
@@ -9,6 +10,7 @@ const Main = () => {
 
       {/* Outlet (Banner, etc.) starts behind or just below the navbar */}
       <Outlet />
+      <Footer/>
     </div>
   )
 }
