@@ -1,7 +1,8 @@
 import React from 'react'
 import login_pic from '../../assets/login_pic.png'
 import { Link } from 'react-router-dom'
-const LoginPage = () => {
+
+const RegisterPage = () => {
   return (
     <section className='md:h-screen w-full'>
       <div className='md:flex w-full h-full'>
@@ -89,8 +90,40 @@ const LoginPage = () => {
           <div className='border-2 flex justify-center py-14 px-10'>
             <div>
               <h1 className='text-center text-2xl font-semibold mb-10'>
-                Sign in Doc House
+                Sign up Doc House
               </h1>
+              <div className='md:w-96 mb-8'>
+                <label
+                  htmlFor='input-label'
+                  className='block text-sm font-medium mb-2 dark:text-white'
+                >
+                  Name
+                </label>
+                <div class='relative'>
+                  <input
+                    type='email'
+                    class='peer py-2.5 sm:py-3 px-4 ps-11 block w-full border border-black border-transparent rounded-lg sm:text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-700 dark:border-transparent dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600'
+                    placeholder='Enter name'
+                  />
+                  <div class='absolute inset-y-0 start-0 flex items-center pointer-events-none ps-4 peer-disabled:opacity-50 peer-disabled:pointer-events-none'>
+                    <svg
+                      class='shrink-0 size-4 text-gray-500 dark:text-neutral-500'
+                      xmlns='http://www.w3.org/2000/svg'
+                      width='24'
+                      height='24'
+                      viewBox='0 0 24 24'
+                      fill='none'
+                      stroke='currentColor'
+                      stroke-width='2'
+                      stroke-linecap='round'
+                      stroke-linejoin='round'
+                    >
+                      <path d='M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2'></path>
+                      <circle cx='12' cy='7' r='4'></circle>
+                    </svg>
+                  </div>
+                </div>
+              </div>
               <div className='md:w-96 mb-8'>
                 <label
                   htmlFor='input-label'
@@ -172,11 +205,16 @@ const LoginPage = () => {
                   type='button'
                   className='w-full py-3 px-4 gap-x-2 text-sm font-medium rounded-lg border border-transparent bg-[#F7A582] text-white hover:bg-[#F7A582] focus:outline-hidden disabled:opacity-50 disabled:pointer-events-none'
                 >
-                  Login
+                  Register
                 </button>
                 <p className='text-center mt-2'>
                   Please register at first. Go to{' '}
-                  <Link to="/register"><span className='text-[#F7A582] font-semibold cursor-pointer'> SIGN UP</span></Link>
+                  <Link to='/login'>
+                    <span className='text-[#F7A582] font-semibold cursor-pointer'>
+                      {' '}
+                      SIGN IN
+                    </span>
+                  </Link>
                 </p>
               </div>
             </div>
@@ -187,4 +225,4 @@ const LoginPage = () => {
   )
 }
 
-export default LoginPage
+export default RegisterPage
