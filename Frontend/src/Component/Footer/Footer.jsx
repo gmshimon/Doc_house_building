@@ -41,7 +41,7 @@ const Footer = () => {
             <div className='flex justify-center'>
               <button
                 type='button'
-                class='w-full  py-3 px-4 gap-x-2 text-sm font-medium rounded-lg border border-[#F7A582] text-[#F7A582] hover:border-[#F7A582] hover:text-[#F7A582] focus:outline-hidden focus:border-blue-600 focus:text-blue-600 disabled:opacity-50 disabled:pointer-events-none dark:border-neutral-700 dark:text-neutral-400 dark:hover:text-blue-500 dark:hover:border-blue-600 dark:focus:text-blue-500 dark:focus:border-blue-600'
+                className='w-full  py-3 px-4 gap-x-2 text-sm font-medium rounded-lg border border-[#F7A582] text-[#F7A582] hover:border-[#F7A582] hover:text-[#F7A582] focus:outline-hidden focus:border-blue-600 focus:text-blue-600 disabled:opacity-50 disabled:pointer-events-none dark:border-neutral-700 dark:text-neutral-400 dark:hover:text-blue-500 dark:hover:border-blue-600 dark:focus:text-blue-500 dark:focus:border-blue-600'
               >
                 Outline
               </button>
