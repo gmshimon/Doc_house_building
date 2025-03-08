@@ -1,3 +1,5 @@
+import { Link } from "react-router-dom"
+
 const Navbar = () => {
   return (
     <section className=''>
@@ -41,12 +43,14 @@ const Navbar = () => {
             <div className='ms-1 sm:ms-2'></div>
           </div>
           <div className='flex items-center gap-x-1 lg:gap-x-2 ms-auto py-1 lg:ps-6 lg:order-3 lg:col-span-3'>
-            <button
+           <Link to="/login">
+           <button
               type='button'
               className='py-2 px-3 inline-flex items-center gap-x-2 text-sm font-medium text-nowrap rounded-xl bg-white border border-gray-200 text-black hover:bg-gray-100 focus:outline-hidden focus:bg-gray-100 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:hover:bg-white/10 dark:text-white dark:hover:text-white dark:focus:text-white'
             >
               Sign in
             </button>
+           </Link>
 
             <div className='lg:hidden ml-1'>
               <button
@@ -99,13 +103,13 @@ const Navbar = () => {
           >
             <div className='flex flex-col gap-y-4 gap-x-0 mt-5 lg:flex-row lg:justify-center lg:items-center lg:gap-y-0 lg:gap-x-7 lg:mt-0'>
               <div>
-                <a
+                <Link to="/">
+                <p
                   className='relative inline-block text-lg pb-1 md:text-white focus:outline-hidden before:absolute before:bottom-0.5 before:start-0 before:-z-1 before:w-full before:h-1 before:bg-lime-400 dark:text-white hover:text-gray-400'
-                  href='#'
-                  aria-current='page'
                 >
                   Home
-                </a>
+                </p>
+                </Link>
               </div>
               <div>
                 <a
@@ -116,12 +120,13 @@ const Navbar = () => {
                 </a>
               </div>
               <div>
-                <a
+                <Link to="/appointment">
+                <p
                   className='relative inline-block text-lg pb-1 md:text-white focus:outline-hidden before:absolute before:bottom-0.5 before:start-0 before:-z-1 before:w-full before:h-1 before:bg-lime-400 dark:text-white hover:text-gray-400'
-                  href='#'
                 >
                   Appointment
-                </a>
+                </p>
+                </Link>
               </div>
             </div>
           </div>
