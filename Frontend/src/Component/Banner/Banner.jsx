@@ -1,4 +1,5 @@
 import React from 'react'
+import { motion } from 'framer-motion'
 import doc_1 from '../../assets/Doc_1.png'
 import doc_2 from '../../assets/Doc_2.png'
 import doc_3 from '../../assets/Doc_3.png'
@@ -179,7 +180,12 @@ const Banner = () => {
       </div>
 
       {/* Main banner content */}
-      <div className='md:flex md:justify-center md:items-center md:mt-0 mt-6'>
+      <motion.div
+        className='md:flex md:justify-center md:items-center md:mt-0 mt-6'
+        initial={{ opacity: 0, y: 50 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.8, ease: 'easeOut', delay: 0.6 }}
+      >
         <div className='md:ml-24'>
           <h1 className='md:text-6xl text-4xl font-semibold'>
             Your Best Medical <br /> Help Center
@@ -199,33 +205,48 @@ const Banner = () => {
         {/* Container to hold the stacked photos (responsive) */}
         <div className='relative w-full max-w-xl mx-auto aspect-[4/3]'>
           {/* Left photo */}
-          <div className='absolute top-10 -left-2 md:top-16 md:left-20 md:w-52 md:h-60 w-40 h-44 transform rotate-[5deg] bg-slate-300 border-8 border-white overflow-hidden'>
+          <motion.div
+            className='absolute top-10 -left-2 md:top-16 md:left-20 md:w-52 md:h-60 w-40 h-44 transform rotate-[5deg] bg-slate-300 border-8 border-white overflow-hidden'
+            initial={{ opacity: 0, x: -30, rotate: 0 }}
+            animate={{ opacity: 1, x: 0, rotate: 5 }}
+            transition={{ duration: 0.8, ease: 'easeOut', delay: 0.7 }}
+          >
             <img
               src={doc_1}
               alt='Doctor 1'
               className='w-full h-full md:object-cover object-contain'
             />
-          </div>
+          </motion.div>
 
           {/* Middle photo */}
-          <div className='absolute -bottom-16 md:left-[40%] left-[28%] md:w-52 md:h-60 w-40 h-44 transform rotate-[5deg] bg-slate-300 border-8 border-white overflow-hidden'>
+          <motion.div
+            className='absolute -bottom-16 md:left-[40%] left-[28%] md:w-52 md:h-60 w-40 h-44 transform rotate-[5deg] bg-slate-300 border-8 border-white overflow-hidden'
+            initial={{ opacity: 0, y: 30, rotate: 0 }}
+            animate={{ opacity: 1, y: 0, rotate: 5 }}
+            transition={{ duration: 0.8, ease: 'easeOut', delay: 0.8 }}
+          >
             <img
               src={doc_2}
               alt='Doctor 2'
               className='w-full h-full md:object-cover object-contain'
             />
-          </div>
+          </motion.div>
 
           {/* Right photo */}
-          <div className='absolute bottom-16 md:left-[72%] left-[60%] md:w-52 md:h-60 w-40 h-44 transform rotate-[5deg] bg-slate-300 border-8 border-white overflow-hidden'>
+          <motion.div
+            className='absolute bottom-16 md:left-[72%] left-[60%] md:w-52 md:h-60 w-40 h-44 transform rotate-[5deg] bg-slate-300 border-8 border-white overflow-hidden'
+            initial={{ opacity: 0, x: 30, rotate: 0 }}
+            animate={{ opacity: 1, x: 0, rotate: 5 }}
+            transition={{ duration: 0.8, ease: 'easeOut', delay: 0.9 }}
+          >
             <img
               src={doc_3}
               alt='Doctor 3'
               className='w-full h-full md:object-cover object-contain'
             />
-          </div>
+          </motion.div>
         </div>
-      </div>
+        </motion.div>
     </div>
   )
 }
