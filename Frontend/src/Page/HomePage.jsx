@@ -4,6 +4,7 @@ import ServiceDetails from '../Component/ServiceDetails/ServiceDetails';
 import ContactBanner from '../Component/ContactBanner/ContactBanner';
 import PatientReview from '../Component/PatientReview/PatientReview';
 import ExpertDoctor from '../Component/ExpertDoctor/ExpertDoctor';
+import Contact from '../Component/Contact/Contact';
 
 const HomePage = () => {
     return (
@@ -14,6 +15,7 @@ const HomePage = () => {
                 <ContactBanner/>
                 <PatientReview/>
                 <ExpertDoctor/>
+                <Contact/>
             </div>
         </div>
     );
