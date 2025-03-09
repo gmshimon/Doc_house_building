@@ -2,17 +2,17 @@ import React from 'react'
 
 const DoctorOverview = () => {
   return (
-    <section className='px-5'>
+    <section className='px-5 pb-6'>
       <p className='text-lg font-semibold'>About Me</p>
-      <p>
+      <p className='text-justify'>
         Lorem, ipsum dolor sit amet consectetur adipisicing elit. Ipsa, sit
         perspiciatis eum rem vel eveniet mollitia aut laudantium magnam enim
         eaque natus repellendus! Recusandae nihil qui, dolorum quas nostrum
         dolor iste id veniam eum quia animi tempore velit et ipsam dolores quam
         fugit. Accusamus velit placeat delectus quas. Eius, possimus!
       </p>
-      <main className='flex justify-center w-full mt-4'>
-        <div className='w-1/2'>
+      <main className='md:flex justify-center w-full mt-4'>
+        <div className='md:w-1/2'>
           <div>
             <h1 className='text-lg font-semibold'>Education</h1>
             <ul className='list-disc ml-8 mt-5'>
@@ -47,8 +47,8 @@ const DoctorOverview = () => {
             </ul>
           </div>
         </div>
-        <div className='w-1/2'>
-          <div>
+        <div className='md:w-1/2'>
+          <div className='mt-4 md:mt-0'>
             <h1 className='text-lg font-semibold'>Awards</h1>
             <ul className='list-disc ml-8 mt-5'>
               <p>July 2019</p>

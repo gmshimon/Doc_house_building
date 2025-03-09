@@ -6,11 +6,14 @@ import { CiLocationOn } from 'react-icons/ci'
 import doc_img from '../../assets/Doc_2.png'
 import category_1 from '../../assets/category_1.jpg'
 import DoctorOverview from '../../Component/DoctorOverview/DoctorOverview'
+import DoctorLocation from '../../Component/DoctorLocation/DoctorLocation'
+import DoctorReview from '../../Component/DoctorReview/DoctorReview'
+import BusinessHours from '../../Component/BusinessHours/BusinessHours'
 
 const DoctorProfilePage = () => {
   const [activeTab, setActiveTab] = useState(1)
   return (
-    <section className='bg-gray-200 pt-5'>
+    <section className='bg-gray-200 py-10 h-'>
       <motion.div
         className='mx-auto max-w-5xl bg-white rounded-md'
         initial={{ opacity: 0, y: 50 }}
@@ -87,8 +90,7 @@ const DoctorProfilePage = () => {
           </div>
         </div>
       </motion.div>
-
-      <div className='mx-auto max-w-5xl bg-white rounded-md mt-5'>
+      <div className='mx-auto max-w-5xl bg-white rounded-md mt-5 mb'>
         <div className='w-full p-2'>
         <nav
           className='grid grid-cols-2 md:grid-cols-4 gap-x-12 border-b w-full'
@@ -138,7 +140,7 @@ const DoctorProfilePage = () => {
             role='tabpanel'
             aria-labelledby='pills-with-brand-color-item-2'
           >
-            
+            <DoctorLocation/> 
           </div>
           <div
             id='pills-with-brand-color-3'
@@ -146,6 +148,15 @@ const DoctorProfilePage = () => {
             role='tabpanel'
             aria-labelledby='pills-with-brand-color-item-3'
           >
+            <DoctorReview/>
+          </div>
+          <div
+            id='pills-with-brand-color-4'
+            className='hidden'
+            role='tabpanel'
+            aria-labelledby='pills-with-brand-color-item-4'
+          >
+            <BusinessHours/>
           </div>
         </div>
        </div>
