@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
 import { Rating } from '@smastrom/react-rating'
 import '@smastrom/react-rating/style.css'
@@ -12,6 +12,9 @@ import BusinessHours from '../../Component/BusinessHours/BusinessHours'
 
 const DoctorProfilePage = () => {
   const [activeTab, setActiveTab] = useState(1)
+  useEffect(() => {
+    window.scrollTo(0, 0)
+  }, [])
   return (
     <section className='bg-gray-200 py-10 h-'>
       <motion.div
@@ -92,74 +95,74 @@ const DoctorProfilePage = () => {
       </motion.div>
       <div className='mx-auto max-w-5xl bg-white rounded-md mt-5 mb'>
         <div className='w-full p-2'>
-        <nav
-          className='grid grid-cols-2 md:grid-cols-4 gap-x-12 border-b w-full'
-          aria-label='Tabs'
-          role='tablist'
-          aria-orientation='horizontal'
-        >
-          {['Overview', 'Locations', 'Reviews', 'Business Hours'].map(
-            (tab, index) => {
-              const tabIndex = index + 1
-              return (
-                <button
-                  key={tabIndex}
-                  type='button'
-                  className={`py-3 px-4 mr-10  gap-x-2 text-sm font-medium text-center rounded-lg focus:outline-none ${
-                    activeTab === tabIndex
-                      ? 'bg-[#F7A582] text-white'
-                      : 'bg-transparent text-black hover:text-black'
-                  }`}
-                  id={`pills-with-brand-color-item-${tabIndex}`}
-                  aria-selected={activeTab === tabIndex}
-                  data-hs-tab={`#pills-with-brand-color-${tabIndex}`}
-                  aria-controls={`pills-with-brand-color-${tabIndex}`}
-                  role='tab'
-                  onClick={() => setActiveTab(tabIndex)} // Change active tab on click
-                >
-                  {tab}
-                </button>
-              )
-            }
-          )}
-        </nav>
+          <nav
+            className='grid grid-cols-2 md:grid-cols-4 gap-x-12 border-b w-full'
+            aria-label='Tabs'
+            role='tablist'
+            aria-orientation='horizontal'
+          >
+            {['Overview', 'Locations', 'Reviews', 'Business Hours'].map(
+              (tab, index) => {
+                const tabIndex = index + 1
+                return (
+                  <button
+                    key={tabIndex}
+                    type='button'
+                    className={`py-3 px-4 mr-10  gap-x-2 text-sm font-medium text-center rounded-lg focus:outline-none ${
+                      activeTab === tabIndex
+                        ? 'bg-[#F7A582] text-white'
+                        : 'bg-transparent text-black hover:text-black'
+                    }`}
+                    id={`pills-with-brand-color-item-${tabIndex}`}
+                    aria-selected={activeTab === tabIndex}
+                    data-hs-tab={`#pills-with-brand-color-${tabIndex}`}
+                    aria-controls={`pills-with-brand-color-${tabIndex}`}
+                    role='tab'
+                    onClick={() => setActiveTab(tabIndex)} // Change active tab on click
+                  >
+                    {tab}
+                  </button>
+                )
+              }
+            )}
+          </nav>
         </div>
 
-       <div className='p-2'>
-       <div className='mt-3'>
-          <div
-            id='pills-with-brand-color-1'
-            role='tabpanel'
-            aria-labelledby='pills-with-brand-color-item-1'
-          >
-            <DoctorOverview/>
-          </div>
-          <div
-            id='pills-with-brand-color-2'
-            className='hidden'
-            role='tabpanel'
-            aria-labelledby='pills-with-brand-color-item-2'
-          >
-            <DoctorLocation/> 
-          </div>
-          <div
-            id='pills-with-brand-color-3'
-            className='hidden'
-            role='tabpanel'
-            aria-labelledby='pills-with-brand-color-item-3'
-          >
-            <DoctorReview/>
-          </div>
-          <div
-            id='pills-with-brand-color-4'
-            className='hidden'
-            role='tabpanel'
-            aria-labelledby='pills-with-brand-color-item-4'
-          >
-            <BusinessHours/>
+        <div className='p-2'>
+          <div className='mt-3'>
+            <div
+              id='pills-with-brand-color-1'
+              role='tabpanel'
+              aria-labelledby='pills-with-brand-color-item-1'
+            >
+              <DoctorOverview />
+            </div>
+            <div
+              id='pills-with-brand-color-2'
+              className='hidden'
+              role='tabpanel'
+              aria-labelledby='pills-with-brand-color-item-2'
+            >
+              <DoctorLocation />
+            </div>
+            <div
+              id='pills-with-brand-color-3'
+              className='hidden'
+              role='tabpanel'
+              aria-labelledby='pills-with-brand-color-item-3'
+            >
+              <DoctorReview />
+            </div>
+            <div
+              id='pills-with-brand-color-4'
+              className='hidden'
+              role='tabpanel'
+              aria-labelledby='pills-with-brand-color-item-4'
+            >
+              <BusinessHours />
+            </div>
           </div>
         </div>
-       </div>
       </div>
     </section>
   )
