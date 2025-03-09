@@ -5,9 +5,11 @@ import '@smastrom/react-rating/style.css'
 import { IoLocationOutline } from 'react-icons/io5'
 import { CiCalendar } from 'react-icons/ci'
 import { AiOutlineDollarCircle } from 'react-icons/ai'
+import { useNavigate } from 'react-router-dom'
 
 const ExpertDoctor = () => {
   const [rating, setRating] = useState(3)
+  const navigate = useNavigate()
   return (
     <section className='mt-16 w-full'>
       <h1 className='text-4xl font-semibold text-center'>
@@ -169,6 +171,7 @@ const ExpertDoctor = () => {
               </div>
               <div className='w-full flex justify-center'>
                 <button
+                onClick={()=>navigate(`/doctor-profile/1`)}
                   type='button'
                   className='w-full  py-3 mt-7 px-4  gap-x-2 text-sm font-medium rounded-lg border border-[#F7A582] text-[#F7A582] hover:border-[#F7A582] hover:text-[#000000FF] focus:outline-hidden focus:border-[#F7A582] hover:bg-[#F7A582] focus:text-[#000000FF] disabled:opacity-50 disabled:pointer-events-none'
                 >

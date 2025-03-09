@@ -219,6 +219,8 @@ const CommonBanner = () => {
                 href='#'
               >
                 {pathname?.split('/')[1] === 'appointment' && 'Appointment'}
+                {pathname?.split('/')[1] === 'doctor-profile' &&
+                  'Doctor Profile'}
                 <svg
                   className='shrink-0 size-5 text-gray-400 dark:text-neutral-600 mx-2'
                   width='16'
@@ -238,7 +240,12 @@ const CommonBanner = () => {
             </li>
           </ol>
           <div>
-            {pathname?.split('/')[1] === 'appointment' && <p className='text-4xl mt-5'>Appointment</p>}
+            {pathname?.split('/')[1] === 'appointment' && (
+              <p className='text-4xl mt-5'>Appointment</p>
+            )}
+            {pathname?.split('/')[1] === 'doctor-profile' && (
+              <p className='text-4xl mt-5'>Doctor Profile</p>
+            )}
           </div>
         </div>
       </div>

@@ -94,7 +94,7 @@ const AvailableSlot = () => {
               <h3 className='text-lg font-bold'>Cavity Protection</h3>
               <button
                 onClick={() => setIsModalOpen(false)}
-                className='text-gray-500 hover:text-gray-700'
+                className='text-white  bg-[#07332F] p-2 rounded-full'
               >
                 ✕
               </button>

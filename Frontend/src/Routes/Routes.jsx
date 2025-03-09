@@ -4,6 +4,7 @@ import HomePage from '../Page/HomePage/HomePage'
 import LoginPage from '../Page/LoginPage/LoginPage'
 import RegisterPage from '../Page/RegisterPage/RegisterPage'
 import AppointmentPage from '../Page/AppointmentPage/AppointmentPage'
+import DoctorProfilePage from '../Page/DoctorProfilePage/DoctorProfilePage'
 
 export const router = createBrowserRouter([
     {
@@ -25,6 +26,10 @@ export const router = createBrowserRouter([
             {
                 path:'register',
                 element:<RegisterPage/>
+            },
+            {
+                path:'/doctor-profile/:id',
+                element:<DoctorProfilePage/>
             }
         ]
     }
