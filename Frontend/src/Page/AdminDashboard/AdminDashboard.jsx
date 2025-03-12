@@ -2,6 +2,7 @@ import React from 'react'
 import { CiFileOn, CiUser } from 'react-icons/ci'
 import { IoPeopleOutline } from 'react-icons/io5'
 import PatientGraph from '../../Component/PatientGraph/PatientGraph'
+import AppointmentGraph from '../../Component/AppointmentGraph/AppointmentGraph'
 
 const AdminDashboard = () => {
   return (
@@ -85,13 +86,14 @@ const AdminDashboard = () => {
         </div>
       </div>
       </div>
-      <div className='md:flex justify-center'>
+      <div className='md:flex justify-evenly mt-7'>
         <div className='md:w-[700px] bg-white rounded-lg p-5'>
-            <h1 className='text-3xl pl-5'>Patient</h1>
+            <h1 className='text-3xl pl-5 border-b pb-2 mb-8'>Patient</h1>
             <PatientGraph/>
         </div>
-        <div>
-            
+        <div className='md:w-[700px] bg-white rounded-lg p-5 mt-10 md:mt-0'>
+            <h1 className='text-3xl pl-5 border-b pb-2 mb-8'>Appointment</h1>
+            <AppointmentGraph/>
         </div>
       </div>
     </section>

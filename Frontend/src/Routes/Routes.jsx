@@ -7,6 +7,7 @@ import AppointmentPage from '../Page/AppointmentPage/AppointmentPage'
 import DoctorProfilePage from '../Page/DoctorProfilePage/DoctorProfilePage'
 import Dashboard from '../Layout/Dashboard'
 import AdminDashboard from '../Page/AdminDashboard/AdminDashboard'
+import AdminUserDashboard from '../Page/AdminUserDashboard/AdminUserDashboard'
 
 export const router = createBrowserRouter([
     {
@@ -42,6 +43,10 @@ export const router = createBrowserRouter([
             {
                 path:'admin-dashboard',
                 element:<AdminDashboard/>
+            },
+            {
+                path:'admin-user',
+                element:<AdminUserDashboard/>
             }
         ]
     }

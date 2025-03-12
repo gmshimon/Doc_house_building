@@ -66,7 +66,7 @@ const Dashboard = () => {
               <Link to='/login'>
                 <button
                   type='button'
-                  className='py-2 px-3 inline-flex items-center gap-x-2 text-sm font-medium text-nowrap rounded-xl bg-white border border-gray-200 text-black hover:bg-gray-100 focus:outline-hidden focus:bg-gray-100 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:hover:bg-white/10 dark:text-white dark:hover:text-white dark:focus:text-white'
+                  className='lg:hidden py-2 px-3 inline-flex items-center gap-x-2 text-sm font-medium text-nowrap rounded-xl bg-white border border-gray-200 text-black hover:bg-gray-100 focus:outline-hidden focus:bg-gray-100 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:hover:bg-white/10 dark:text-white dark:hover:text-white dark:focus:text-white'
                 >
                   Sign in
                 </button>
@@ -148,7 +148,7 @@ const Dashboard = () => {
             </div>
           </nav>
         </header>
-        <div className='mt-[62px] bg-[#F1F5F9] h-screen'>
+        <div className='mt-[62px] bg-[#F1F5F9] min-h-dvh'>
             <Outlet/>
         </div>
       </div>
