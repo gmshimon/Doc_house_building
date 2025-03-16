@@ -13,7 +13,7 @@ const __dirname = path.dirname(__filename);
 
 dotenv.config();
 
-const port = process.env.PORT || 8000
+const port = process.env.PORT || 5000
 
 const app = express();
 app.use(cors({
@@ -30,12 +30,18 @@ mongoose.connect(uri).then(()=>{
     console.log("Connected to MongoDB")
 })
 
+import UserRouter from './Module/User/user.routes.js'
+import DoctorRouter from './Module/Doctor/doctor.routes.js'
+
+app.use('/api/v1/user', UserRouter)
+
+
 app.get('/',(req,res)=>{
     res.send("Hello World!")
 })
 
 app.listen(port,()=>{
-    console.log("http://localhost:8000")
+    console.log(`http://localhost:${port}`)
     console.log(`Server running on port ${port}`)
 })
 

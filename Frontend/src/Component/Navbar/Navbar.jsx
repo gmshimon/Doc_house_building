@@ -1,6 +1,10 @@
-import { Link } from "react-router-dom"
+import { useState } from 'react';
+import { useSelector } from 'react-redux'
+import { Link } from 'react-router-dom'
 
 const Navbar = () => {
+  const [isOpen, setIsOpen] = useState(false);
+  const { user } = useSelector(state => state.authSlice)
   return (
     <section className=''>
       <header className='absolute top-0 left-0 flex flex-wrap lg:justify-start lg:flex-nowrap z-50 w-full py-3'>
@@ -43,14 +47,45 @@ const Navbar = () => {
             <div className='ms-1 sm:ms-2'></div>
           </div>
           <div className='flex items-center gap-x-1 lg:gap-x-2 ms-auto py-1 lg:ps-6 lg:order-3 lg:col-span-3'>
-           <Link to="/login">
-           <button
-              type='button'
-              className='py-2 px-3 inline-flex items-center gap-x-2 text-sm font-medium text-nowrap rounded-xl bg-white border border-gray-200 text-black hover:bg-gray-100 focus:outline-hidden focus:bg-gray-100 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:hover:bg-white/10 dark:text-white dark:hover:text-white dark:focus:text-white'
-            >
-              Sign in
-            </button>
-           </Link>
+          <div className="relative">
+      {user ? (
+        <div>
+          {/* Avatar - Click to Toggle Dropdown */}
+          <img
+            className="cursor-pointer inline-block size-8 rounded-full"
+            src="https://images.unsplash.com/photo-1568602471122-7832951cc4c5?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=facearea&facepad=2&w=300&h=300&q=80"
+            alt="Avatar"
+            onClick={() => setIsOpen(!isOpen)}
+          />
+
+          {/* Dropdown Menu */}
+          {isOpen && (
+            <div className="absolute right-0 mt-2 w-48 bg-white border border-gray-200 rounded-lg shadow-lg dark:bg-neutral-900 dark:border-neutral-700">
+              <ul className="py-2">
+                <li className="px-4 py-2 text-sm text-gray-800 dark:text-white hover:bg-gray-100 dark:hover:bg-white/10">
+                  <Link to="/profile">Profile</Link>
+                </li>
+                <li className="px-4 py-2 text-sm text-gray-800 dark:text-white hover:bg-gray-100 dark:hover:bg-white/10">
+                  <Link to="/settings">Settings</Link>
+                </li>
+                <li className="px-4 py-2 text-sm text-red-600 hover:bg-red-50 dark:hover:bg-red-500/10">
+                  <button onClick={() => console.log("Logout")}>Logout</button>
+                </li>
+              </ul>
+            </div>
+          )}
+        </div>
+      ) : (
+        <Link to="/login">
+          <button
+            type="button"
+            className="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-medium text-nowrap rounded-xl bg-white border border-gray-200 text-black hover:bg-gray-100 focus:outline-hidden focus:bg-gray-100 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:hover:bg-white/10 dark:text-white dark:hover:text-white dark:focus:text-white"
+          >
+            Sign in
+          </button>
+        </Link>
+      )}
+    </div>
 
             <div className='lg:hidden ml-1'>
               <button
@@ -103,12 +138,10 @@ const Navbar = () => {
           >
             <div className='flex flex-col gap-y-4 gap-x-0 mt-5 lg:flex-row lg:justify-center lg:items-center lg:gap-y-0 lg:gap-x-7 lg:mt-0'>
               <div>
-                <Link to="/">
-                <p
-                  className='relative inline-block text-lg pb-1 md:text-white focus:outline-hidden before:absolute before:bottom-0.5 before:start-0 before:-z-1 before:w-full before:h-1 before:bg-lime-400 dark:text-white hover:text-gray-400'
-                >
-                  Home
-                </p>
+                <Link to='/'>
+                  <p className='relative inline-block text-lg pb-1 md:text-white focus:outline-hidden before:absolute before:bottom-0.5 before:start-0 before:-z-1 before:w-full before:h-1 before:bg-lime-400 dark:text-white hover:text-gray-400'>
+                    Home
+                  </p>
                 </Link>
               </div>
               <div>
@@ -120,12 +153,10 @@ const Navbar = () => {
                 </a>
               </div>
               <div>
-                <Link to="/appointment">
-                <p
-                  className='relative inline-block text-lg pb-1 md:text-white focus:outline-hidden before:absolute before:bottom-0.5 before:start-0 before:-z-1 before:w-full before:h-1 before:bg-lime-400 dark:text-white hover:text-gray-400'
-                >
-                  Appointment
-                </p>
+                <Link to='/appointment'>
+                  <p className='relative inline-block text-lg pb-1 md:text-white focus:outline-hidden before:absolute before:bottom-0.5 before:start-0 before:-z-1 before:w-full before:h-1 before:bg-lime-400 dark:text-white hover:text-gray-400'>
+                    Appointment
+                  </p>
                 </Link>
               </div>
             </div>

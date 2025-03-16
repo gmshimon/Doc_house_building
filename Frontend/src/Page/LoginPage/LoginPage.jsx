@@ -1,7 +1,41 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import login_pic from '../../assets/login_pic.png'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
+import { useDispatch, useSelector } from 'react-redux'
+import { loginUser, reset } from '../../Redux/Slice/AuthSlice'
+import { toast, ToastContainer } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
 const LoginPage = () => {
+  const {isLoginSuccess,isLoginError} = useSelector(state=>state.authSlice)
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+
+  const dispatch = useDispatch()
+  const navigate = useNavigate()
+  useEffect(()=>{
+    if(isLoginSuccess){
+      navigate('/')
+    }
+    if(isLoginError){
+      toast.error('Invalid credentials',{
+        position: 'top-right',
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+      })
+      dispatch(reset())
+    }
+  },[dispatch, isLoginError, isLoginSuccess, navigate])
+
+  const handleSubmit = e => {
+    e.preventDefault()
+    const data = {
+      email,
+      password
+    }
+    dispatch(loginUser(data))
+  }
   return (
     <section className='md:h-screen w-full'>
       <div className='md:flex w-full h-full'>
@@ -100,8 +134,9 @@ const LoginPage = () => {
                 </label>
                 <div className='relative'>
                   <input
+                    onChange={e => setEmail(e.target.value)}
                     type='email'
-                    className='peer py-2.5 sm:py-3 px-4 pl-11 block w-full border border-black border-transparent rounded-lg sm:text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-700 dark:border-transparent dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600'
+                    className=' py-2.5 sm:py-3 px-4 pl-11 block w-full border border-black  rounded-lg sm:text-sm focus:border-blue-500 focus:ring-blue-500  disabled:pointer-events-none dark:bg-neutral-700  dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600'
                     placeholder='Enter email'
                   />
                   <div className='absolute inset-y-0 left-0 flex items-center pointer-events-none pl-4 peer-disabled:opacity-50 peer-disabled:pointer-events-none'>
@@ -138,14 +173,15 @@ const LoginPage = () => {
                   >
                     Password
                   </label>
-                  <span className='block mb-2 text-sm text-gray-500 dark:text-neutral-500'>
+                  <span className='block mb-2 text-sm dark:text-neutral-500 text-[#F7A582] font-semibold cursor-pointer hover:underline'>
                     Forgot Password
                   </span>
                 </div>
                 <div className='relative'>
                   <input
+                    onChange={e => setPassword(e.target.value)}
                     type='password'
-                    className='peer py-2.5 sm:py-3 px-4 pl-11 block w-full border border-black border-transparent rounded-lg sm:text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-700 dark:border-transparent dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600'
+                    className='py-2.5 sm:py-3 px-4 pl-11 block w-full border border-black  rounded-lg sm:text-sm focus:border-blue-500 focus:ring-blue-500  disabled:pointer-events-none dark:bg-neutral-700  dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600'
                     placeholder='Enter password'
                   />
                   <div className='absolute inset-y-0 left-0 flex items-center pointer-events-none pl-4 peer-disabled:opacity-50 peer-disabled:pointer-events-none'>
@@ -169,6 +205,7 @@ const LoginPage = () => {
               </div>
               <div>
                 <button
+                  onClick={handleSubmit}
                   type='button'
                   className='w-full py-3 px-4 gap-x-2 text-sm font-medium rounded-lg border border-transparent bg-[#F7A582] text-white hover:bg-[#F7A582] focus:outline-hidden disabled:opacity-50 disabled:pointer-events-none'
                 >
@@ -176,7 +213,12 @@ const LoginPage = () => {
                 </button>
                 <p className='text-center mt-2'>
                   Please register at first. Go to{' '}
-                  <Link to="/register"><span className='text-[#F7A582] font-semibold cursor-pointer'> SIGN UP</span></Link>
+                  <Link to='/register'>
+                    <span className='text-[#F7A582] font-semibold cursor-pointer'>
+                      {' '}
+                      SIGN UP
+                    </span>
+                  </Link>
                 </p>
               </div>
             </div>
