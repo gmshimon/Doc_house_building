@@ -1,0 +1,101 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User{
+  id  Int @id @default(autoincrement())
+  name String
+  email String @unique
+  role USER_ROLE @default(USER)
+  image String
+  phone String
+  address Address? @relation(fields: [addressId], references: [id])
+  addressId Int? @unique
+}
+
+model Address{
+  id Int @id @default(autoincrement())
+  street String
+  city String
+  state String?
+  zip String?
+  country String?
+  map String?
+  institution String?
+  doctor Doctor?
+  users User?
+}
+
+enum USER_ROLE{
+  ADMIN
+  USER
+}
+
+model Doctor {
+  id Int @id @default(autoincrement())
+  name String
+  email String @unique
+  phone String
+  qualification String @db.VarChar(100)
+  specialties String[]
+  image String
+  services String[]
+  education Education[]
+  experience Experience[]
+  award Award[]
+  business_hour Business_hour[]
+  description String 
+  address Address @relation(fields: [addressId],references:[id])
+  addressId Int @unique
+}
+
+model Education{
+  id Int @id @default(autoincrement())
+  degree String
+  company String
+  startDate DateTime
+  endDate DateTime
+  doctor Doctor @relation(fields: [doctorId], references: [id])
+  doctorId Int 
+}
+
+model Experience {
+  id Int @id @default(autoincrement())
+  title String
+  company String
+  startDate DateTime
+  endDate DateTime
+  doctor Doctor @relation(fields: [doctorId], references: [id])
+  doctorId Int 
+}
+
+model Award{
+  id Int @id @default(autoincrement())
+  title String
+  description String
+  year String
+  doctor Doctor @relation(fields: [doctorId], references: [id])
+  doctorId Int
+}
+
+model Business_hour{
+  id Int @id @default(autoincrement())
+  day String
+  open String
+  close String
+  isClose Boolean @default(false)
+  special_notes String
+  doctor Doctor @relation(fields: [doctorId], references: [id])
+  doctorId Int
+}
