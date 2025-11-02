@@ -29,7 +29,7 @@ const Dashboard = () => {
               <a
                 className='flex-none rounded-xl text-xl inline-block font-semibold focus:outline-hidden focus:opacity-80'
                 href='../templates/creative-agency/index.html'
-                aria-label='Preline'
+
               >
                 <svg
                   width='150'
