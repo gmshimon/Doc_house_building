@@ -33,30 +33,31 @@ export class UserController {
       });
     } catch (error) {
       console.log(error);
-      response.status(200).json({
+      response.status(400).json({
         status: 'Failed',
-        message: 'Internal Server Error',
+        message: error,
       });
     }
   }
 
-  @Get()
-  findAll() {
-    return this.userService.findAll();
-  }
-
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.userService.findOne(+id);
-  }
-
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
-    return this.userService.update(+id, updateUserDto);
-  }
-
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.userService.remove(+id);
+  @Post('get-user')
+  async fetchUser(
+    @Req() request: Request,
+    @Res() response: Response,
+    @Body() data,
+  ) {
+    try {
+      const user = await this.userService.fetchUser(data);
+      response.status(200).json({
+        status: 'Success',
+        message: 'User fetched successfully',
+        data: user,
+      });
+    } catch (error) {
+      response.status(400).json({
+        status: 'Failed',
+        message: error,
+      });
+    }
   }
 }

@@ -30,7 +30,7 @@ const dispatch = useDispatch()
   }, [dispatch, isLoginSuccess])
   return (
     <div className='w-full'>
-        <ToastContainer />
+      <ToastContainer />
       <Banner />
       <div className='px-5 md:mx-auto max-w-5xl w-full max-h-full'>
         <ServiceDetails />

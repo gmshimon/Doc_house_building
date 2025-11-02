@@ -1,0 +1,6 @@
+-- AlterTable
+ALTER TABLE "Doctor" ALTER COLUMN "image" DROP NOT NULL;
+
+-- AlterTable
+ALTER TABLE "User" ALTER COLUMN "image" DROP NOT NULL,
+ALTER COLUMN "phone" DROP NOT NULL;

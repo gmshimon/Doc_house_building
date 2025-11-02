@@ -17,7 +17,6 @@ export class UserService {
         email: data.email,
       },
     });
-
     const user = existingUser
       ? existingUser
       : await this.prisma.user.create({
@@ -37,19 +36,12 @@ export class UserService {
     };
   }
 
-  findAll() {
-    return `This action returns all user`;
-  }
-
-  findOne(id: number) {
-    return `This action returns a #${id} user`;
-  }
-
-  update(id: number, updateUserDto: UpdateUserDto) {
-    return `This action updates a #${id} user`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} user`;
+  async fetchUser(data: { email: string }) {
+    const user = await this.prisma.user.findUnique({
+      where: {
+        email: data.email,
+      },
+    });
+    return user;
   }
 }

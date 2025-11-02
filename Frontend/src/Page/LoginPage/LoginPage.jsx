@@ -136,7 +136,7 @@ const LoginPage = () => {
                   <input
                     onChange={e => setEmail(e.target.value)}
                     type='email'
-                    className=' py-2.5 sm:py-3 px-4 pl-11 block w-full border border-black  rounded-lg sm:text-sm focus:border-blue-500 focus:ring-blue-500  disabled:pointer-events-none dark:bg-neutral-700  dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600'
+                    className=' py-2.5 sm:py-3 px-4 pl-11 block w-full border border-black  rounded-lg sm:text-sm focus:border-blue-500 focus:ring-blue-500  disabled:pointer-events-none   dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600'
                     placeholder='Enter email'
                   />
                   <div className='absolute inset-y-0 left-0 flex items-center pointer-events-none pl-4 peer-disabled:opacity-50 peer-disabled:pointer-events-none'>
@@ -181,7 +181,7 @@ const LoginPage = () => {
                   <input
                     onChange={e => setPassword(e.target.value)}
                     type='password'
-                    className='py-2.5 sm:py-3 px-4 pl-11 block w-full border border-black  rounded-lg sm:text-sm focus:border-blue-500 focus:ring-blue-500  disabled:pointer-events-none dark:bg-neutral-700  dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600'
+                    className='py-2.5 sm:py-3 px-4 pl-11 block w-full border border-black  rounded-lg sm:text-sm focus:border-blue-500 focus:ring-blue-500  disabled:pointer-events-none   dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600'
                     placeholder='Enter password'
                   />
                   <div className='absolute inset-y-0 left-0 flex items-center pointer-events-none pl-4 peer-disabled:opacity-50 peer-disabled:pointer-events-none'>

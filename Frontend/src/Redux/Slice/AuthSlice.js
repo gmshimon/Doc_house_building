@@ -45,7 +45,7 @@ export const saveUserData = async userData => {
   localStorage.setItem(
     'userToken',
     JSON.stringify({
-      access_token: response.data.token,
+      access_token: response.data.data.token,
       expiration: tokenExpiration
     })
   )
@@ -59,11 +59,11 @@ export const fetchUser = createAsyncThunk('fetchUser', async email => {
 
 export const loginUser = createAsyncThunk(
   'loginUser',
-  async ({ email, password }) => {
+  async (userData) => {
+    const { email, password } = userData
     const res = await signInWithEmailAndPassword(auth, email, password)
     const data = await saveUserData({
-      name: res?.user?.displayName,
-      email: res?.user?.email
+      email
     })
     return data
   }
@@ -71,14 +71,15 @@ export const loginUser = createAsyncThunk(
 
 export const createUser = createAsyncThunk(
   'createUser',
-  async ({ name, email, password }) => {
+  async (userData) => {
+    const { name, email, password } = userData
     const res = await createUserWithEmailAndPassword(auth, email, password)
     const result = updateProfile(auth.currentUser, {
       displayName: name
     })
     const data = await saveUserData({
-      name: result?.user?.displayName,
-      email: result?.user?.email
+      name,
+      email,
     })
     return data
   }

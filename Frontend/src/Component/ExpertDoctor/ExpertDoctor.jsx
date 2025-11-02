@@ -26,7 +26,7 @@ const ExpertDoctor = () => {
       <div className='md:flex w-full md:space-x-4 space-y-4 md:space-y-0'>
         {/* card */}
         <div>
-          <div className='flex flex-col w-full md:w-80 p-2 bg-white border-2 border-gray-200 shadow-2xs rounded-xl dark:bg-neutral-900 dark:border-neutral-700 dark:shadow-neutral-700/70'>
+          <div className='flex flex-col w-full md:w-80 p-2 bg-white border-2 border-gray-200 shadow-2xs rounded-xl  dark:border-neutral-700 dark:shadow-neutral-700/70'>
             <img
               className='w-full h-auto rounded-2xl'
               src={expert_doc_1}
@@ -78,7 +78,7 @@ const ExpertDoctor = () => {
         </div>
         {/* card */}
         <div>
-          <div className='flex flex-col w-full md:w-80 p-2 bg-white border-2 border-gray-200 shadow-2xs rounded-xl dark:bg-neutral-900 dark:border-neutral-700 dark:shadow-neutral-700/70'>
+          <div className='flex flex-col w-full md:w-80 p-2 bg-white border-2 border-gray-200 shadow-2xs rounded-xl  dark:border-neutral-700 dark:shadow-neutral-700/70'>
             <img
               className='w-full h-auto rounded-2xl'
               src={expert_doc_1}
@@ -130,7 +130,7 @@ const ExpertDoctor = () => {
         </div>
         {/* card */}
         <div>
-          <div className='flex flex-col w-full md:w-80 p-2 bg-white border-2 border-gray-200 shadow-2xs rounded-xl dark:bg-neutral-900 dark:border-neutral-700 dark:shadow-neutral-700/70'>
+          <div className='flex flex-col w-full md:w-80 p-2 bg-white border-2 border-gray-200 shadow-2xs rounded-xl  dark:border-neutral-700 dark:shadow-neutral-700/70'>
             <img
               className='w-full h-auto rounded-2xl'
               src={expert_doc_1}

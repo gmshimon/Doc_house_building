@@ -141,10 +141,10 @@ const RegisterPage = () => {
               <h1 className='text-center text-2xl font-semibold mb-10'>
                 Sign up Doc House
               </h1>
-              <div className='md:w-96 mb-8'>
+              <div className='md:w-96 mb-4'>
                 <label
                   htmlFor='input-label'
-                  className='block text-sm font-medium mb-2 dark:text-white'
+                  className='block text-sm font-medium mb-2 '
                 >
                   Name
                 </label>
@@ -152,7 +152,7 @@ const RegisterPage = () => {
                   <input
                   onChange={e=>setName(e.target.value)}
                     type='email'
-                    className='py-2.5 sm:py-3 px-4 pl-11 block w-full border border-black  rounded-lg sm:text-sm focus:border-blue-500 focus:ring-blue-500  disabled:pointer-events-none dark:bg-neutral-700  dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600'
+                    className='py-2.5 sm:py-3 px-4 pl-11 block w-full border border-black  rounded-lg sm:text-sm focus:border-blue-500 focus:ring-blue-500  disabled:pointer-events-none   dark:placeholder-neutral-500 dark:focus:ring-neutral-600'
                     placeholder='Enter name'
                   />
                   <div className='absolute inset-y-0 start-0 flex items-center pointer-events-none ps-4 peer-disabled:opacity-50 peer-disabled:pointer-events-none'>
@@ -174,10 +174,10 @@ const RegisterPage = () => {
                   </div>
                 </div>
               </div>
-              <div className='md:w-96 mb-8'>
+              <div className='md:w-96 mb-6'>
                 <label
                   htmlFor='input-label'
-                  className='block text-sm font-medium mb-2 dark:text-white'
+                  className='block text-sm font-medium mb-1 '
                 >
                   Email
                 </label>
@@ -185,7 +185,7 @@ const RegisterPage = () => {
                   <input
                   onChange={e=>setEmail(e.target.value)}
                     type='email'
-                    className='py-2.5 sm:py-3 px-4 pl-11 block w-full border border-black  rounded-lg sm:text-sm focus:border-blue-500 focus:ring-blue-500  disabled:pointer-events-none dark:bg-neutral-700  dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600'
+                    className='py-2.5 sm:py-3 px-4 pl-11 block w-full border border-black  rounded-lg sm:text-sm focus:border-blue-500 focus:ring-blue-500  disabled:pointer-events-none dark:placeholder-neutral-500 dark:focus:ring-neutral-600'
                     placeholder='Enter email'
                   />
                   <div className='absolute inset-y-0 left-0 flex items-center pointer-events-none pl-4 peer-disabled:opacity-50 peer-disabled:pointer-events-none'>
@@ -214,11 +214,11 @@ const RegisterPage = () => {
                   </div>
                 </div>
               </div>
-              <div className='md:w-96 mb-8'>
+              <div className='md:w-96 mb-6'>
                 <div className='flex flex-wrap justify-between items-center gap-2'>
                   <label
                     htmlFor='with-corner-hint'
-                    className='block text-sm font-medium mb-2 dark:text-white'
+                    className='block text-sm font-medium mb-2'
                   >
                     Password
                   </label>
@@ -230,7 +230,7 @@ const RegisterPage = () => {
                   <input
                   onChange={e=>setPassword(e.target.value)}
                     type='password'
-                    className='py-2.5 sm:py-3 px-4 pl-11 block w-full border border-black  rounded-lg sm:text-sm focus:border-blue-500 focus:ring-blue-500  disabled:pointer-events-none dark:bg-neutral-700  dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600'
+                    className='py-2.5 sm:py-3 px-4 pl-11 block w-full border border-black  rounded-lg sm:text-sm focus:border-blue-500 focus:ring-blue-500  disabled:pointer-events-none  dark:placeholder-neutral-500 dark:focus:ring-neutral-600'
                     placeholder='Enter password'
                   />
                   <div className='absolute inset-y-0 left-0 flex items-center pointer-events-none pl-4 peer-disabled:opacity-50 peer-disabled:pointer-events-none'>
