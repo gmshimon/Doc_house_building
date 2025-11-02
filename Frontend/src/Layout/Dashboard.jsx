@@ -19,7 +19,7 @@ const Dashboard = () => {
           Open
         </button>
       </div> */}
-      <div className='w-64 '>
+      <div className='w-72'>
         <DashboardNavbar />
       </div>
       <div className='flex-1'>
