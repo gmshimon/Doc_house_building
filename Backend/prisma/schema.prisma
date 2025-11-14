@@ -20,7 +20,7 @@ model User{
   role USER_ROLE @default(USER)
   image String?
   phone String?
-  address Address? @relation(fields: [addressId], references: [id])
+  address Address? @relation(fields: [addressId], references: [id],onDelete: Cascade)
   addressId Int? @unique
 }
 
@@ -56,7 +56,7 @@ model Doctor {
   award Award[]
   business_hour Business_hour[]
   description String 
-  address Address @relation(fields: [addressId],references:[id])
+  address Address @relation(fields: [addressId],references:[id],onDelete: Cascade)
   addressId Int @unique
 }
 
@@ -64,9 +64,9 @@ model Education{
   id Int @id @default(autoincrement())
   degree String
   company String
-  startDate DateTime
-  endDate DateTime
-  doctor Doctor @relation(fields: [doctorId], references: [id])
+  startDate String
+  endDate String
+  doctor Doctor @relation(fields: [doctorId], references: [id],onDelete: Cascade)
   doctorId Int 
 }
 
@@ -74,9 +74,9 @@ model Experience {
   id Int @id @default(autoincrement())
   title String
   company String
-  startDate DateTime
-  endDate DateTime
-  doctor Doctor @relation(fields: [doctorId], references: [id])
+  startDate String
+  endDate String
+  doctor Doctor @relation(fields: [doctorId], references: [id],onDelete: Cascade)
   doctorId Int 
 }
 
@@ -85,7 +85,7 @@ model Award{
   title String
   description String
   year String
-  doctor Doctor @relation(fields: [doctorId], references: [id])
+  doctor Doctor @relation(fields: [doctorId], references: [id],onDelete: Cascade)
   doctorId Int
 }
 
@@ -95,7 +95,7 @@ model Business_hour{
   open String
   close String
   isClose Boolean @default(false)
-  special_notes String
-  doctor Doctor @relation(fields: [doctorId], references: [id])
+  special_notes String @default("")
+  doctor Doctor @relation(fields: [doctorId], references: [id],onDelete: Cascade)
   doctorId Int
 }

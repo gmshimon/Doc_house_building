@@ -1,16 +1,5 @@
-import {
-  Controller,
-  Get,
-  Post,
-  Body,
-  Patch,
-  Param,
-  Delete,
-  Req,
-  Res,
-} from '@nestjs/common';
+import { Controller, Post, Body, Req, Res } from '@nestjs/common';
 import { UserService } from './user.service';
-import { UpdateUserDto } from './dto/update-user.dto';
 import type { Request, Response } from 'express';
 import { Prisma } from '@prisma/client';
 
@@ -35,6 +24,7 @@ export class UserController {
       console.log(error);
       response.status(400).json({
         status: 'Failed',
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
         message: error,
       });
     }
@@ -56,6 +46,7 @@ export class UserController {
     } catch (error) {
       response.status(400).json({
         status: 'Failed',
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
         message: error,
       });
     }

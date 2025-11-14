@@ -1,6 +1,4 @@
 import { BriefcaseMedical, User } from 'lucide-react'
-import React from 'react'
-import { FaDocker } from 'react-icons/fa6'
 import { MdDashboard } from 'react-icons/md'
 import { NavLink } from 'react-router-dom'
 
@@ -50,16 +48,16 @@ const DashboardNavbar = () => {
     'text-white/70 hover:text-white hover:bg-white/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-lime-300/60'
 
   return (
-    <aside className='relative hidden h-screen w-72 flex-col overflow-hidden border-r border-white/10 bg-[#052823] text-white md:flex'>
+    <aside className='relative hidden h-screen w-80 flex-col overflow-hidden border-r border-white/10 bg-[#052823] text-white md:flex'>
       <div className='pointer-events-none absolute -left-16 top-10 h-40 w-40 rounded-full bg-lime-500/20 blur-3xl' />
       <div className='pointer-events-none absolute -right-24 bottom-24 h-56 w-56 rounded-full bg-teal-500/20 blur-3xl' />
 
-      <div className='flex flex-1 flex-col overflow-y-auto px-6 py-8 mt-10'>
+      <div className='flex flex-1 flex-col overflow-y-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden px-6 py-8 mt-10'>
         <div className='flex items-center justify-between gap-3'>
           <div className='flex items-center gap-3'>
-            <div className='flex h-11 w-11 items-center justify-center rounded-2xl bg-white/10 text-lg font-semibold tracking-wide text-lime-300 shadow-inner shadow-white/10'>
+            {/* <div className='flex h-11 w-11 items-center justify-center rounded-2xl bg-white/10 text-lg font-semibold tracking-wide text-lime-300 shadow-inner shadow-white/10'>
               DH
-            </div>
+            </div> */}
             <div>
               <p className='text-lg font-semibold leading-tight'>Doc House</p>
               <p className='text-xs font-medium uppercase tracking-[0.25em] text-white/40'>

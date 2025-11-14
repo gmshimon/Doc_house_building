@@ -26,7 +26,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
       where: {
         id: payload.id,
         email: payload.email,
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+
         role: payload.role,
       },
       select: {
