@@ -13,89 +13,124 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model User{
-  id  Int @id @default(autoincrement())
-  name String?
-  email String @unique
-  role USER_ROLE @default(USER)
-  image String?
-  phone String?
-  address Address? @relation(fields: [addressId], references: [id],onDelete: Cascade)
-  addressId Int? @unique
+model User {
+  id           Int           @id @default(autoincrement())
+  name         String?
+  email        String        @unique
+  role         USER_ROLE     @default(USER)
+  image        String?
+  phone        String?
+  address      Address?      @relation(fields: [addressId], references: [id], onDelete: Cascade)
+  addressId    Int?          @unique
+  appointments Appointment[]
 }
 
-model Address{
-  id Int @id @default(autoincrement())
-  street String
-  city String
-  state String?
-  zip String?
-  country String?
-  map String?
+model Address {
+  id          Int     @id @default(autoincrement())
+  street      String
+  city        String
+  state       String?
+  zip         String?
+  country     String?
+  map         String?
   institution String?
-  doctor Doctor?
-  users User?
+  doctor      Doctor?
+  users       User?
 }
 
-enum USER_ROLE{
+enum USER_ROLE {
   ADMIN
   USER
 }
 
 model Doctor {
-  id Int @id @default(autoincrement())
-  name String
-  email String @unique
-  phone String
-  qualification String @db.VarChar(100)
-  specialties String[]
-  image String?
-  services String[]
-  education Education[]
-  experience Experience[]
-  award Award[]
+  id            Int             @id @default(autoincrement())
+  name          String
+  email         String          @unique
+  phone         String
+  qualification String          @db.VarChar(100)
+  specialties   String[]
+  image         String?
+  services      String[]
+  education     Education[]
+  experience    Experience[]
+  award         Award[]
   business_hour Business_hour[]
-  description String 
-  address Address @relation(fields: [addressId],references:[id],onDelete: Cascade)
-  addressId Int @unique
+  description   String
+  address       Address         @relation(fields: [addressId], references: [id], onDelete: Cascade)
+  slots         Slot[]
+  appointments  Appointment[]
+  addressId     Int             @unique
 }
 
-model Education{
-  id Int @id @default(autoincrement())
-  degree String
-  company String
+model Education {
+  id        Int    @id @default(autoincrement())
+  degree    String
+  company   String
   startDate String
-  endDate String
-  doctor Doctor @relation(fields: [doctorId], references: [id],onDelete: Cascade)
-  doctorId Int 
+  endDate   String
+  doctor    Doctor @relation(fields: [doctorId], references: [id], onDelete: Cascade)
+  doctorId  Int
 }
 
 model Experience {
-  id Int @id @default(autoincrement())
-  title String
-  company String
+  id        Int    @id @default(autoincrement())
+  title     String
+  company   String
   startDate String
-  endDate String
-  doctor Doctor @relation(fields: [doctorId], references: [id],onDelete: Cascade)
-  doctorId Int 
+  endDate   String
+  doctor    Doctor @relation(fields: [doctorId], references: [id], onDelete: Cascade)
+  doctorId  Int
 }
 
-model Award{
-  id Int @id @default(autoincrement())
-  title String
+model Award {
+  id          Int    @id @default(autoincrement())
+  title       String
   description String
-  year String
-  doctor Doctor @relation(fields: [doctorId], references: [id],onDelete: Cascade)
-  doctorId Int
+  year        String
+  doctor      Doctor @relation(fields: [doctorId], references: [id], onDelete: Cascade)
+  doctorId    Int
 }
 
-model Business_hour{
-  id Int @id @default(autoincrement())
-  day String
-  open String
-  close String
-  isClose Boolean @default(false)
-  special_notes String @default("")
-  doctor Doctor @relation(fields: [doctorId], references: [id],onDelete: Cascade)
+model Business_hour {
+  id            Int     @id @default(autoincrement())
+  day           String
+  open          String
+  close         String
+  isClose       Boolean @default(false)
+  special_notes String  @default("")
+  doctor        Doctor  @relation(fields: [doctorId], references: [id], onDelete: Cascade)
+  doctorId      Int
+  consultationDuration Int    @default(30) // in minutes
+}
+
+model Slot {
+  id          Int          @id @default(autoincrement())
+  doctorId    Int
+  date        String
+  isBooked    Boolean      @default(false)
+  doctor      Doctor       @relation(fields: [doctorId], references: [id], onDelete: Cascade)
+  appointment Appointment?
+
+}
+
+enum AppointmentStatus {
+  PENDING
+  CONFIRMED
+  CANCELLED
+  COMPLETED
+  REJECTED
+  NO_SHOW
+}
+
+model Appointment {
+  id       Int               @id @default(autoincrement())
   doctorId Int
+  userId   Int
+  slotId   Int               @unique
+  reason   String
+  status   AppointmentStatus @default(PENDING)
+  doctor Doctor @relation(fields: [doctorId], references: [id], onDelete: Cascade)
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  slot   Slot   @relation(fields: [slotId], references: [id], onDelete: Cascade)
 }
