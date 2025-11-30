@@ -23,7 +23,7 @@ const Navbar = () => {
         aria-hidden='true'
       />
       <div className='mx-auto max-w-7xl  pt-4'>
-        <div className='relative overflow-visible rounded-2xl border border-white/10 bg-gradient-to-r from-[#052823] via-[#0b3a32] to-[#0f5247] text-white shadow-xl shadow-black/20 backdrop-blur'>
+        <div className='relative overflow-visible rounded-2xl border border-white/10 bg-gradient-to-r from-[#052823] via-[#0b3a32] to-[#0f5247] text-white  '>
           <div
             className='pointer-events-none absolute -left-16 -top-12 h-36 w-36 rounded-full bg-lime-400/15 blur-3xl'
             aria-hidden='true'
