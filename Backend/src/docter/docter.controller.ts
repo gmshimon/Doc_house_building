@@ -39,7 +39,7 @@ export class DocterController {
     let imageUrl: string | undefined;
     try {
       if (file) {
-        imageUrl = await this.cloudinaryService.uploadImage(file);
+        imageUrl = await this.cloudinaryService.uploadImage(file, 'doctor');
         createDocterDto.image = imageUrl;
       }
       const result = await this.docterService.create(createDocterDto);
@@ -78,7 +78,7 @@ export class DocterController {
       };
 
       if (file) {
-        imageUrl = await this.cloudinaryService.uploadImage(file);
+        imageUrl = await this.cloudinaryService.uploadImage(file, 'doctor');
         data.image = imageUrl;
       }
       const result = await this.docterService.updateImage(+id, data);

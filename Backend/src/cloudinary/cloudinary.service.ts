@@ -12,13 +12,16 @@ export class CloudinaryService {
     });
   }
 
-  async uploadImage(file: Express.Multer.File): Promise<string> {
+  async uploadImage(
+    file: Express.Multer.File,
+    category: string,
+  ): Promise<string> {
     try {
       const b64 = Buffer.from(file.buffer).toString('base64');
       const dataURI = `data:${file.mimetype};base64,${b64}`;
 
       const result = await cloudinary.uploader.upload(dataURI, {
-        asset_folder: 'Doctor_house/docter_images',
+        asset_folder: `Doctor_house/${category === 'doctor' ? 'doctor_images' : 'user'}`,
         resource_type: 'image',
       });
       return result.secure_url;

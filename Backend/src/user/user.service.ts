@@ -1,13 +1,16 @@
-import { Injectable } from '@nestjs/common';
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { Prisma } from '@prisma/client';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { JwtService } from '@nestjs/jwt';
+import { CloudinaryService } from 'src/cloudinary/cloudinary.service';
 
 @Injectable()
 export class UserService {
   constructor(
     private prisma: PrismaService,
     private jwtService: JwtService,
+    private readonly cloudinaryService: CloudinaryService,
   ) {}
   async create(data: Prisma.UserCreateInput) {
     const existingUser = await this.prisma.user.findUnique({
@@ -39,7 +42,76 @@ export class UserService {
       where: {
         email: data.email,
       },
+      include: {
+        address: true,
+      },
     });
     return user;
+  }
+
+  async updateProfile(user, data) {
+    const isUserExist = await this.prisma.user.findUnique({
+      where: {
+        id: user.id,
+      },
+      include: { address: true },
+    });
+
+    if (!isUserExist) {
+      throw new NotFoundException('User not found');
+    }
+
+    const { address, ...userData } = data;
+
+    return await this.prisma.user.update({
+      where: { id: user.id },
+      data: {
+        ...userData,
+        address: address
+          ? {
+              upsert: {
+                create: {
+                  ...address,
+                },
+                update: {
+                  ...address,
+                },
+              },
+            }
+          : undefined,
+      },
+      include: { address: true },
+    });
+  }
+
+  async updateUserImage(user, file) {
+    const isUserExist = await this.prisma.user.findUnique({
+      where: {
+        id: user.id,
+      },
+    });
+    if (!isUserExist) {
+      throw new NotFoundException('User Not Found');
+    }
+    if (isUserExist.image) {
+      await this.cloudinaryService.deleteImage(isUserExist.image);
+    }
+    let data = {
+      image: '',
+    };
+    if (file) {
+      const imageUrl = await this.cloudinaryService.uploadImage(file, 'user');
+      data.image = imageUrl;
+    }
+
+    return await this.prisma.user.update({
+      where: {
+        id: user.id,
+      },
+      data,
+      include: {
+        address: true,
+      },
+    });
   }
 }
