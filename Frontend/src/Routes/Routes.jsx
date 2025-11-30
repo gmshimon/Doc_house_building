@@ -5,6 +5,7 @@ import LoginPage from '../Page/LoginPage/LoginPage'
 import RegisterPage from '../Page/RegisterPage/RegisterPage'
 import AppointmentPage from '../Page/AppointmentPage/AppointmentPage'
 import DoctorProfilePage from '../Page/DoctorProfilePage/DoctorProfilePage'
+import ProfilePage from '../Page/Profile/ProfilePage'
 import Dashboard from '../Layout/Dashboard'
 import AdminDashboard from '../Page/AdminDashboard/AdminDashboard'
 import AdminUserDashboard from '../Page/AdminUserDashboard/AdminUserDashboard'
@@ -30,6 +31,10 @@ export const router = createBrowserRouter([
             {
                 path:'register',
                 element:<RegisterPage/>
+            },
+            {
+                path:'/profile',
+                element:<ProfilePage/>
             },
             {
                 path:'/doctor-profile/:id',

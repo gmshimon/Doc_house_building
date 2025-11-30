@@ -11,12 +11,13 @@ const Main = () => {
     location.pathname.includes('register')
   const isHomePage =
     location.pathname.includes('home') || location.pathname === '/'
+    const profilePage = location.pathname.includes('profile')
     CurrentUser()
   return (
     <div className=''>
       {/* Overlapping Navbar */}
       {isLoginPage || <Navbar />}
-      {isHomePage ||isLoginPage || <CommonBanner />}
+      {isHomePage ||isLoginPage || profilePage||  <CommonBanner />}
       {/* Outlet (Banner, etc.) starts behind or just below the navbar */}
       <Outlet />
       {isLoginPage || <Footer />}
