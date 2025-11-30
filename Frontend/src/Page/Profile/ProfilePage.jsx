@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 import ProfileEditModal from './ProfileEditModal'
 import { Pencil } from 'lucide-react'
-import { editProfileData, reset } from '../../Redux/Slice/AuthSlice'
+import { editProfileData, editUserImage, reset } from '../../Redux/Slice/AuthSlice'
 import { toast, ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import { DotLoader } from 'react-spinners'
@@ -14,13 +14,16 @@ const ProfilePage = () => {
     userDetails,
     isUpdateUserLoading,
     isUpdateUserSuccess,
-    isUpdateUserError
+    isUpdateUserError,
+   isUpdateUserImageLoading,
+   isUpdateUserImageSuccess,
+    isUpdateUserImageError
   } = useSelector(state => state.authSlice)
   const [isEditOpen, setIsEditOpen] = useState(false)
   const dispatch = useDispatch()
 
   useEffect(() => {
-    if (isUpdateUserSuccess) {
+    if (isUpdateUserSuccess||isUpdateUserImageSuccess) {
       toast.success('Profile updated', {
         position: 'top-right',
         autoClose: 5000,
@@ -33,7 +36,7 @@ const ProfilePage = () => {
       })
       dispatch(reset())
     }
-    if (isUpdateUserError) {
+    if (isUpdateUserError||isUpdateUserImageError) {
       toast.error('Failed', {
         position: 'top-right',
         autoClose: 5000,
@@ -46,7 +49,7 @@ const ProfilePage = () => {
       })
       dispatch(reset())
     }
-  }, [dispatch, isUpdateUserError, isUpdateUserSuccess])
+  }, [dispatch, isUpdateUserError, isUpdateUserSuccess, isUpdateUserImageError, isUpdateUserImageSuccess])
 
   const profile = useMemo(() => {
     const source = userDetails || user || {}
@@ -89,7 +92,16 @@ const ProfilePage = () => {
     dispatch(editProfileData(data))
     setIsEditOpen(false)
   }
-  if (isUpdateUserLoading) {
+
+  const handleFileInput = (e) =>{
+    const file = e.target.files[0];
+    const formData = new FormData()
+    formData.append('file',file)
+
+    dispatch(editUserImage(formData))
+  }
+
+  if (isUpdateUserLoading||isUpdateUserImageLoading) {
     return (
       <div className='h-screen mt-20 flex justify-center items-center'>
         <DotLoader color='#0C453C' />
@@ -146,6 +158,7 @@ const ProfilePage = () => {
                     type='file'
                     accept='image/*'
                     className='hidden'
+                    onChange={handleFileInput}
                   />
                   <label
                     htmlFor='profile-photo'

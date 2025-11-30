@@ -38,7 +38,10 @@ const initialState = {
   isAdminDataError: false,
   isUpdateUserLoading: false,
   isUpdateUserSuccess: false,
-  isUpdateUserError: false
+  isUpdateUserError: false,
+  isUpdateUserImageLoading: false,
+  isUpdateUserImageSuccess: false,
+  isUpdateUserImageError: false
 }
 
 export const saveUserData = async userData => {
@@ -109,9 +112,23 @@ export const getAdminDetails = createAsyncThunk('getAdminDetails', async () => {
 
 export const editProfileData = createAsyncThunk(
   'editProfileData',
-  async ( data, { rejectWithValue }) => {
+  async (data, { rejectWithValue }) => {
     try {
       const result = await axiosSecure.put('/user/update', data)
+      return result.data.data
+    } catch (error) {
+      const message =
+        error.response?.data?.message ||
+        'An error occurred while fetching abstract'
+      return rejectWithValue(message)
+    }
+  }
+)
+export const editUserImage = createAsyncThunk(
+  'editUserImage',
+  async (data, { rejectWithValue }) => {
+    try {
+      const result = await axiosSecure.put('/user/update-image', data)
       return result.data.data
     } catch (error) {
       const message =
@@ -154,6 +171,9 @@ const AuthSlice = createSlice({
       state.isUpdateUserLoading = false
       state.isUpdateUserSuccess = false
       state.isUpdateUserError = false
+      state.isUpdateUserImageLoading = false
+      state.isUpdateUserImageSuccess = false
+      state.isUpdateUserImageError = false
     },
     startLoading: (state, action) => {
       state.isLoading = action.payload
@@ -275,21 +295,37 @@ const AuthSlice = createSlice({
         state.isAdminDataSuccess = false
         state.isAdminDataError = true
       })
-      .addCase(editProfileData.pending,(state)=>{
-      state.isUpdateUserLoading = true
-      state.isUpdateUserSuccess = false
-      state.isUpdateUserError = false
+      .addCase(editProfileData.pending, state => {
+        state.isUpdateUserLoading = true
+        state.isUpdateUserSuccess = false
+        state.isUpdateUserError = false
       })
-      .addCase(editProfileData.fulfilled,(state,action)=>{
-      state.isUpdateUserLoading = false
-      state.isUpdateUserSuccess = true
-      state.isUpdateUserError = false
-      state.user = action.payload
+      .addCase(editProfileData.fulfilled, (state, action) => {
+        state.isUpdateUserLoading = false
+        state.isUpdateUserSuccess = true
+        state.isUpdateUserError = false
+        state.user = action.payload
       })
-      .addCase(editProfileData.rejected,(state)=>{
-      state.isUpdateUserLoading = false
-      state.isUpdateUserSuccess = false
-      state.isUpdateUserError = true
+      .addCase(editProfileData.rejected, state => {
+        state.isUpdateUserLoading = false
+        state.isUpdateUserSuccess = false
+        state.isUpdateUserError = true
+      })
+      .addCase(editUserImage.pending, state => {
+      state.isUpdateUserImageLoading = true
+      state.isUpdateUserImageSuccess = false
+      state.isUpdateUserImageError = false
+      })
+      .addCase(editUserImage.fulfilled, (state, action) => {
+      state.isUpdateUserImageLoading = false
+      state.isUpdateUserImageSuccess = true
+      state.isUpdateUserImageError = false
+        state.user = action.payload
+      })
+      .addCase(editUserImage.rejected, state => {
+      state.isUpdateUserImageLoading = false
+      state.isUpdateUserImageSuccess = false
+      state.isUpdateUserImageError = true
       })
   }
 })
