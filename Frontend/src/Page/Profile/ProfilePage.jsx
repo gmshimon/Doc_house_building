@@ -81,7 +81,7 @@ const ProfilePage = () => {
     { label: 'Country', value: profile.address.country },
     { label: 'Institution', value: profile.address.institution },
     profile.address.map
-      ? { label: 'Map link', value: profile.map }
+      ? { label: 'Map link', value: profile.address.map }
       : { label: 'Map link', value: 'Not provided' }
   ]
 
@@ -238,7 +238,7 @@ const ProfilePage = () => {
                         href={item.value}
                         target='_blank'
                         rel='noreferrer'
-                        className='mt-1 inline-flex items-center gap-2 text-sm font-semibold text-emerald-700 hover:underline'
+                        className='mt-1 inline-flex items-center gap-2 text-sm font-semibold cursor-pointer text-emerald-700 hover:underline'
                       >
                         View map
                         <svg
