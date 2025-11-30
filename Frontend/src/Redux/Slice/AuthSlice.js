@@ -13,8 +13,8 @@ import axiosSecure from '../../Utilis/axiosSecure'
 import auth from '../../Firebase/firebase.config'
 
 const initialState = {
-  userDetails:null,
-  adminDetails:null,
+  userDetails: null,
+  adminDetails: null,
   user: null,
   users: [],
   isLoading: true,
@@ -35,7 +35,10 @@ const initialState = {
   isGetUsersError: false,
   isAdminDataLoading: false,
   isAdminDataSuccess: false,
-  isAdminDataError:false
+  isAdminDataError: false,
+  isUpdateUserLoading: false,
+  isUpdateUserSuccess: false,
+  isUpdateUserError: false
 }
 
 export const saveUserData = async userData => {
@@ -57,33 +60,27 @@ export const fetchUser = createAsyncThunk('fetchUser', async email => {
   return response.data.data
 })
 
-export const loginUser = createAsyncThunk(
-  'loginUser',
-  async (userData) => {
-    const { email, password } = userData
-    const res = await signInWithEmailAndPassword(auth, email, password)
-    const data = await saveUserData({
-      email
-    })
-    return data
-  }
-)
+export const loginUser = createAsyncThunk('loginUser', async userData => {
+  const { email, password } = userData
+  const res = await signInWithEmailAndPassword(auth, email, password)
+  const data = await saveUserData({
+    email
+  })
+  return data
+})
 
-export const createUser = createAsyncThunk(
-  'createUser',
-  async (userData) => {
-    const { name, email, password } = userData
-    const res = await createUserWithEmailAndPassword(auth, email, password)
-    const result = updateProfile(auth.currentUser, {
-      displayName: name
-    })
-    const data = await saveUserData({
-      name,
-      email,
-    })
-    return data
-  }
-)
+export const createUser = createAsyncThunk('createUser', async userData => {
+  const { name, email, password } = userData
+  const res = await createUserWithEmailAndPassword(auth, email, password)
+  const result = updateProfile(auth.currentUser, {
+    displayName: name
+  })
+  const data = await saveUserData({
+    name,
+    email
+  })
+  return data
+})
 
 export const loginWithGoogle = createAsyncThunk('loginWithGoogle', async () => {
   const provider = new GoogleAuthProvider()
@@ -110,6 +107,21 @@ export const getAdminDetails = createAsyncThunk('getAdminDetails', async () => {
   return response?.data?.data
 })
 
+export const editProfileData = createAsyncThunk(
+  'editProfileData',
+  async ( data, { rejectWithValue }) => {
+    try {
+      const result = await axiosSecure.put('/user/update', data)
+      return result.data.data
+    } catch (error) {
+      const message =
+        error.response?.data?.message ||
+        'An error occurred while fetching abstract'
+      return rejectWithValue(message)
+    }
+  }
+)
+
 export const logOut = createAsyncThunk('logOut', async () => {
   const response = await signOut(auth)
   localStorage.removeItem('userToken')
@@ -121,7 +133,7 @@ const AuthSlice = createSlice({
   initialState,
   reducers: {
     reset: state => {
-      (state.isLoginLoading = false),
+      ;(state.isLoginLoading = false),
         (state.isLoginError = false),
         (state.isLoginSuccess = false),
         (state.isCreateUserLoading = false)
@@ -136,9 +148,12 @@ const AuthSlice = createSlice({
       state.isGetUsersLoading = false
       state.isGetUsersSuccess = false
       state.isGetUsersError = false
-      state.isAdminDataLoading= false
-      state.isAdminDataSuccess= false
-      state.isAdminDataError=false
+      state.isAdminDataLoading = false
+      state.isAdminDataSuccess = false
+      state.isAdminDataError = false
+      state.isUpdateUserLoading = false
+      state.isUpdateUserSuccess = false
+      state.isUpdateUserError = false
     },
     startLoading: (state, action) => {
       state.isLoading = action.payload
@@ -191,8 +206,7 @@ const AuthSlice = createSlice({
       .addCase(logOut.fulfilled, (state, action) => {
         state.user = null
       })
-      .addCase(logOut.rejected, (state, action) => {
-      })
+      .addCase(logOut.rejected, (state, action) => {})
       .addCase(loginWithGoogle.pending, state => {
         state.isLoginWithGoogleLoading = true
         state.isLoginWithGoogleError = false
@@ -242,24 +256,40 @@ const AuthSlice = createSlice({
         state.isGetUserDataSuccess = false
         state.isGetUserDataError = true
       })
-      .addCase(getUserDetails.fulfilled,(state, action) => {
-        state.userDetails = action.payload
+      .addCase(getUserDetails.fulfilled, (state, action) => {
+        state.user = action.payload
       })
-      .addCase(getUserDetails.pending,(state, action) =>{
-        state.isAdminDataLoading= true
-        state.isAdminDataSuccess= false
-        state.isAdminDataError=false
+      .addCase(getUserDetails.pending, (state, action) => {
+        state.isAdminDataLoading = true
+        state.isAdminDataSuccess = false
+        state.isAdminDataError = false
       })
       .addCase(getAdminDetails.fulfilled, (state, action) => {
-        state.isAdminDataLoading= false
-        state.isAdminDataSuccess= true
-        state.isAdminDataError=false
+        state.isAdminDataLoading = false
+        state.isAdminDataSuccess = true
+        state.isAdminDataError = false
         state.adminDetails = action.payload
       })
       .addCase(getAdminDetails.rejected, (state, action) => {
-        state.isAdminDataLoading= false
-        state.isAdminDataSuccess= false
-        state.isAdminDataError=true
+        state.isAdminDataLoading = false
+        state.isAdminDataSuccess = false
+        state.isAdminDataError = true
+      })
+      .addCase(editProfileData.pending,(state)=>{
+      state.isUpdateUserLoading = true
+      state.isUpdateUserSuccess = false
+      state.isUpdateUserError = false
+      })
+      .addCase(editProfileData.fulfilled,(state,action)=>{
+      state.isUpdateUserLoading = false
+      state.isUpdateUserSuccess = true
+      state.isUpdateUserError = false
+      state.user = action.payload
+      })
+      .addCase(editProfileData.rejected,(state)=>{
+      state.isUpdateUserLoading = false
+      state.isUpdateUserSuccess = false
+      state.isUpdateUserError = true
       })
   }
 })
