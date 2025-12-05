@@ -6,7 +6,7 @@ import { Pencil } from 'lucide-react'
 import { editProfileData, editUserImage, reset } from '../../Redux/Slice/AuthSlice'
 import { toast, ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
-import { DotLoader } from 'react-spinners'
+import Loading from '../../Component/Loading/Loading'
 
 const ProfilePage = () => {
   const {
@@ -103,9 +103,7 @@ const ProfilePage = () => {
 
   if (isUpdateUserLoading||isUpdateUserImageLoading) {
     return (
-      <div className='h-screen mt-20 flex justify-center items-center'>
-        <DotLoader color='#0C453C' />
-      </div>
+      <Loading/>
     )
   }
   return (

@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import {
   CalendarClock,
   Clock3,
@@ -8,6 +8,9 @@ import {
   Stethoscope,
   Users
 } from 'lucide-react'
+import { useDispatch, useSelector } from 'react-redux'
+import { getServices } from '../../Redux/Slice/ServiceSlice'
+import Loading from '../../Component/Loading/Loading'
 
 const servicesData = [
   {
@@ -72,16 +75,6 @@ const servicesData = [
   }
 ]
 
-const statusStyles = status => {
-  if (status === 'High demand') {
-    return 'bg-orange-100 text-orange-700 ring-1 ring-orange-200'
-  }
-  if (status === 'Paused') {
-    return 'bg-gray-100 text-gray-700 ring-1 ring-gray-200'
-  }
-  return 'bg-emerald-100 text-emerald-700 ring-1 ring-emerald-200'
-}
-
 const MetricCard = ({ icon, label, value, helper }) => (
   <div className='relative overflow-hidden rounded-2xl border border-white/60 bg-white p-4 shadow-sm'>
     <div className='pointer-events-none absolute -right-6 top-0 h-20 w-20 rounded-full bg-[#07332F]/10 blur-3xl' />
@@ -100,21 +93,22 @@ const MetricCard = ({ icon, label, value, helper }) => (
 )
 
 const AdminServices = () => {
-  const [query, setQuery] = useState('')
-
+  const { services, getServicesLoading } = useSelector(state => state.services)
+  const [query, setQuery] = useState(null)
+  const dispatch = useDispatch()
   const metrics = useMemo(() => {
     const uniqueDoctors = new Set()
     let totalDuration = 0
     let totalFee = 0
 
-    servicesData.forEach(service => {
+    services.forEach(service => {
       totalDuration += service.duration || 0
       totalFee += service.fee ?? 0
       service.doctors.forEach(doc => uniqueDoctors.add(doc))
     })
 
     return {
-      totalServices: servicesData.length,
+      totalServices: services.length,
       averageDuration: servicesData.length
         ? Math.round(totalDuration / servicesData.length)
         : 0,
@@ -123,32 +117,31 @@ const AdminServices = () => {
     }
   }, [])
 
-  const filteredServices = useMemo(() => {
-    const term = query.trim().toLowerCase()
-    if (!term) return servicesData
-
-    return servicesData.filter(
-      service =>
-        service.name.toLowerCase().includes(term) ||
-        service.doctors.some(doctor => doctor.toLowerCase().includes(term))
-    )
-  }, [query])
+  useEffect(() => {
+    dispatch(getServices())
+  }, [dispatch])
 
   const formatFee = fee => {
     if (fee === null || fee === undefined) return 'Not set'
     return `$${fee}`
   }
 
+  if (getServicesLoading) {
+    return <Loading />
+  }
   return (
-    <section className='min-h-screen bg-[#F1F5F9] p-4 md:p-8'>
+    <section className='h-screen bg-[#F1F5F9] p-4 md:p-8'>
       <div className='flex flex-col gap-3 md:flex-row md:items-center md:justify-between'>
         <div>
           <p className='text-xs font-semibold uppercase tracking-[0.24em] text-[#07332F]'>
             Admin / Services
           </p>
-          <h1 className='text-3xl font-semibold text-gray-900'>Service catalog</h1>
+          <h1 className='text-3xl font-semibold text-gray-900'>
+            Service catalog
+          </h1>
           <p className='text-sm text-gray-500'>
-            Review every procedure with duration, fees, assigned doctors and demand signals.
+            Review every procedure with duration, fees, assigned doctors and
+            demand signals.
           </p>
         </div>
         <button
@@ -192,18 +185,29 @@ const AdminServices = () => {
           <div>
             <h2 className='text-xl font-semibold text-gray-900'>Services</h2>
             <p className='text-sm text-gray-500'>
-              Showing {filteredServices.length} of {servicesData.length} entries
+              Showing {servicesData.length} of {servicesData.length} entries
             </p>
           </div>
-          <div className='relative w-full md:w-80'>
-            <Search className='pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-gray-400' />
-            <input
-              type='text'
-              value={query}
-              onChange={event => setQuery(event.target.value)}
-              placeholder='Search by service or doctor'
-              className='w-full rounded-xl border border-gray-200 bg-white py-2.5 pl-10 pr-3 text-sm text-gray-700 shadow-sm transition focus:border-[#07332F] focus:outline-none focus:ring-2 focus:ring-[#07332F]/20'
-            />
+          <div className='flex w-full items-center gap-2 md:w-80'>
+            <div className='relative w-full'>
+              <Search className='pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-gray-400' />
+              <input
+                type='text'
+                value={query}
+                onChange={event => setQuery(event.target.value)}
+                placeholder='Search by service or doctor'
+                className='w-full rounded-xl border border-gray-200 bg-white py-2.5 pl-10 pr-3 text-sm text-gray-700 shadow-sm transition focus:border-[#07332F] focus:outline-none focus:ring-2 focus:ring-[#07332F]/20'
+              />
+            </div>
+            <button
+              type='button'
+              className='inline-flex items-center justify-center rounded-xl border border-gray-200 bg-white p-2.5 text-gray-600 shadow-sm transition hover:border-[#07332F]/40 hover:text-[#07332F] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#07332F]/30'
+              onClick={() => {
+                dispatch(getServices(query))
+              }}
+            >
+              <Search size={16} />
+            </button>
           </div>
         </div>
 
@@ -229,16 +233,16 @@ const AdminServices = () => {
                 <th scope='col' className='px-6 py-3 font-semibold'>
                   Appointments
                 </th>
-                <th scope='col' className='px-6 py-3 font-semibold'>
+                {/* <th scope='col' className='px-6 py-3 font-semibold'>
                   Status
-                </th>
+                </th> */}
                 <th scope='col' className='px-6 py-3 font-semibold'>
                   Edit
                 </th>
               </tr>
             </thead>
             <tbody className='divide-y divide-gray-100'>
-              {filteredServices.map(service => (
+              {services?.map(service => (
                 <tr key={service.id} className='hover:bg-gray-50/60'>
                   <td className='px-6 py-3 font-semibold text-gray-900'>
                     {service.name}
@@ -247,15 +251,15 @@ const AdminServices = () => {
                   <td className='px-6 py-3'>{formatFee(service.fee)}</td>
                   <td className='px-6 py-3'>
                     <div className='flex flex-wrap gap-2'>
-                      {service.doctors.slice(0, 2).map(doctor => (
+                      {service?.doctors?.slice(0, 2).map(doctor => (
                         <span
-                          key={doctor}
+                          key={doctor.id}
                           className='rounded-full bg-[#07332F]/10 px-3 py-1 text-xs font-semibold text-[#07332F]'
                         >
-                          {doctor}
+                          {doctor?.name}
                         </span>
                       ))}
-                      {service.doctors.length > 2 ? (
+                      {service?.doctors.length > 2 ? (
                         <span className='text-xs text-gray-500'>
                           +{service.doctors.length - 2} more
                         </span>
@@ -265,15 +269,15 @@ const AdminServices = () => {
                   <td className='px-6 py-3'>
                     <div className='inline-flex items-center gap-2 rounded-full bg-blue-50 px-3 py-1 text-xs font-semibold text-blue-700 ring-1 ring-blue-100'>
                       <CalendarClock size={14} />
-                      {service.slots} slots
+                      {service.slots.length} slots
                     </div>
                   </td>
                   <td className='px-6 py-3'>
                     <div className='inline-flex items-center gap-2 rounded-full bg-purple-50 px-3 py-1 text-xs font-semibold text-purple-700 ring-1 ring-purple-100'>
-                      {service.appointments} booked
+                      {service.appointments.length} booked
                     </div>
                   </td>
-                  <td className='px-6 py-3'>
+                  {/* <td className='px-6 py-3'>
                     <span
                       className={`inline-flex items-center gap-2 rounded-full px-3 py-1 text-xs font-semibold ${statusStyles(
                         service.status
@@ -281,7 +285,7 @@ const AdminServices = () => {
                     >
                       {service.status}
                     </span>
-                  </td>
+                  </td> */}
                   <td className='px-6 py-3'>
                     <button
                       type='button'

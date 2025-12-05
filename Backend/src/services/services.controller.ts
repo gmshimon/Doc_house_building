@@ -9,6 +9,7 @@ import {
   Req,
   Res,
   UseGuards,
+  Query,
 } from '@nestjs/common';
 import { ServicesService } from './services.service';
 import { UpdateServiceDto } from './dto/update-service.dto';
@@ -53,8 +54,25 @@ export class ServicesController {
   }
 
   @Get()
-  findAll() {
-    return this.servicesService.findAll();
+  async findAll(
+    @Req() request: Request,
+    @Res() response: Response,
+    @Query('name') name: string,
+  ) {
+    try {
+      const results = await this.servicesService.findAll(name);
+      response.status(200).json({
+        status: 'success',
+        message: 'Services fetched successfully',
+        data: results,
+      });
+    } catch (error) {
+      response.status(400).json({
+        status: 'failed',
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+        message: error.message,
+      });
+    }
   }
 
   @Get(':id')

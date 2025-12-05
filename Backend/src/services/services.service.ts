@@ -15,9 +15,26 @@ export class ServicesService {
     });
   }
 
-  async findAll() {
+  async findAll(name?: string) {
     try {
-      const results = await this.prisma.service.findMany();
+      const results = await this.prisma.service.findMany(
+        {
+          where: name
+            ? {
+                name: {
+                  contains: name,
+                  mode: 'insensitive',
+                },
+              }
+            : undefined,
+            include: { 
+              appointments: true,
+              doctors: true,
+              slots: true
+            }
+        },
+
+      );
       return results;
     } catch (error) {
       throw new InternalServerErrorException('Error fetching services');
