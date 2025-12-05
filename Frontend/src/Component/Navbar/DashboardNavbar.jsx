@@ -1,4 +1,4 @@
-import { BriefcaseMedical, User } from 'lucide-react'
+import { BriefcaseMedical, ListChecks, User } from 'lucide-react'
 import { MdDashboard } from 'react-icons/md'
 import { NavLink } from 'react-router-dom'
 
@@ -25,6 +25,14 @@ const navSections = [
         to: '/dashboard/admin-user',
         icon: (
           <User/>
+        )
+      },
+      {
+        label: 'Services',
+        helper: 'Catalog & fees',
+        to: '/dashboard/services',
+        icon: (
+          <ListChecks/>
         )
       },
       {

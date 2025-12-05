@@ -7,6 +7,7 @@ import { UserModule } from './user/user.module';
 import { DocterModule } from './docter/docter.module';
 import { CloudinaryModule } from './cloudinary/cloudinary.module';
 import { SlotsModule } from './slots/slots.module';
+import { ServicesModule } from './services/services.module';
 
 @Module({
   imports: [
@@ -15,6 +16,7 @@ import { SlotsModule } from './slots/slots.module';
     DocterModule,
     CloudinaryModule,
     SlotsModule,
+    ServicesModule,
   ],
   controllers: [AppController],
   providers: [AppService, PrismaService],

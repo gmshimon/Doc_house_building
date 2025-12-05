@@ -73,7 +73,7 @@ export class DocterController {
   ) {
     let imageUrl: string | undefined;
     try {
-      let data = {
+      const data = {
         image: '',
       };
 
@@ -171,5 +171,28 @@ export class DocterController {
       });
     }
     return this.docterService.remove(+id);
+  }
+
+  @Get('/doctor-by-service/:serviceId')
+  async getDoctorByService(
+    @Req() request: Request,
+    @Res() response: Response,
+    @Param('serviceId') serviceId: string,
+  ) {
+    try {
+      const result = await this.docterService.getDoctorByService(+serviceId);
+      response.status(200).json({
+        status: 'success',
+        message: 'Doctors fetched successfully',
+        data: result,
+      });
+    } catch (error) {
+      response.status(400).json({
+        status: 'failed',
+        message: 'Error fetching doctors',
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
+        error: error.message,
+      });
+    }
   }
 }

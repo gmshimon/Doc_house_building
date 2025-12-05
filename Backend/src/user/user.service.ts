@@ -96,7 +96,7 @@ export class UserService {
     if (isUserExist.image) {
       await this.cloudinaryService.deleteImage(isUserExist.image);
     }
-    let data = {
+    const data = {
       image: '',
     };
     if (file) {

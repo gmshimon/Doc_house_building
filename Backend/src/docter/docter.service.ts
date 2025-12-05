@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import {
   BadRequestException,
   Injectable,
@@ -336,5 +337,26 @@ export class DocterService {
       console.error('Error deleting doctor', error);
       throw new InternalServerErrorException('Failed to delete doctor');
     }
+  }
+
+  async getDoctorByService(serviceId: number) {
+    const result = await this.prisma.doctor.findMany({
+      where: {
+        services: {
+          some: {
+            id: serviceId,
+          },
+        },
+      },
+      include: {
+        services: true,
+        address: true,
+        education: true,
+        experience: true,
+        award: true,
+        business_hour: true,
+      },
+    });
+    return result;
   }
 }

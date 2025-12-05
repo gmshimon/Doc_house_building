@@ -51,7 +51,6 @@ model Doctor {
   qualification String          @db.VarChar(100)
   specialties   String[]
   image         String?
-  services      String[]
   education     Education[]
   experience    Experience[]
   award         Award[]
@@ -61,6 +60,17 @@ model Doctor {
   slots         Slot[]
   appointments  Appointment[]
   addressId     Int             @unique
+  services      Service[]       @relation("DoctorServices")
+}
+
+model Service {
+  id           Int           @id @default(autoincrement())
+  name         String
+  duration     Int           @default(30)
+  fee          Int?
+  doctors      Doctor[]      @relation("DoctorServices")
+  slots        Slot[]        @relation("ServiceSlots")
+  appointments Appointment[] @relation("ServiceAppointments")
 }
 
 model Education {
@@ -93,25 +103,29 @@ model Award {
 }
 
 model Business_hour {
-  id            Int     @id @default(autoincrement())
-  day           String
-  open          String
-  close         String
-  isClose       Boolean @default(false)
-  special_notes String  @default("")
-  doctor        Doctor  @relation(fields: [doctorId], references: [id], onDelete: Cascade)
-  doctorId      Int
-  consultationDuration Int    @default(30) // in minutes
+  id                   Int     @id @default(autoincrement())
+  day                  String
+  open                 String
+  close                String
+  isClose              Boolean @default(false)
+  special_notes        String  @default("")
+  doctor               Doctor  @relation(fields: [doctorId], references: [id], onDelete: Cascade)
+  doctorId             Int
+  consultationDuration Int     @default(30) // in minutes
 }
 
 model Slot {
   id          Int          @id @default(autoincrement())
   doctorId    Int
   date        String
+  startTime   String?
+  endTime     String?
   isBooked    Boolean      @default(false)
   doctor      Doctor       @relation(fields: [doctorId], references: [id], onDelete: Cascade)
   appointment Appointment?
 
+  serviceId Int?
+  service   Service? @relation("ServiceSlots", fields: [serviceId], references: [id])
 }
 
 enum AppointmentStatus {
@@ -124,13 +138,15 @@ enum AppointmentStatus {
 }
 
 model Appointment {
-  id       Int               @id @default(autoincrement())
-  doctorId Int
-  userId   Int
-  slotId   Int               @unique
-  reason   String
-  status   AppointmentStatus @default(PENDING)
-  doctor Doctor @relation(fields: [doctorId], references: [id], onDelete: Cascade)
-  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
-  slot   Slot   @relation(fields: [slotId], references: [id], onDelete: Cascade)
+  id        Int               @id @default(autoincrement())
+  doctorId  Int
+  userId    Int
+  slotId    Int               @unique
+  reason    String
+  status    AppointmentStatus @default(PENDING)
+  doctor    Doctor            @relation(fields: [doctorId], references: [id], onDelete: Cascade)
+  user      User              @relation(fields: [userId], references: [id], onDelete: Cascade)
+  slot      Slot              @relation(fields: [slotId], references: [id], onDelete: Cascade)
+  serviceId Int
+  service   Service           @relation("ServiceAppointments", fields: [serviceId], references: [id])
 }
