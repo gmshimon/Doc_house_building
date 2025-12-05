@@ -1,11 +1,22 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import DashboardNavbar from '../Component/Navbar/DashboardNavbar'
 import { Link, Outlet } from 'react-router-dom'
+import { useDispatch, useSelector } from 'react-redux'
+import { getDoctors } from '../Redux/Slice/DoctorSlice'
+import Loading from '../Component/Loading/Loading'
 
 const Dashboard = () => {
+  const {getDoctorsLoading} = useSelector(state=>state.doctors)
+  const dispatch = useDispatch()
+  useEffect(() => {
+    dispatch(getDoctors())
+  }, [dispatch])
+if(getDoctorsLoading){
+  return <Loading/>
+}
   return (
-    <div className='md:flex'> 
-    {/* bg-[#F1F5F9] */}
+    <div className='md:flex'>
+      {/* bg-[#F1F5F9] */}
       {/* <div className='lg:hidden py-16 text-center'>
         <button
           type='button'
@@ -19,10 +30,10 @@ const Dashboard = () => {
           Open
         </button>
       </div> */}
-      <div >
+      <div>
         <DashboardNavbar />
       </div>
-      <div className='flex-1 h-screen overflow-y-auto' >
+      <div className='flex-1 h-screen overflow-y-auto'>
         <header className=' fixed top-0 left-0 flex flex-wrap md:hidden lg:justify-start lg:flex-nowrap z-50 w-full py- bg-[#07332F]'>
           <nav className='relative max-w-7xl w-full flex flex-wrap lg:grid lg:grid-cols-12 basis-full items-center px-4 md:px-6 lg:px-8 mx-auto'>
             {/* <div className='lg:col-span-3 flex items-center'>
@@ -148,8 +159,11 @@ const Dashboard = () => {
             </div>
           </nav>
         </header>
-        <div className='md:mt-0 mt-10 bg-[#F1F5F9]' style={{ height: 'calc(100vh - 62px)' }}>
-            <Outlet/>
+        <div
+          className='md:mt-0 mt-10 bg-[#F1F5F9]'
+          style={{ height: 'calc(100vh - 62px)' }}
+        >
+          <Outlet />
         </div>
       </div>
     </div>

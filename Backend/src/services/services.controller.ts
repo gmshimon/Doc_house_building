@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import {
   Controller,
   Get,
@@ -10,23 +11,25 @@ import {
   Res,
   UseGuards,
   Query,
+  Put,
 } from '@nestjs/common';
 import { ServicesService } from './services.service';
 import { UpdateServiceDto } from './dto/update-service.dto';
 import { AuthGuard } from '@nestjs/passport';
 import type { Request, Response } from 'express';
-import { Prisma, User } from '@prisma/client';
+import { User } from '@prisma/client';
+import { CreateServiceDto } from './dto/create-service.dto';
 
 @Controller('services')
 export class ServicesController {
   constructor(private readonly servicesService: ServicesService) {}
-
+  // TODO: Add auth guard back and admin check
   @Post()
   // @UseGuards(AuthGuard('jwt'))
   async create(
     @Req() request: Request,
     @Res() response: Response,
-    @Body() createServiceDto: Prisma.ServiceCreateInput,
+    @Body() createServiceDto: CreateServiceDto,
   ) {
     try {
       // const user = (request as Request & { user?: User }).user;
@@ -47,7 +50,6 @@ export class ServicesController {
     } catch (error) {
       response.status(400).json({
         status: 'failed',
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
         message: error,
       });
     }
@@ -80,12 +82,27 @@ export class ServicesController {
     return this.servicesService.findOne(+id);
   }
 
-  @Patch(':id')
+  @Put(':id')
   update(
+    @Req() request: Request,
+    @Res() response: Response,
     @Param('id') id: string,
-    @Body() updateServiceDto: Prisma.ServiceUpdateInput,
+    @Body() updateServiceDto: UpdateServiceDto,
   ) {
-    return this.servicesService.update(+id, updateServiceDto);
+    try {
+      const result = this.servicesService.update(+id, updateServiceDto);
+      response.status(200).json({
+        status: 'success',
+        message: 'Service updated successfully',
+        data: result,
+      });
+    } catch (error) {
+      response.status(400).json({
+        status: 'failed',
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
+        message: error.message,
+      });
+    }
   }
 
   @Delete(':id')

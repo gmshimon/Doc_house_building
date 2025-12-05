@@ -37,6 +37,46 @@ export const getServices = createAsyncThunk(
     }
 )
 
+export const createService = createAsyncThunk(
+    'service/createService',
+    async (serviceData, thunkAPI) => {
+        try {
+            const response = await axios.post('/services', serviceData)
+            return response.data.data
+        }
+        catch (error) {
+            return thunkAPI.rejectWithValue(error.message)
+        }
+    }
+)
+
+export const deleteService = createAsyncThunk(
+    'service/deleteService',
+    async (serviceId, thunkAPI) => {
+        try {
+            await axios.delete(`/services/${serviceId}`)
+            return serviceId
+        }
+        catch (error) {
+            return thunkAPI.rejectWithValue(error.message)
+        }
+    }
+)
+
+export const updateService = createAsyncThunk(
+    'service/updateService',
+    async ( {serviceId, serviceData }, thunkAPI) => {
+        try {
+            console.log('serviceData', serviceData)
+            const response = await axios.put(`/services/${serviceId}`, serviceData)
+            return response.data.data
+        }
+        catch (error) {
+            return thunkAPI.rejectWithValue(error.message)
+        }
+    }
+)
+
 const ServiceSlice = createSlice({
     name: 'service',
     initialState,
@@ -73,8 +113,57 @@ const ServiceSlice = createSlice({
             state.getServicesLoading = false
             state.getServicesError = action.payload
         })
+
+        // create service
+        builder.addCase(createService.pending, (state) => {
+            state.createServicesLoading = true
+        })
+        builder.addCase(createService.fulfilled, (state, action) => {
+            state.createServicesLoading = false
+            state.createServicesSuccess = true
+            state.services.push(action.payload)
+        })
+        builder.addCase(createService.rejected, (state, action) => {
+            state.createServicesLoading = false
+            state.createServicesError = action.payload
+        })
+
+        // delete service
+        builder.addCase(deleteService.pending, (state) => {
+            state.deleteServicesLoading = true
+        })
+        builder.addCase(deleteService.fulfilled, (state, action) => {
+            state.deleteServicesLoading = false
+            state.deleteServicesSuccess = true
+            state.services = state.services.filter(
+                service => service.id !== action.payload
+            )
+        })
+        builder.addCase(deleteService.rejected, (state, action) => {
+            state.deleteServicesLoading = false
+            state.deleteServicesError = action.payload
+        })
+
+        // update service
+        builder.addCase(updateService.pending, (state) => {
+            state.editServicesLoading = true
+        })
+        builder.addCase(updateService.fulfilled, (state, action) => {
+            state.editServicesLoading = false
+            state.editServicesSuccess = true
+            const index = state.services.findIndex(
+                service => service.id === action.payload
+            )
+            if (index !== -1) {
+                state.services[index] = action.payload
+            }
+        })
+        builder.addCase(updateService.rejected, (state, action) => {
+            state.editServicesLoading = false
+            state.editServicesError = action.payload
+        })
     }
 })
 
-const { reset } = ServiceSlice.actions
+export const { reset } = ServiceSlice.actions
 export default ServiceSlice.reducer

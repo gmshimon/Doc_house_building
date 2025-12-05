@@ -6,74 +6,16 @@ import {
   Pencil,
   Search,
   Stethoscope,
+  Trash2,
   Users
 } from 'lucide-react'
 import { useDispatch, useSelector } from 'react-redux'
-import { getServices } from '../../Redux/Slice/ServiceSlice'
+import { createService, deleteService, getServices, reset, updateService } from '../../Redux/Slice/ServiceSlice'
 import Loading from '../../Component/Loading/Loading'
-
-const servicesData = [
-  {
-    id: 1,
-    name: 'General Consultation',
-    duration: 30,
-    fee: 50,
-    doctors: ['Dr. Mia Hudson', 'Dr. Luca Chen'],
-    slots: 18,
-    appointments: 42,
-    status: 'Active'
-  },
-  {
-    id: 2,
-    name: 'Dental Cleaning',
-    duration: 45,
-    fee: 120,
-    doctors: ['Dr. Priya Das', 'Dr. Anika Rahman'],
-    slots: 12,
-    appointments: 23,
-    status: 'High demand'
-  },
-  {
-    id: 3,
-    name: 'Root Canal Therapy',
-    duration: 60,
-    fee: 250,
-    doctors: ['Dr. Luca Chen'],
-    slots: 9,
-    appointments: 12,
-    status: 'Active'
-  },
-  {
-    id: 4,
-    name: 'Pediatric Checkup',
-    duration: 30,
-    fee: 80,
-    doctors: ['Dr. Felix Moore', 'Dr. Amara Singh'],
-    slots: 14,
-    appointments: 19,
-    status: 'Paused'
-  },
-  {
-    id: 5,
-    name: 'Orthodontic Review',
-    duration: 40,
-    fee: 160,
-    doctors: ['Dr. Priya Das', 'Dr. Amara Singh'],
-    slots: 16,
-    appointments: 21,
-    status: 'Active'
-  },
-  {
-    id: 6,
-    name: 'Post-Op Follow Up',
-    duration: 20,
-    fee: null,
-    doctors: ['Dr. Mia Hudson'],
-    slots: 20,
-    appointments: 17,
-    status: 'Active'
-  }
-]
+import NewServiceModal from './components/NewServiceModal'
+import EditServiceModal from './components/EditServiceModal'
+import { toast, ToastContainer } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
 
 const MetricCard = ({ icon, label, value, helper }) => (
   <div className='relative overflow-hidden rounded-2xl border border-white/60 bg-white p-4 shadow-sm'>
@@ -93,9 +35,112 @@ const MetricCard = ({ icon, label, value, helper }) => (
 )
 
 const AdminServices = () => {
-  const { services, getServicesLoading } = useSelector(state => state.services)
-  const [query, setQuery] = useState(null)
+  const { doctors } = useSelector(state => state.doctors)
+  const {
+    services,
+    getServicesLoading,
+    createServicesLoading,
+    createServicesSuccess,
+    createServicesError,
+    deleteServicesLoading,
+    deleteServicesSuccess,
+    deleteServicesError,
+
+    editServicesLoading,
+    editServicesSuccess,
+    editServicesError,
+
+  } = useSelector(state => state.services)
+  const [query, setQuery] = useState('')
+  const [isCreateOpen, setIsCreateOpen] = useState(false)
+  const [editingService, setEditingService] = useState(null)
   const dispatch = useDispatch()
+
+  useEffect(() => {
+    dispatch(getServices())
+  }, [dispatch])
+
+  useEffect(() => {
+    if(createServicesSuccess){
+      toast.success('Service created successfully',{
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      })
+      dispatch(reset())
+    }
+    if(createServicesError){
+      toast.error(`Something went wrong`,{
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      })
+      dispatch(reset())
+    }
+    if(deleteServicesSuccess){
+      toast.success('Service deleted successfully',{
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      })
+      dispatch(reset())
+    }
+    if(deleteServicesError){
+      toast.error(`Something went wrong`,{
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      })
+      dispatch(reset())
+    }
+    if(editServicesSuccess){
+      toast.success('Service edited successfully',{
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      })
+      dispatch(reset())
+    }
+    if(editServicesError){
+      toast.error(`Something went wrong`,{
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      })
+      dispatch(reset())
+    }
+  },[createServicesError, createServicesSuccess, deleteServicesError, deleteServicesSuccess, dispatch, editServicesError, editServicesSuccess])
+
   const metrics = useMemo(() => {
     const uniqueDoctors = new Set()
     let totalDuration = 0
@@ -104,33 +149,56 @@ const AdminServices = () => {
     services.forEach(service => {
       totalDuration += service.duration || 0
       totalFee += service.fee ?? 0
-      service.doctors.forEach(doc => uniqueDoctors.add(doc))
+      ;(service.doctors || []).forEach(doc => {
+        const key = doc?.id ?? doc?._id ?? doc?.email ?? doc?.name ?? doc
+        if (key !== undefined && key !== null) {
+          uniqueDoctors.add(key)
+        }
+      })
     })
 
     return {
       totalServices: services.length,
-      averageDuration: servicesData.length
-        ? Math.round(totalDuration / servicesData.length)
+      averageDuration: services.length
+        ? Math.round(totalDuration / services.length)
         : 0,
       totalFee,
       totalDoctors: uniqueDoctors.size
     }
-  }, [])
+  }, [services])
 
-  useEffect(() => {
-    dispatch(getServices())
-  }, [dispatch])
+  const doctorOptions = useMemo(() => {
+    if (!Array.isArray(doctors)) return []
+    return doctors.map(doctor => ({
+      id: doctor.id ?? doctor._id ?? doctor.email ?? doctor.name ?? doctor,
+      name: doctor.name ?? doctor.fullName ?? doctor.email ?? 'Doctor'
+    }))
+  }, [doctors])
 
   const formatFee = fee => {
     if (fee === null || fee === undefined) return 'Not set'
     return `$${fee}`
   }
 
-  if (getServicesLoading) {
+  const handleCreateService = payload => {
+    dispatch(createService(payload))
+    setIsCreateOpen(false)
+  }
+
+  const handleEditService = payload => {
+    // Hook up edit service action when available
+    // eslint-disable-next-line no-console
+    dispatch(updateService({serviceId:payload.id, serviceData:payload}))
+    console.log('Edit service payload', payload)
+    setEditingService(null)
+  }
+
+  if (getServicesLoading || createServicesLoading || deleteServicesLoading ||editServicesLoading) {
     return <Loading />
   }
   return (
     <section className='h-screen bg-[#F1F5F9] p-4 md:p-8'>
+      <ToastContainer />
       <div className='flex flex-col gap-3 md:flex-row md:items-center md:justify-between'>
         <div>
           <p className='text-xs font-semibold uppercase tracking-[0.24em] text-[#07332F]'>
@@ -146,6 +214,7 @@ const AdminServices = () => {
         </div>
         <button
           type='button'
+          onClick={() => setIsCreateOpen(true)}
           className='inline-flex items-center gap-2 self-start rounded-xl bg-[#07332F] px-4 py-2 text-sm font-semibold text-white shadow hover:bg-[#062b29] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#07332F]/50'
         >
           <Stethoscope size={16} />
@@ -185,7 +254,7 @@ const AdminServices = () => {
           <div>
             <h2 className='text-xl font-semibold text-gray-900'>Services</h2>
             <p className='text-sm text-gray-500'>
-              Showing {servicesData.length} of {servicesData.length} entries
+              Showing {services.length} of {services.length} entries
             </p>
           </div>
           <div className='flex w-full items-center gap-2 md:w-80'>
@@ -237,7 +306,7 @@ const AdminServices = () => {
                   Status
                 </th> */}
                 <th scope='col' className='px-6 py-3 font-semibold'>
-                  Edit
+                  Actions
                 </th>
               </tr>
             </thead>
@@ -259,7 +328,7 @@ const AdminServices = () => {
                           {doctor?.name}
                         </span>
                       ))}
-                      {service?.doctors.length > 2 ? (
+                      {service?.doctors?.length > 2 ? (
                         <span className='text-xs text-gray-500'>
                           +{service.doctors.length - 2} more
                         </span>
@@ -269,12 +338,12 @@ const AdminServices = () => {
                   <td className='px-6 py-3'>
                     <div className='inline-flex items-center gap-2 rounded-full bg-blue-50 px-3 py-1 text-xs font-semibold text-blue-700 ring-1 ring-blue-100'>
                       <CalendarClock size={14} />
-                      {service.slots.length} slots
+                      {service?.slots?.length} slots
                     </div>
                   </td>
                   <td className='px-6 py-3'>
                     <div className='inline-flex items-center gap-2 rounded-full bg-purple-50 px-3 py-1 text-xs font-semibold text-purple-700 ring-1 ring-purple-100'>
-                      {service.appointments.length} booked
+                      {service?.appointments?.length} booked
                     </div>
                   </td>
                   {/* <td className='px-6 py-3'>
@@ -287,13 +356,27 @@ const AdminServices = () => {
                     </span>
                   </td> */}
                   <td className='px-6 py-3'>
-                    <button
-                      type='button'
-                      className='inline-flex items-center gap-2 rounded-lg border border-[#07332F]/10 bg-[#07332F]/10 px-3 py-1.5 text-xs font-semibold text-[#07332F] transition hover:border-[#07332F]/30 hover:bg-[#07332F]/15 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#07332F]/30'
-                    >
-                      <Pencil size={14} />
-                      Edit
-                    </button>
+                    <div className='flex flex-wrap gap-2'>
+                      <button
+                        type='button'
+                        onClick={() => setEditingService(service)}
+                        className='inline-flex items-center gap-2 rounded-lg border border-[#07332F]/10 bg-[#07332F]/10 px-3 py-1.5 text-xs font-semibold text-[#07332F] transition hover:border-[#07332F]/30 hover:bg-[#07332F]/15 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#07332F]/30'
+                      >
+                        <Pencil size={14} />
+                        Edit
+                      </button>
+                      <button
+                        type='button'
+                        className='inline-flex items-center gap-2 rounded-lg border border-red-200 bg-red-50 px-3 py-1.5 text-xs font-semibold text-red-700 transition hover:border-red-300 hover:bg-red-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-200'
+                        onClick={()=>{
+                          dispatch(deleteService(service.id))
+                          console.log(service.id)
+                        }}
+                      >
+                        <Trash2 size={14} />
+                        Delete
+                      </button>
+                    </div>
                   </td>
                 </tr>
               ))}
@@ -301,6 +384,19 @@ const AdminServices = () => {
           </table>
         </div>
       </div>
+      <NewServiceModal
+        open={isCreateOpen}
+        onClose={() => setIsCreateOpen(false)}
+        onSubmit={handleCreateService}
+        doctorOptions={doctorOptions}
+      />
+      <EditServiceModal
+        open={Boolean(editingService)}
+        service={editingService}
+        onClose={() => setEditingService(null)}
+        onSubmit={handleEditService}
+        doctorOptions={doctorOptions}
+      />
     </section>
   )
 }

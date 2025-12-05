@@ -21,7 +21,7 @@ import { CloudinaryService } from 'src/cloudinary/cloudinary.service';
 import { Prisma } from '@prisma/client';
 import { type Request, type Response } from 'express';
 
-@Controller('docter')
+@Controller('doctor')
 export class DocterController {
   constructor(
     private readonly docterService: DocterService,

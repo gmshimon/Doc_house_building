@@ -1,4 +1,7 @@
-import { PartialType } from '@nestjs/mapped-types';
-import { CreateServiceDto } from './create-service.dto';
-
-export class UpdateServiceDto extends PartialType(CreateServiceDto) {}
+export class UpdateServiceDto {
+  name?: string;
+  duration?: number;
+  fee?: number;
+  // New field: the final, desired list of Doctor IDs
+  doctorIds?: number[];
+}

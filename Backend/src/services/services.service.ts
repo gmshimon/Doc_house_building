@@ -1,40 +1,58 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+/* eslint-disable @typescript-eslint/no-unsafe-call */
+/* eslint-disable @typescript-eslint/no-unsafe-return */
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
-import { Prisma } from '@prisma/client';
+import { CreateServiceDto } from './dto/create-service.dto';
+import { UpdateServiceDto } from './dto/update-service.dto';
 
 @Injectable()
 export class ServicesService {
   constructor(private prisma: PrismaService) {}
-  async create(createServiceDto: Prisma.ServiceCreateInput) {
+  async create(createServiceDto: CreateServiceDto) {
+    const doctorConnectData = createServiceDto.doctorIds
+      ? createServiceDto.doctorIds.map((id) => ({ id }))
+      : [];
+
     return await this.prisma.service.create({
       data: {
         name: createServiceDto.name,
         duration: createServiceDto.duration,
         fee: createServiceDto.fee,
+        doctors: {
+          connect: doctorConnectData,
+        },
+      },
+      include: {
+        doctors: true,
+        slots: true,
+        appointments: true,
       },
     });
   }
 
   async findAll(name?: string) {
     try {
-      const results = await this.prisma.service.findMany(
-        {
-          where: name
-            ? {
-                name: {
-                  contains: name,
-                  mode: 'insensitive',
-                },
-              }
-            : undefined,
-            include: { 
-              appointments: true,
-              doctors: true,
-              slots: true
+      const results = await this.prisma.service.findMany({
+        where: name
+          ? {
+              name: {
+                contains: name,
+                mode: 'insensitive',
+              },
             }
+          : undefined,
+        include: {
+          appointments: true,
+          doctors: true,
+          slots: true,
         },
-
-      );
+        orderBy: {
+          id: 'asc',
+        },
+      });
       return results;
     } catch (error) {
       throw new InternalServerErrorException('Error fetching services');
@@ -52,16 +70,33 @@ export class ServicesService {
     }
   }
 
-  async update(id: number, updateServiceDto: Prisma.ServiceUpdateInput) {
-    const result = await this.prisma.service.update({
-      where: { id },
-      data: {
-        name: updateServiceDto.name,
-        duration: updateServiceDto.duration,
-        fee: updateServiceDto.fee,
-      },
-    });
-    return result;
+  async update(id: number, updateServiceDto: UpdateServiceDto) {
+    try {
+      const doctorRelationData = updateServiceDto.doctorIds
+        ? {
+            set: updateServiceDto.doctorIds.map((doctorId) => ({
+              id: doctorId,
+            })),
+          }
+        : undefined;
+      const result = await this.prisma.service.update({
+        where: { id },
+        data: {
+          name: updateServiceDto.name,
+          duration: updateServiceDto.duration,
+          fee: updateServiceDto.fee,
+          doctors: doctorRelationData,
+        },
+        include: {
+          doctors: true,
+          slots: true,
+          appointments: true,
+        },
+      });
+      return result;
+    } catch (error) {
+      throw new InternalServerErrorException('Error fetching services');
+    }
   }
 
   async remove(id: number) {
