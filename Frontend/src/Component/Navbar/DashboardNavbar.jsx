@@ -1,4 +1,4 @@
-import { BriefcaseMedical, ListChecks, User } from 'lucide-react'
+import { BriefcaseMedical, ListChecks, Stethoscope, User } from 'lucide-react'
 import { MdDashboard } from 'react-icons/md'
 import { NavLink } from 'react-router-dom'
 
@@ -28,6 +28,14 @@ const navSections = [
         )
       },
       {
+        label: 'Doctors',
+        helper: 'Roster & specialties',
+        to: '/dashboard/doctors',
+        icon: (
+          <Stethoscope/>
+        )
+      },
+      {
         label: 'Services',
         helper: 'Catalog & fees',
         to: '/dashboard/services',
@@ -35,14 +43,14 @@ const navSections = [
           <ListChecks/>
         )
       },
-      {
-        label: 'Add Doctor',
-        helper: 'Invite specialists',
-        to: '/dashboard/add-doctor',
-        icon: (
-         <BriefcaseMedical />
-        )
-      }
+      // {
+      //   label: 'Add Doctor',
+      //   helper: 'Invite specialists',
+      //   to: '/dashboard/add-doctor',
+      //   icon: (
+      //    <BriefcaseMedical />
+      //   )
+      // }
     ]
   }
 ]

@@ -53,7 +53,7 @@ const RegisterPage = () => {
   }
 
   return (
-    <section className='relative h-screen overflow-hidden bg-gradient-to-br from-[#041f1c] via-[#07332F] to-[#0a4d45] text-white'>
+    <section className='relative min-h-screen overflow-hidden bg-gradient-to-br from-[#041f1c] via-[#07332F] to-[#0a4d45] text-white'>
       <ToastContainer />
 
       <div className='pointer-events-none absolute inset-0'>

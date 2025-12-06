@@ -1,19 +1,8 @@
-import React, { useEffect } from 'react'
+
 import DashboardNavbar from '../Component/Navbar/DashboardNavbar'
 import { Link, Outlet } from 'react-router-dom'
-import { useDispatch, useSelector } from 'react-redux'
-import { getDoctors } from '../Redux/Slice/DoctorSlice'
-import Loading from '../Component/Loading/Loading'
 
 const Dashboard = () => {
-  const {getDoctorsLoading} = useSelector(state=>state.doctors)
-  const dispatch = useDispatch()
-  useEffect(() => {
-    dispatch(getDoctors())
-  }, [dispatch])
-if(getDoctorsLoading){
-  return <Loading/>
-}
   return (
     <div className='md:flex'>
       {/* bg-[#F1F5F9] */}

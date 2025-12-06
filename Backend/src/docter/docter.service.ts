@@ -233,6 +233,7 @@ export class DocterService {
           award: true,
           business_hour: true,
           address: true,
+          services: true,
         },
       });
     } catch (error) {
@@ -271,15 +272,27 @@ export class DocterService {
     }
   }
 
-  async findAll() {
+  async findAll(name?: string) {
     try {
       const doctors = await this.prisma.doctor.findMany({
+        where: name
+          ? {
+              name: {
+                contains: name,
+                mode: 'insensitive',
+              },
+            }
+          : undefined,
         include: {
           education: true,
           experience: true,
           award: true,
           business_hour: true,
           address: true,
+          services: true,
+        },
+        orderBy: {
+          id: 'asc',
         },
       });
       return doctors;

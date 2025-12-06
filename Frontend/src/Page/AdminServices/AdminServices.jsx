@@ -16,6 +16,7 @@ import NewServiceModal from './components/NewServiceModal'
 import EditServiceModal from './components/EditServiceModal'
 import { toast, ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
+import { getDoctors } from '../../Redux/Slice/DoctorSlice'
 
 const MetricCard = ({ icon, label, value, helper }) => (
   <div className='relative overflow-hidden rounded-2xl border border-white/60 bg-white p-4 shadow-sm'>
@@ -35,7 +36,7 @@ const MetricCard = ({ icon, label, value, helper }) => (
 )
 
 const AdminServices = () => {
-  const { doctors } = useSelector(state => state.doctors)
+  const { doctors,getDoctorsLoading } = useSelector(state => state.doctors)
   const {
     services,
     getServicesLoading,
@@ -58,6 +59,7 @@ const AdminServices = () => {
 
   useEffect(() => {
     dispatch(getServices())
+     dispatch(getDoctors())
   }, [dispatch])
 
   useEffect(() => {
@@ -193,7 +195,7 @@ const AdminServices = () => {
     setEditingService(null)
   }
 
-  if (getServicesLoading || createServicesLoading || deleteServicesLoading ||editServicesLoading) {
+  if (getServicesLoading || createServicesLoading || deleteServicesLoading ||editServicesLoading||getDoctorsLoading) {
     return <Loading />
   }
   return (

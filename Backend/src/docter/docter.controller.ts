@@ -11,6 +11,7 @@ import {
   Res,
   UseInterceptors,
   UploadedFile,
+  Query,
 } from '@nestjs/common';
 import { DocterService } from './docter.service';
 import { UpdateDocterDto } from './dto/update-docter.dto';
@@ -101,9 +102,13 @@ export class DocterController {
   }
 
   @Get()
-  async findAll(@Req() request: Request, @Res() response: Response) {
+  async findAll(
+    @Req() request: Request,
+    @Res() response: Response,
+    @Query('name') name: string,
+  ) {
     try {
-      const result = await this.docterService.findAll();
+      const result = await this.docterService.findAll(name);
       response.status(200).json({
         status: 'success',
         message: 'Doctors fetched successfully',
