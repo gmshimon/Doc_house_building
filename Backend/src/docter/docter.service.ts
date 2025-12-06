@@ -15,7 +15,14 @@ export class DocterService {
     private prisma: PrismaService,
     private readonly cloudinaryService: CloudinaryService,
   ) {}
-
+  private doctorInclude = {
+    education: true,
+    experience: true,
+    award: true,
+    business_hour: true,
+    address: true,
+    services: true,
+  };
   private normalizeAddressInput(
     value?: unknown,
   ): Prisma.AddressCreateNestedOneWithoutDoctorInput | undefined {
@@ -227,14 +234,7 @@ export class DocterService {
 
       return await this.prisma.doctor.create({
         data: formattedData,
-        include: {
-          education: true,
-          experience: true,
-          award: true,
-          business_hour: true,
-          address: true,
-          services: true,
-        },
+        include: this.doctorInclude,
       });
     } catch (error) {
       if (createDocterDto.image) {
@@ -283,14 +283,7 @@ export class DocterService {
               },
             }
           : undefined,
-        include: {
-          education: true,
-          experience: true,
-          award: true,
-          business_hour: true,
-          address: true,
-          services: true,
-        },
+        include: this.doctorInclude,
         orderBy: {
           id: 'asc',
         },
@@ -305,13 +298,7 @@ export class DocterService {
     try {
       const doctor = await this.prisma.doctor.findUnique({
         where: { id },
-        include: {
-          education: true,
-          experience: true,
-          award: true,
-          business_hour: true,
-          address: true,
-        },
+        include: this.doctorInclude,
       });
       if (!doctor) {
         throw new BadRequestException(`Doctor with ID ${id} not found`);

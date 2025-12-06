@@ -58,17 +58,12 @@ const AdminDoctors = () => {
     return <Loading />
   }
 
-  const handleEditDoctor = doctor => {
-    // Hook up to edit doctor flow when ready
-    // eslint-disable-next-line no-console
-    console.log('Edit doctor', doctor)
-  }
-
   const handleDeleteDoctor = doctorId => {
     // Hook up to delete doctor action when ready
     // eslint-disable-next-line no-console
     console.log('Delete doctor id', doctorId)
   }
+
   return (
     <section className='min-h-screen bg-[#F1F5F9] p-4 md:p-8'>
       <div className='flex flex-col gap-3 md:flex-row md:items-center md:justify-between'>
@@ -181,12 +176,25 @@ const AdminDoctors = () => {
               {doctors?.map(doctor => (
                 <tr key={doctor.id} className='hover:bg-gray-50/60'>
                   <td className='px-6 py-3'>
-                    <p className='text-sm font-semibold text-gray-900'>
-                      {doctor.name || 'Unnamed'}
-                    </p>
-                    <p className='text-xs text-gray-500'>
-                      {doctor.title || 'Doctor'}
-                    </p>
+                    <div className='flex items-center gap-3'>
+                      <img
+                        className='h-10 w-10 rounded-full object-cover ring-1 ring-gray-200'
+                        src={
+                          doctor.image ||
+                          doctor.avatar ||
+                          'https://i.pravatar.cc/80?img=65'
+                        }
+                        alt={doctor.name || 'Doctor avatar'}
+                      />
+                      <div>
+                        <p className='text-sm font-semibold text-gray-900'>
+                          {doctor.name || 'Unnamed'}
+                        </p>
+                        <p className='text-xs text-gray-500'>
+                          {doctor.title || 'Doctor'}
+                        </p>
+                      </div>
+                    </div>
                   </td>
                   <td className='px-6 py-3'>
                     <div className='flex flex-wrap gap-2'>
@@ -229,23 +237,22 @@ const AdminDoctors = () => {
                   </td>
                   <td className='px-6 py-3'>
                     <div className='flex flex-wrap gap-2'>
-                      <button
-                        type='button'
-                        onClick={() => handleEditDoctor(doctor)}
+                      <Link
+                        to={`/dashboard/doctors/${doctor.id}/edit`}
                         className='inline-flex items-center gap-2 rounded-lg border border-[#07332F]/10 bg-[#07332F]/10 px-3 py-1.5 text-xs font-semibold text-[#07332F] transition hover:border-[#07332F]/30 hover:bg-[#07332F]/15 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#07332F]/30'
                       >
                         Edit
-                      </button>
+                      </Link>
                       <button
                         type='button'
                         onClick={() => handleDeleteDoctor(doctor.id)}
-                        className='inline-flex items-center gap-2 rounded-lg border border-red-200 bg-red-50 px-3 py-1.5 text-xs font-semibold text-red-700 transition hover:border-red-300 hover:bg-red-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-200'
-                      >
-                        Delete
-                      </button>
-                    </div>
-                  </td>
-                </tr>
+                className='inline-flex items-center gap-2 rounded-lg border border-red-200 bg-red-50 px-3 py-1.5 text-xs font-semibold text-red-700 transition hover:border-red-300 hover:bg-red-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-200'
+              >
+                Delete
+              </button>
+            </div>
+          </td>
+        </tr>
               ))}
             </tbody>
           </table>

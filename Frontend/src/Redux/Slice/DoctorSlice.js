@@ -4,10 +4,15 @@ import axios from '../../Utilis/axios'
 
 const initialState = {
   doctors: [],
+  doctorDetails: null,
 
   getDoctorsLoading: false,
   getDoctorsSuccess: false,
   getDoctorsError: null,
+
+  getDoctorDetailsLoading: false,
+  getDoctorDetailsSuccess: false,
+  getDoctorDetailsError: null,
 
   createDoctorsLoading: false,
   createDoctorsSuccess: false,
@@ -38,6 +43,18 @@ export const getDoctors = createAsyncThunk(
   }
 )
 
+export const getDoctorById = createAsyncThunk(
+  'doctor/getDoctorById',
+  async (id, thunkAPI) => {
+    try {
+      const response = await axios.get(`/doctor/${id}`)
+      return response.data.data
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.message)
+    }
+  }
+)
+
 const DoctorSlice = createSlice({
   name: 'doctor',
   initialState,
@@ -46,6 +63,10 @@ const DoctorSlice = createSlice({
       state.getDoctorsLoading = false
       state.getDoctorsSuccess = false
       state.getDoctorsError = null
+
+      state.getDoctorDetailsLoading = false
+      state.getDoctorDetailsSuccess = false
+      state.getDoctorDetailsError = null
 
       state.createDoctorsLoading = false
       state.createDoctorsSuccess = false
@@ -73,6 +94,20 @@ const DoctorSlice = createSlice({
       .addCase(getDoctors.rejected, (state, action) => {
         state.getDoctorsLoading = false
         state.getDoctorsError = action.payload
+      })
+      .addCase(getDoctorById.pending, state => {
+        state.getDoctorDetailsLoading = true
+        state.getDoctorDetailsSuccess = false
+        state.getDoctorDetailsError = null
+      })
+      .addCase(getDoctorById.fulfilled, (state, action) => {
+        state.getDoctorDetailsLoading = false
+        state.getDoctorDetailsSuccess = true
+        state.doctorDetails = action.payload
+      })
+      .addCase(getDoctorById.rejected, (state, action) => {
+        state.getDoctorDetailsLoading = false
+        state.getDoctorDetailsError = action.payload
       })
   }
 })
