@@ -1,8 +1,14 @@
-import React, { useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import ProfileForm from './components/ProfileForm'
 import QualificationForm from './components/QualificationForm'
 import LocationForm from './components/LocationForm'
 import BusinessHourForm from './components/BusinessHourForm'
+import { useDispatch, useSelector } from 'react-redux'
+import Loading from '../../Component/Loading/Loading'
+import { createDoctor, reset } from '../../Redux/Slice/DoctorSlice'
+import { getServices } from '../../Redux/Slice/ServiceSlice'
+import { toast, ToastContainer } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
 
 const tabs = [
   { key: 'profile', label: 'Profile' },
@@ -66,10 +72,57 @@ const initialDoctorState = {
 }
 
 const AdminAddDoctor = () => {
+  const {
+    createDoctorsLoading,
+    createDoctorsSuccess,
+    createDoctorsError
+  } = useSelector(state => state.doctor)
+  const { services, getServicesLoading } = useSelector(state => state.services)
   const [activeTab, setActiveTab] = useState('profile')
   const [doctorData, setDoctorData] = useState(initialDoctorState)
   const [imageFile, setImageFile] = useState(null)
   const [statusMessage, setStatusMessage] = useState('')
+  const [selectedServiceIds, setSelectedServiceIds] = useState([])
+
+  const dispatch = useDispatch()
+
+  useEffect(() => {
+    dispatch(getServices())
+  }, [dispatch])
+
+  useEffect(() => {
+    if (createDoctorsSuccess) {
+      toast.success('Doctor created successfully', {
+        position: 'top-right',
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: 'light'
+      })
+      setDoctorData(initialDoctorState)
+      setSelectedServiceIds([])
+      setStatusMessage('Doctor created successfully.')
+      setActiveTab('profile')
+      dispatch(reset())
+    }
+    if (createDoctorsError) {
+      toast.error(createDoctorsError, {
+        position: 'top-right',
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: 'light'
+      })
+      setStatusMessage('Failed to create doctor.')
+      dispatch(reset())
+    }
+  }, [createDoctorsError, createDoctorsSuccess, dispatch])
 
   const handleProfileFieldChange = (field, value) => {
     setDoctorData(prev => ({
@@ -107,6 +160,27 @@ const AdminAddDoctor = () => {
   const handleFileInput = e => {
     const file = e.target.files[0]
     setImageFile(file)
+  }
+
+  const serviceOptions = useMemo(() => {
+    if (!Array.isArray(services)) return []
+    return services
+      .map(service => ({
+        id: service.id ?? service._id ?? service.name,
+        name: service.name || 'Service'
+      }))
+      .filter(option => option.id !== undefined && option.id !== null)
+  }, [services])
+
+  const handleServicesChange = ids => {
+    setSelectedServiceIds(ids)
+    setDoctorData(prev => ({
+      ...prev,
+      profile: {
+        ...prev.profile,
+        services: ids
+      }
+    }))
   }
 
   const updateCollectionItem = (collectionKey, index, field, value) => {
@@ -185,44 +259,90 @@ const AdminAddDoctor = () => {
       businessHours: createDefaultBusinessHours()
     }))
 
-  const handleSubmit = event => {
-    event.preventDefault()
-    setStatusMessage(
-      'Doctor profile payload prepared. Check console for the JSON object.'
-    )
-    // eslint-disable-next-line no-console
-    console.log('Doctor payload', doctorData)
+  const sanitizeCollection = collection =>
+    collection
+      .map(item =>
+        Object.fromEntries(
+          Object.entries(item).map(([key, value]) => [
+            key,
+            typeof value === 'string' ? value.trim() : value
+          ])
+        )
+      )
+      .filter(item =>
+        Object.values(item).some(value =>
+          typeof value === 'string'
+            ? value !== ''
+            : value !== null && value !== undefined
+        )
+      )
 
-    const formData = new FormData()
-    const appendFormData = (formData, data, parentKey = '') => {
-      if (data && typeof data === 'object' && !(data instanceof File)) {
-        if (Array.isArray(data)) {
-          data.forEach((value, index) => {
-            appendFormData(formData, value, `${parentKey}[${index}]`)
-          })
-        } else {
-          Object.keys(data).forEach(key => {
-            const value = data[key]
-            const formKey = parentKey ? `${parentKey}.${key}` : key
-            appendFormData(formData, value, formKey)
-          })
-        }
-      } else {
-        formData.append(parentKey, data)
+  const handleSubmit = async event => {
+    event.preventDefault()
+    setStatusMessage('Submitting doctor data...')
+
+    const payload = {
+      name: doctorData.profile.name.trim(),
+      email: doctorData.profile.email.trim(),
+      phone: doctorData.profile.phone.trim(),
+      qualification: doctorData.profile.qualification.trim(),
+      specialties: doctorData.profile.specialties
+        .map(item => item.trim())
+        .filter(Boolean),
+      services: selectedServiceIds,
+      serviceIds: selectedServiceIds,
+      description: doctorData.profile.description.trim(),
+      education: sanitizeCollection(doctorData.education),
+      experience: sanitizeCollection(doctorData.experience),
+      award: sanitizeCollection(doctorData.awards),
+      business_hour: doctorData.businessHours.map(item => ({
+        day: item.day,
+        open: item.isClose ? '' : item.open,
+        close: item.isClose ? '' : item.close,
+        isClose: Boolean(item.isClose),
+        special_notes: item.isClose ? '' : item.special_notes
+      })),
+      address: {
+        street: doctorData.address.street.trim(),
+        city: doctorData.address.city.trim(),
+        state: doctorData.address.state.trim(),
+        zip: doctorData.address.zip.trim(),
+        country: doctorData.address.country.trim(),
+        map: doctorData.address.map.trim(),
+        institution: doctorData.address.institution.trim()
       }
     }
 
-    // append doctorData to formData
-    appendFormData(formData, doctorData)
+    const formData = new FormData()
+    const appendFormData = (key, value) => {
+      if (value === undefined || value === null) return
+      if (value instanceof File) {
+        formData.append(key, value)
+      } else if (Array.isArray(value)) {
+        value.forEach((item, index) => appendFormData(`${key}[${index}]`, item))
+      } else if (typeof value === 'object') {
+        Object.entries(value).forEach(([childKey, childValue]) => {
+          appendFormData(`${key}[${childKey}]`, childValue)
+        })
+      } else {
+        formData.append(key, typeof value === 'boolean' ? String(value) : value)
+      }
+    }
 
-    // append image file if exists
+    Object.entries(payload).forEach(([key, value]) => appendFormData(key, value))
     if (imageFile) {
       formData.append('file', imageFile)
     }
+    dispatch(createDoctor(formData))
+  }
+
+  if (createDoctorsLoading || getServicesLoading) {
+    return <Loading/>
   }
 
   return (
     <section className='bg-[#F1F5F9]'>
+            <ToastContainer />
       <form
         onSubmit={handleSubmit}
         className='mx-auto max-w-7xl  px-4 pb-16 pt-10'
@@ -246,6 +366,10 @@ const AdminAddDoctor = () => {
           </nav>
         </header>
 
+        {statusMessage ? (
+          <p className='mb-4 text-sm font-medium text-gray-700'>{statusMessage}</p>
+        ) : null}
+
         <div className='mb-8 flex items-center justify-end'>
           <button className='rounded-lg bg-[#07332F] px-3 py-2 text-sm font-semibold text-white shadow hover:bg-[#062b29] focus:outline-none focus:ring-2 focus:ring-[#07332F]/40'>
             Submit
@@ -260,6 +384,9 @@ const AdminAddDoctor = () => {
               onListItemAdd={handleProfileListAdd}
               onListItemRemove={handleProfileListRemove}
               fileInput={handleFileInput}
+              serviceOptions={serviceOptions}
+              selectedServiceIds={selectedServiceIds}
+              onServicesChange={handleServicesChange}
             />
           ) : null}
 

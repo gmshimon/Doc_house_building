@@ -27,7 +27,7 @@ export class CloudinaryService {
       return result.secure_url;
     } catch (error) {
       console.error('Cloudinary upload error:', error);
-      throw new InternalServerErrorException('Failed to upload image');
+      throw new InternalServerErrorException(error);
     }
   }
 

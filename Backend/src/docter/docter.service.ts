@@ -155,6 +155,78 @@ export class DocterService {
     return value as Prisma.Business_hourCreateNestedManyWithoutDoctorInput;
   }
 
+  private normalizeServicesInput(
+    value?: unknown,
+  ): Prisma.ServiceCreateNestedManyWithoutDoctorsInput | undefined {
+    if (!value) {
+      return undefined;
+    }
+
+    const toIdArray = (input: unknown): number[] => {
+      if (Array.isArray(input)) {
+        return input
+          .map((id) => {
+            const num = Number(id);
+            return Number.isNaN(num) ? undefined : num;
+          })
+          .filter((id): id is number => typeof id === 'number');
+      }
+
+      if (typeof input === 'string') {
+        try {
+          const parsed = JSON.parse(input) as unknown;
+          if (Array.isArray(parsed)) {
+            return parsed
+              .map((id) => {
+                const num = Number(id);
+                return Number.isNaN(num) ? undefined : num;
+              })
+              .filter((id): id is number => typeof id === 'number');
+          }
+        } catch {
+          const num = Number(input);
+          return Number.isNaN(num) ? [] : [num];
+        }
+      }
+
+      return [];
+    };
+
+    if (this.isRecord(value) && ('connect' in value || 'create' in value)) {
+      return value as Prisma.ServiceCreateNestedManyWithoutDoctorsInput;
+    }
+
+    const ids = toIdArray(value);
+    if (!ids.length) {
+      return undefined;
+    }
+
+    return {
+      connect: ids.map((id) => ({ id })),
+    };
+  }
+
+  private normalizeStringArrayInput(value?: unknown): string[] | undefined {
+    if (!value) {
+      return undefined;
+    }
+    if (Array.isArray(value)) {
+      return value.map((item) => String(item));
+    }
+    if (typeof value === 'string') {
+      try {
+        const parsed = JSON.parse(value) as unknown;
+        if (Array.isArray(parsed)) {
+          return parsed.map((item) => String(item));
+        }
+      } catch {
+        // fall back to treating the string as a single entry
+        return [value];
+      }
+    }
+    return undefined;
+  }
+
   private toDate(value: unknown): Date | undefined {
     if (!value) {
       return undefined;
@@ -207,6 +279,9 @@ export class DocterService {
         award,
         business_hour,
         address,
+        services,
+        serviceIds,
+        specialties,
         ...doctorCore
       } = createDocterDto as Prisma.DoctorCreateInput & Record<string, unknown>;
 
@@ -230,6 +305,8 @@ export class DocterService {
         award: this.normalizeSimpleNestedInput(award),
         business_hour: this.normalizeBusinessHourNestedInput(business_hour),
         address: normalizedAddress,
+        services: this.normalizeServicesInput(services ?? serviceIds),
+        specialties: this.normalizeStringArrayInput(specialties) ?? [],
       };
 
       return await this.prisma.doctor.create({

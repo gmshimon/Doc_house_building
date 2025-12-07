@@ -27,6 +27,19 @@ const initialState = {
   deleteDoctorsError: null
 }
 
+export const createDoctor = createAsyncThunk(
+  'doctor/createDoctor',
+  async (doctorData, thunkAPI) => {
+    try {
+      const response = await axios.post('/doctor', doctorData)
+      return response.data.data
+    }
+    catch (error) {
+      return thunkAPI.rejectWithValue(error.message)
+    }
+  }
+)
+
 export const getDoctors = createAsyncThunk(
   'doctor/getDoctors',
   async (name = null, thunkAPI) => {
@@ -83,6 +96,19 @@ const DoctorSlice = createSlice({
   },
   extraReducers: builder => {
     builder
+      .addCase(createDoctor.pending, state => {
+        state.createDoctorsLoading = true
+      })
+      .addCase(createDoctor.fulfilled, (state, action) => {
+        state.createDoctorsLoading = false
+        state.createDoctorsSuccess = true
+        state.doctors.push(action.payload)
+      })
+      .addCase(createDoctor.rejected, (state, action) => {
+        state.createDoctorsLoading = false
+        state.createDoctorsError = action.payload
+      })
+
       .addCase(getDoctors.pending, state => {
         state.getDoctorsLoading = true
       })
@@ -112,5 +138,5 @@ const DoctorSlice = createSlice({
   }
 })
 
-const { reset } = DoctorSlice.actions
+export const { reset } = DoctorSlice.actions
 export default DoctorSlice.reducer

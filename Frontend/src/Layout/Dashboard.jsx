@@ -150,7 +150,6 @@ const Dashboard = () => {
         </header>
         <div
           className='md:mt-0 mt-10 bg-[#F1F5F9]'
-          style={{ height: 'calc(100vh - 62px)' }}
         >
           <Outlet />
         </div>

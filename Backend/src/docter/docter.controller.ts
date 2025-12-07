@@ -39,10 +39,11 @@ export class DocterController {
   ) {
     let imageUrl: string | undefined;
     try {
-      if (file) {
-        imageUrl = await this.cloudinaryService.uploadImage(file, 'doctor');
-        createDocterDto.image = imageUrl;
-      }
+      // console.log('Received DTO:', createDocterDto);
+      // if (file) {
+      //   imageUrl = await this.cloudinaryService.uploadImage(file, 'doctor');
+      //   createDocterDto.image = imageUrl;
+      // }
       const result = await this.docterService.create(createDocterDto);
       response.status(200).json({
         status: 'success',

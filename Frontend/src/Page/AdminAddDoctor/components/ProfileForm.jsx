@@ -58,7 +58,28 @@ const ListInput = ({ label, items, placeholder, onAdd, onRemove }) => {
   )
 }
 
-const ProfileForm = ({ data, onFieldChange, onListItemAdd, onListItemRemove ,fileInput}) => {
+const ProfileForm = ({
+  data,
+  onFieldChange,
+  onListItemAdd,
+  onListItemRemove,
+  fileInput,
+  serviceOptions = [],
+  selectedServiceIds = [],
+  onServicesChange = () => {}
+}) => {
+
+  const handleServiceSelect = event => {
+    const parseValue = value => {
+      const asNumber = Number(value)
+      return Number.isNaN(asNumber) ? value : asNumber
+    }
+    const selected = Array.from(event.target.selectedOptions).map(option =>
+      parseValue(option.value)
+    )
+    onServicesChange(selected)
+  }
+
   return (
     <div className='space-y-8 rounded-xl bg-white p-6 shadow-md'>
       <div className='grid grid-cols-1 gap-6 md:grid-cols-2'>
@@ -139,13 +160,28 @@ const ProfileForm = ({ data, onFieldChange, onListItemAdd, onListItemRemove ,fil
         onRemove={value => onListItemRemove('specialties', value)}
       />
 
-      <ListInput
-        label='Services'
-        items={data.services}
-        placeholder='e.g. Telemedicine Consultation'
-        onAdd={value => onListItemAdd('services', value)}
-        onRemove={value => onListItemRemove('services', value)}
-      />
+      <div className='space-y-2'>
+        <label className='block text-sm font-semibold text-gray-700'>Services</label>
+        <select
+          multiple
+          value={selectedServiceIds}
+          onChange={handleServiceSelect}
+          className='w-full rounded-lg border border-gray-200 px-3 py-2 text-sm shadow-sm focus:border-[#07332F] focus:outline-none focus:ring-2 focus:ring-[#07332F]/40'
+        >
+          {serviceOptions.length ? (
+            serviceOptions.map(service => (
+              <option key={service.id} value={service.id}>
+                {service.name}
+              </option>
+            ))
+          ) : (
+            <option disabled value=''>
+              No services available
+            </option>
+          )}
+        </select>
+        <p className='text-xs text-gray-500'>Hold Ctrl/Cmd to select multiple services.</p>
+      </div>
     </div>
   )
 }
