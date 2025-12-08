@@ -9,9 +9,9 @@ const Main = () => {
   const isLoginPage =
     location.pathname.includes('login') ||
     location.pathname.includes('register')
-  const isHomePage =
-    location.pathname.includes('home') || location.pathname === '/'
-    const profilePage = location.pathname.includes('profile')
+  // const isHomePage =
+  //   location.pathname.includes('home') || location.pathname === '/'
+  //   const profilePage = location.pathname.includes('profile')
     CurrentUser()
   return (
     <div className=''>

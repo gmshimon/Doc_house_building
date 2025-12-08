@@ -4,11 +4,13 @@ import 'react-calendar/dist/Calendar.css'
 import { useDispatch, useSelector } from 'react-redux'
 import { getServices } from '../../Redux/Slice/ServiceSlice'
 import Loading from '../Loading/Loading'
+import { useNavigate } from 'react-router-dom'
 
 const placeholderImg =
   'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=facearea&w=256&h=256&q=80'
 
 const ServiceDoctorPicker = () => {
+  const navigate = useNavigate()
   const { services, getServicesLoading } = useSelector(state => state.services)
   const [searchTerm, setSearchTerm] = useState('')
   const [selectedServiceId, setSelectedServiceId] = useState(null)
@@ -44,6 +46,18 @@ const ServiceDoctorPicker = () => {
         : '',
     [selectedDate]
   )
+
+  const formattedDateForQuery = useMemo(() => {
+    if (!(selectedDate instanceof Date)) return ''
+    return selectedDate.toISOString().split('T')[0]
+  }, [selectedDate])
+
+  const handleSeeSlots = () => {
+    if (!selectedDoctor || !selectedService || !formattedDateForQuery) return
+    navigate(
+      `/available-slots?doctorId=${selectedDoctor.id}&serviceId=${selectedService.id}&date=${formattedDateForQuery}`
+    )
+  }
   if (getServicesLoading) {
     return <Loading />
   }
@@ -218,9 +232,10 @@ const ServiceDoctorPicker = () => {
             </div>
             <button
               type='button'
+              onClick={handleSeeSlots}
               className='inline-flex items-center justify-center rounded-xl border border-transparent bg-gradient-to-r from-[#07332F] to-[#0d4d44] px-5 py-3 text-sm font-semibold text-white shadow-md shadow-[#07332F]/15 transition hover:-translate-y-0.5 hover:shadow-lg focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#07332F]'
             >
-              See available dates
+              See Available Slots
             </button>
           </div>
         )}

@@ -530,6 +530,9 @@ export class DocterService {
           day: weekday,
           isClose: false,
         },
+        include: {
+          doctor: true,
+        },
       });
 
       if (!businessHour) return { availableSlots: [] };
@@ -566,8 +569,16 @@ export class DocterService {
 
       // 7. Return clean response for frontend
       return {
-        doctorId,
-        serviceId,
+        service: {
+          id: service.id,
+          name: service.name,
+          duration: service.duration,
+          fee: service.fee,
+        },
+        doctor: {
+          id: businessHour.doctor.id,
+          name: businessHour.doctor.name,
+        },
         date,
         availableSlots: finalSlots.map((s) => ({
           start: s.start.toLocaleTimeString([], {

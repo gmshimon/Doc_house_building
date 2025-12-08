@@ -7,6 +7,7 @@ import AppointmentPage from '../Page/AppointmentPage/AppointmentPage'
 import DoctorProfilePage from '../Page/DoctorProfilePage/DoctorProfilePage'
 import ProfilePage from '../Page/Profile/ProfilePage'
 import ContactPage from '../Page/ContactPage/ContactPage'
+import AvailableSlotsPage from '../Page/AvailableSlotsPage/AvailableSlotsPage'
 import Dashboard from '../Layout/Dashboard'
 import AdminDashboard from '../Page/AdminDashboard/AdminDashboard'
 import AdminUserDashboard from '../Page/AdminUserDashboard/AdminUserDashboard'
@@ -47,6 +48,10 @@ export const router = createBrowserRouter([
             {
                 path:'/contact',
                 element:<ContactPage/>
+            },
+            {
+                path:'/available-slots',
+                element:<AvailableSlotsPage/>
             }
         ]
     },

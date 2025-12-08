@@ -4,6 +4,7 @@ import axios from '../../Utilis/axios'
 
 const initialState = {
   doctors: [],
+  availability: [],
   doctorDetails: null,
 
   getDoctorsLoading: false,
@@ -24,7 +25,11 @@ const initialState = {
 
   deleteDoctorsLoading: false,
   deleteDoctorsSuccess: false,
-  deleteDoctorsError: null
+  deleteDoctorsError: null,
+
+  getDoctorAvailabilityLoading: false,
+  getDoctorAvailabilitySuccess: false,
+  getDoctorAvailabilityError: null,
 }
 
 export const createDoctor = createAsyncThunk(
@@ -68,6 +73,18 @@ export const getDoctorById = createAsyncThunk(
   }
 )
 
+export const getDoctorAvailability = createAsyncThunk(
+  'doctor/getDoctorAvailability',
+  async ({ doctorId, date, serviceId }, thunkAPI) => {
+    try {
+      const response = await axios.get(`/doctor/${doctorId}/availability?serviceId=${serviceId}&date=${date}`)
+      return response.data.data
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.message)
+    }
+  }
+)
+
 const DoctorSlice = createSlice({
   name: 'doctor',
   initialState,
@@ -92,6 +109,10 @@ const DoctorSlice = createSlice({
       state.deleteDoctorsLoading = false
       state.deleteDoctorsSuccess = false
       state.deleteDoctorsError = null
+
+      state.getDoctorAvailabilityLoading = false
+      state.getDoctorAvailabilitySuccess = false
+      state.getDoctorAvailabilityError = null
     }
   },
   extraReducers: builder => {
@@ -134,6 +155,21 @@ const DoctorSlice = createSlice({
       .addCase(getDoctorById.rejected, (state, action) => {
         state.getDoctorDetailsLoading = false
         state.getDoctorDetailsError = action.payload
+      })
+
+      .addCase(getDoctorAvailability.pending, state => {
+        state.getDoctorAvailabilityLoading = true
+        state.getDoctorAvailabilitySuccess = false
+        state.getDoctorAvailabilityError = null
+      })
+      .addCase(getDoctorAvailability.fulfilled, (state, action) => {
+        state.getDoctorAvailabilityLoading = false
+        state.getDoctorAvailabilitySuccess = true
+        state.availability = action.payload
+      })
+      .addCase(getDoctorAvailability.rejected, (state, action) => {
+        state.getDoctorAvailabilityLoading = false
+        state.getDoctorAvailabilityError = action.payload
       })
   }
 })
