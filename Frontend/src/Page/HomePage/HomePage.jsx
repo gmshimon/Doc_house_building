@@ -32,7 +32,7 @@ const dispatch = useDispatch()
     <div className='w-full'>
       <ToastContainer />
       <Banner />
-      <div className='px-5 md:mx-auto max-w-5xl w-full max-h-full'>
+      <div className='px-5 md:mx-auto max-w-6xl w-full max-h-full'>
         <ServiceDetails />
         <ContactBanner />
         <PatientReview />
