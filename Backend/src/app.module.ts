@@ -8,6 +8,7 @@ import { DocterModule } from './docter/docter.module';
 import { CloudinaryModule } from './cloudinary/cloudinary.module';
 import { SlotsModule } from './slots/slots.module';
 import { ServicesModule } from './services/services.module';
+import { AppointmentModule } from './appointment/appointment.module';
 
 @Module({
   imports: [
@@ -17,6 +18,7 @@ import { ServicesModule } from './services/services.module';
     CloudinaryModule,
     SlotsModule,
     ServicesModule,
+    AppointmentModule,
   ],
   controllers: [AppController],
   providers: [AppService, PrismaService],

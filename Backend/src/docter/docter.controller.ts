@@ -39,7 +39,6 @@ export class DocterController {
   ) {
     let imageUrl: string | undefined;
     try {
-      // console.log('Received DTO:', createDocterDto);
       if (file) {
         imageUrl = await this.cloudinaryService.uploadImage(file, 'doctor');
         createDocterDto.image = imageUrl;
