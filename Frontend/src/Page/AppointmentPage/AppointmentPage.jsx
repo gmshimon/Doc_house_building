@@ -1,72 +1,28 @@
-import React, { useState } from 'react'
-import { motion } from "framer-motion";
-
-import Calendar from 'react-calendar'
-import 'react-calendar/dist/Calendar.css'
-import appointment_bg from '../../assets/appointment_bg.jpg'
-import appointment from '../../assets/appointment.jpg'
-import AvailableCategory from '../../Component/AvailableCategory/AvailableCategory'
-import AvailableSlot from '../../Component/AvailableSlot/AvailableSlot'
+import React from 'react'
+import { motion } from 'framer-motion'
+import ServiceDoctorPicker from '../../Component/ServiceDoctorPicker/ServiceDoctorPicker'
 
 const AppointmentPage = () => {
-  const [value, setValue] = useState()
   return (
-    <section className='w-full'>
-      <motion.div
-      initial={{ opacity: 0 }} // Fade in effect
-      animate={{ opacity: 1 }}
-      transition={{ duration: 1 }}
-      style={{
-        backgroundImage: `url(${appointment_bg})`,
-        backgroundSize: "contain",
-        backgroundRepeat: "no-repeat",
-        backgroundOrigin: "border-box",
-      }}
-      className="md:flex justify-evenly pt-20 w-full"
-    >
-      {/* Calendar Animation */}
-      <motion.div
-        className="flex justify-center"
-        initial={{ scale: 0.8, opacity: 0 }}
-        animate={{ scale: 1, opacity: 1 }}
-        transition={{ duration: 0.8, delay: 0.3 }}
-      >
-        <Calendar
-          onChange={(e) => setValue(e.toString().split("00:00:00")[0])}
-          value={value}
-        />
-      </motion.div>
+    <section className='bg-gradient-to-br from-white via-[#f7f4f1] to-[#e8f7f4] py-10'>
+      <div className='mx-auto flex max-w-6xl flex-col gap-8 px-4 md:px-0'>
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+          className='rounded-3xl border border-[#07332F]/10 bg-white/95 px-6 py-6 shadow-lg shadow-[#07332F]/10 backdrop-blur'
+        >
+          <p className='inline-flex items-center gap-2 rounded-full border border-[#07332F]/10 bg-white px-3 py-1 text-xs font-semibold uppercase tracking-[0.14em] text-[#07332F]'>
+            Appointment
+          </p>
+          <h1 className='mt-3 text-4xl font-semibold text-[#07332F]'>Book your visit</h1>
+          <p className='mt-2 max-w-3xl text-slate-600'>
+            Start by choosing a service and date. We will surface the clinicians who provide that
+            service so you can pick the right fit.
+          </p>
+        </motion.div>
 
-      {/* Image Slide-in Animation */}
-      <motion.div
-        className="ml-10 hidden md:block"
-        initial={{ x: 100, opacity: 0 }}
-        animate={{ x: 0, opacity: 1 }}
-        transition={{ duration: 0.8, delay: 0.5 }}
-      >
-        <img className="w-[594px] h-[355px] rounded-xl" src={appointment} alt="" />
-      </motion.div>
-    </motion.div>
-      <div className='mt-16'>
-        <p className='text-center text-lg text-[#F7A582]'>
-          Available Services on {value ? value : new Date().toDateString()}
-        </p>
-        <p className='text-center text-4xl font-semibold mt-4'>
-          Please select a service
-        </p>
-      </div>
-      {/* category */}
-      <div className='flex justify-center mt-12'>
-        <AvailableCategory />
-      </div>
-      {/* available slots */}
-      <div className='mt-16'>
-        <p className='text-center text-4xl font-semibold mt-4 px-2'>
-          Available slots for Teeth Orthodontics.{' '}
-        </p>
-      </div>
-      <div className='flex justify-center mt-12'>
-<AvailableSlot/>
+        <ServiceDoctorPicker />
       </div>
     </section>
   )

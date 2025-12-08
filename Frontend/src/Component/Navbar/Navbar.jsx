@@ -1,6 +1,7 @@
 import { useState } from 'react'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { Link, NavLink } from 'react-router-dom'
+import { logOut } from '../../Redux/Slice/AuthSlice'
 
 const navLinks = [
   { label: 'Home', to: '/' },
@@ -12,7 +13,7 @@ const Navbar = () => {
   const [profileOpen, setProfileOpen] = useState(false)
   const [mobileOpen, setMobileOpen] = useState(false)
   const { user } = useSelector(state => state.authSlice)
-
+  const dispatch = useDispatch()
   const baseLinkClass =
     'group relative inline-flex items-center text-xs font-semibold uppercase tracking-[0.22em] transition'
 
@@ -120,7 +121,9 @@ const Navbar = () => {
                       <span className='relative inline-flex size-10 items-center justify-center overflow-hidden rounded-xl bg-white/10 text-sm font-semibold uppercase text-lime-200 ring-1 ring-white/15'>
                         <img
                           className='h-full w-full object-cover'
-                          src='https://images.unsplash.com/photo-1568602471122-7832951cc4c5?ixlib=rb-4.0.3&auto=format&fit=facearea&facepad=2&w=300&h=300&q=80'
+                          src={`
+                              ${user?.image ? user?.image : 'https://images.unsplash.com/photo-1568602471122-7832951cc4c5?ixlib=rb-4.0.3&auto=format&fit=facearea&facepad=2&w=300&h=300&q=80'}
+                            `}
                           alt='User avatar'
                         />
                       </span>
@@ -169,7 +172,7 @@ const Navbar = () => {
                           <li>
                             <button
                               type='button'
-                              onClick={() => console.log('Logout')}
+                              onClick={() => dispatch(logOut())}
                               className='flex w-full items-center justify-between rounded-xl px-3 py-2 text-red-300 transition hover:bg-red-500/10 hover:text-red-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-300/70'
                             >
                               Logout
