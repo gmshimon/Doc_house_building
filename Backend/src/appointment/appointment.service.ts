@@ -3,6 +3,7 @@ import {
   BadRequestException,
   ConflictException,
   Injectable,
+  NotFoundException,
 } from '@nestjs/common';
 import { CreateAppointmentDto } from './dto/create-appointment.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
@@ -112,5 +113,50 @@ export class AppointmentService {
     } catch (error) {
       throw error;
     }
+  }
+
+  async getUserAppointments(userId: number) {
+    // 1. Validate user exists
+    const user = await this.prisma.user.findUnique({
+      where: { id: userId },
+    });
+    if (!user) throw new NotFoundException('User not found');
+
+    // 2. Fetch all user appointments
+    const appointments = await this.prisma.appointment.findMany({
+      where: { userId },
+      include: {
+        doctor: true,
+        service: true,
+        slot: true,
+      },
+      orderBy: {
+        slot: { date: 'asc' },
+      },
+    });
+    // 3. Format response (optional, but nicer)
+    return appointments.map((a) => ({
+      appointmentId: a.id,
+      status: a.status,
+      reason: a.reason,
+      doctor: {
+        id: a.doctor.id,
+        name: a.doctor.name,
+        email: a.doctor.email,
+        image: a.doctor.image,
+        specialties: a.doctor.specialties,
+      },
+      service: {
+        id: a.service.id,
+        name: a.service.name,
+        duration: a.service.duration,
+        fee: a.service.fee,
+      },
+      slot: {
+        date: a.slot.date,
+        startTime: a.slot.startTime,
+        endTime: a.slot.endTime,
+      },
+    }));
   }
 }

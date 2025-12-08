@@ -4,9 +4,6 @@ import {
   Get,
   Post,
   Body,
-  Patch,
-  Param,
-  Delete,
   Req,
   Res,
   UseGuards,
@@ -46,6 +43,39 @@ export class AppointmentController {
       response.status(201).json({
         status: 'success',
         message: 'Appointment created successfully',
+        data: result,
+      });
+    } catch (error) {
+      response.status(400).json({
+        status: 'failed',
+        message: error,
+      });
+    }
+  }
+
+  @Get('user')
+  @UseGuards(AuthGuard('jwt'))
+  async getUserAppointments(
+    @Req() request: Request,
+    @Res() response: Response,
+  ) {
+    try {
+      const user = (request as Request & { user?: User }).user;
+
+      if (!user) {
+        response.status(401).json({
+          status: 'failed',
+          message: 'User not authenticated',
+        });
+        return;
+      }
+
+      const result = await this.appointmentService.getUserAppointments(
+        +user.id,
+      );
+      response.status(200).json({
+        status: 'success',
+        message: 'User appointments fetched successfully',
         data: result,
       });
     } catch (error) {
