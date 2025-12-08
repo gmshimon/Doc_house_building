@@ -4,7 +4,7 @@ import ServiceDoctorPicker from '../../Component/ServiceDoctorPicker/ServiceDoct
 
 const AppointmentPage = () => {
   return (
-    <section className='bg-gradient-to-br from-white via-[#f7f4f1] to-[#e8f7f4] py-10'>
+    <section className='bg-gradient-to-br from-white via-[#f7f4f1] to-[#e8f7f4] py-10 pt-32'>
       <div className='mx-auto flex max-w-6xl flex-col gap-8 px-4 md:px-0'>
         <motion.div
           initial={{ opacity: 0, y: 30 }}

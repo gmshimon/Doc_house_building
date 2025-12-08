@@ -17,7 +17,7 @@ const Main = () => {
     <div className=''>
       {/* Overlapping Navbar */}
       {isLoginPage || <Navbar />}
-      {isHomePage ||isLoginPage || profilePage||  <CommonBanner />}
+      {/* {isHomePage ||isLoginPage || profilePage||  <CommonBanner />} */}
       {/* Outlet (Banner, etc.) starts behind or just below the navbar */}
       <Outlet />
       {isLoginPage || <Footer />}
