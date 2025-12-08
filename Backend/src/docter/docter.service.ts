@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+/* eslint-disable @typescript-eslint/no-unsafe-argument */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import {
   BadRequestException,
@@ -274,6 +276,7 @@ export class DocterService {
   private convertTo24Hour(time: string) {
     // Example input: "12:00 PM", "01:00 AM", "09:30 PM"
     const [t, modifier] = time.split(' '); // "12:00", "PM"
+    // eslint-disable-next-line prefer-const
     let [hours, minutes] = t.split(':');
 
     if (modifier === 'PM' && hours !== '12') {
@@ -292,8 +295,8 @@ export class DocterService {
     close: string,
     date: string,
     blockSize = 60,
-  ) {
-    const blocks: any[] = [];
+  ): { start: Date; end: Date; isAvailable: boolean }[] {
+    const blocks: { start: Date; end: Date; isAvailable: boolean }[] = [];
 
     const start = new Date(`${date}T${open}:00`);
     const end = new Date(`${date}T${close}:00`);

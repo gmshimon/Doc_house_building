@@ -1,6 +1,7 @@
 /* eslint-disable no-unused-vars */
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import axios from '../../Utilis/axios'
+import axiosSecure from '../../Utilis/axiosSecure'
 
 const initialState = {
   doctors: [],
@@ -33,7 +34,12 @@ const initialState = {
 
   makeAppointmentLoading: false,
   makeAppointmentSuccess: false,
-  makeAppointmentError: null
+  makeAppointmentError: null,
+
+  checkBookingLoading: false,
+  checkBookingSuccess: false,
+  checkBookingError: null,
+  bookingStatus: null
 }
 
 export const createDoctor = createAsyncThunk(
@@ -101,6 +107,20 @@ export const makeAppointment = createAsyncThunk(
   }
 )
 
+export const checkAppointmentStatus = createAsyncThunk(
+  'doctor/checkAppointmentStatus',
+  async ({ doctorId, serviceId, date }, thunkAPI) => {
+    try {
+      const response = await axiosSecure.get(
+        `/appointment/check?doctorId=${doctorId}&serviceId=${serviceId}&date=${date}`
+      )
+      return response.data.data
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.message)
+    }
+  }
+)
+
 const DoctorSlice = createSlice({
   name: 'doctor',
   initialState,
@@ -133,6 +153,11 @@ const DoctorSlice = createSlice({
       state.makeAppointmentLoading = false
       state.makeAppointmentSuccess = false
       state.makeAppointmentError = null
+
+      state.checkBookingLoading = false
+      state.checkBookingSuccess = false
+      state.checkBookingError = null
+      state.bookingStatus = null
     }
   },
   extraReducers: builder => {
@@ -204,6 +229,22 @@ const DoctorSlice = createSlice({
       .addCase(makeAppointment.rejected, (state, action) => {
         state.makeAppointmentLoading = false
         state.makeAppointmentError = action.payload
+      })
+
+      .addCase(checkAppointmentStatus.pending, state => {
+        state.checkBookingLoading = true
+        state.checkBookingSuccess = false
+        state.checkBookingError = null
+        state.bookingStatus = null
+      })
+      .addCase(checkAppointmentStatus.fulfilled, (state, action) => {
+        state.checkBookingLoading = false
+        state.checkBookingSuccess = true
+        state.bookingStatus = action.payload
+      })
+      .addCase(checkAppointmentStatus.rejected, (state, action) => {
+        state.checkBookingLoading = false
+        state.checkBookingError = action.payload
       })
   }
 })

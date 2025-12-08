@@ -7,6 +7,7 @@ import {
   Req,
   Res,
   UseGuards,
+  Query,
 } from '@nestjs/common';
 import { AppointmentService } from './appointment.service';
 import { AuthGuard } from '@nestjs/passport';
@@ -76,6 +77,46 @@ export class AppointmentController {
       response.status(200).json({
         status: 'success',
         message: 'User appointments fetched successfully',
+        data: result,
+      });
+    } catch (error) {
+      response.status(400).json({
+        status: 'failed',
+        message: error,
+      });
+    }
+  }
+
+  @Get('check')
+  @UseGuards(AuthGuard('jwt'))
+  async checkIfUserBooked(
+    @Req() request: Request,
+    @Res() response: Response,
+    @Query('doctorId') doctorId: number,
+    @Query('serviceId') serviceId: number,
+    @Query('date') date: string,
+  ) {
+    try {
+      const user = (request as Request & { user?: User }).user;
+
+      if (!user) {
+        response.status(401).json({
+          status: 'failed',
+          message: 'User not authenticated',
+        });
+        return;
+      }
+
+      const result = await this.appointmentService.checkUserBooking(
+        +user.id,
+        +doctorId,
+        +serviceId,
+        date,
+      );
+
+      response.status(200).json({
+        status: 'success',
+        message: 'Booking status fetched successfully',
         data: result,
       });
     } catch (error) {

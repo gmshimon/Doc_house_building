@@ -159,4 +159,49 @@ export class AppointmentService {
       },
     }));
   }
+
+  async checkUserBooking(
+    userId: number,
+    doctorId: number,
+    serviceId: number,
+    date: string,
+  ) {
+    // 1. Find appointment by user + doctor + service + date
+    const appointment = await this.prisma.appointment.findFirst({
+      where: {
+        userId,
+        doctorId,
+        serviceId,
+        slot: {
+          date: date, // slot.date in your schema is a string
+        },
+      },
+      include: {
+        slot: true,
+        doctor: true,
+        service: true,
+      },
+    });
+
+    // 2. If found, return "already booked"
+    if (appointment) {
+      return {
+        isBooked: true,
+        message: `You already booked an appointment with Dr. ${appointment.doctor.name} for ${appointment.service.name} on ${appointment.slot.date}.`,
+        appointment: {
+          appointmentId: appointment.id,
+          date: appointment.slot.date,
+          startTime: appointment.slot.startTime,
+          endTime: appointment.slot.endTime,
+          status: appointment.status,
+        },
+      };
+    }
+
+    // 3. If not found, return "not booked"
+    return {
+      isBooked: false,
+      message: 'No appointment found. You can proceed with booking.',
+    };
+  }
 }
