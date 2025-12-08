@@ -66,7 +66,7 @@ model Doctor {
 model Service {
   id           Int           @id @default(autoincrement())
   name         String
-  duration     Int           @default(30)
+  duration     Int           @default(60) // in minutes
   fee          Int?
   doctors      Doctor[]      @relation("DoctorServices")
   slots        Slot[]        @relation("ServiceSlots")

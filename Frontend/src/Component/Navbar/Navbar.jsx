@@ -5,7 +5,7 @@ import { Link, NavLink } from 'react-router-dom'
 const navLinks = [
   { label: 'Home', to: '/' },
   { label: 'Appointment', to: '/appointment' },
-  { label: 'Contact', to: '/#contact', isHash: true }
+  { label: 'Contact', to: '/contact', isHash: true }
 ]
 
 const Navbar = () => {

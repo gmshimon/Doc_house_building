@@ -211,7 +211,11 @@ export class DocterController {
     @Query('serviceId') serviceId: string,
   ) {
     try {
-      const result = await this.docterService.getDoctorAvailability(+id);
+      const result = await this.docterService.getDoctorAvailability(
+        +id,
+        +serviceId,
+        date,
+      );
       response.status(200).json({
         status: 'success',
         message: 'Doctor availability fetched successfully',

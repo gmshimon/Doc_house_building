@@ -271,6 +271,73 @@ export class DocterService {
     }
   }
 
+  private generateRawBlocks(
+    open: string,
+    close: string,
+    date: string,
+    blockSize = 60,
+  ) {
+    const blocks: any[] = [];
+
+    const start = new Date(`${date}T${open}:00`);
+    const end = new Date(`${date}T${close}:00`);
+
+    let current = new Date(start);
+    while (current < end) {
+      const next = new Date(current.getTime() + blockSize * 60000);
+
+      blocks.push({
+        start: new Date(current),
+        end: new Date(next),
+        isAvailable: true,
+      });
+      current = next;
+    }
+    return blocks;
+  }
+
+  private removeBookedBlocks(
+    blocks: { start: Date; end: Date; isAvailable: boolean }[],
+    bookedSlots: any[],
+    date: any,
+  ) {
+    return blocks.map((block) => {
+      const isOverlap = bookedSlots.some((slot) => {
+        const slotStart = new Date(`${date}T${slot.startTime}:00`);
+        const slotEnd = new Date(`${date}T${slot.endTime}:00`);
+
+        // overlap if times intersect
+        return block.start < slotEnd && slotStart < block.end;
+      });
+      return {
+        ...block,
+        isAvailable: !isOverlap,
+      };
+    });
+  }
+
+  private mergeBlocksIntoSlots(
+    blocks: { start: Date; end: Date; isAvailable: boolean }[],
+    serviceDuration: number,
+    blockSize = 10,
+  ) {
+    const required = serviceDuration / blockSize;
+    const slots: { start: Date; end: Date }[] = [];
+
+    for (let i = 0; i <= blocks.length - required; i++) {
+      const candidate = blocks.slice(i, i + required);
+
+      if (candidate.every((b) => b.isAvailable)) {
+        slots.push({
+          start: candidate[0].start,
+          end: candidate[candidate.length - 1].end,
+        });
+      }
+    }
+
+    return slots;
+  }
+
   async create(createDocterDto: Prisma.DoctorCreateInput) {
     try {
       const {
@@ -435,5 +502,89 @@ export class DocterService {
       },
     });
     return result;
+  }
+
+  async getDoctorAvailability(
+    doctorId: number,
+    serviceId: number,
+    date?: string,
+  ) {
+    try {
+      // 1. Load service
+      const service = await this.prisma.service.findUnique({
+        where: { id: serviceId },
+      });
+      if (!service) {
+        throw new BadRequestException(`Service with ID ${serviceId} not found`);
+      }
+      const duration = service.duration; // minutes
+
+      // 2. Load doctor business hour for that date (Mon, Tue...)
+      const weekday = new Date(date || new Date()).toLocaleString('en-US', {
+        weekday: 'long',
+      });
+
+      const businessHour = await this.prisma.business_hour.findFirst({
+        where: {
+          doctorId: doctorId,
+          day: weekday,
+          isClose: false,
+        },
+      });
+
+      if (!businessHour) return { availableSlots: [] };
+
+      // 3. Generate raw blocks
+      const rawBlocks = this.generateRawBlocks(
+        businessHour.open,
+        businessHour.close,
+        date || new Date().toISOString().split('T')[0],
+      );
+
+      // 4. Load existing appointments for that doctor/date
+      const bookedSlots = await this.prisma.slot.findMany({
+        where: {
+          doctorId,
+          date,
+          isBooked: true,
+        },
+      });
+
+      // 5. Remove blocked blocks
+      const blocksAfterRemoval = this.removeBookedBlocks(
+        rawBlocks,
+        bookedSlots,
+        date,
+      );
+
+      // 6. Merge blocks into service-duration slots
+      // const finalSlots = this.mergeBlocksIntoSlots(
+      //   blocksAfterRemoval,
+      //   duration,
+      // );
+      const finalSlots = blocksAfterRemoval.filter((b) => b.isAvailable);
+
+      // 7. Return clean response for frontend
+      return {
+        doctorId,
+        serviceId,
+        date,
+        availableSlots: finalSlots.map((s) => ({
+          start: s.start.toLocaleTimeString([], {
+            hour: '2-digit',
+            minute: '2-digit',
+          }),
+          end: s.end.toLocaleTimeString([], {
+            hour: '2-digit',
+            minute: '2-digit',
+          }),
+        })),
+      };
+    } catch (error) {
+      console.log(error);
+      throw new InternalServerErrorException(
+        'Failed to fetch doctor availability',
+      );
+    }
   }
 }
