@@ -1,15 +1,20 @@
 import React, { useEffect, useMemo, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useSearchParams } from 'react-router-dom'
+import { toast } from 'react-toastify'
 import Loading from '../../Component/Loading/Loading'
-import { getDoctorAvailability } from '../../Redux/Slice/DoctorSlice'
+import { getDoctorAvailability, makeAppointment } from '../../Redux/Slice/DoctorSlice'
 
 
 
 const AvailableSlotsPage = () => {
-  const { availability, getDoctorAvailabilityLoading } = useSelector(
-    state => state.doctor
-  )
+  const {
+    availability,
+    getDoctorAvailabilityLoading,
+    makeAppointmentLoading,
+    makeAppointmentSuccess,
+    makeAppointmentError
+  } = useSelector(state => state.doctor)
   const [searchParams] = useSearchParams()
   const [selectedSlot, setSelectedSlot] = useState(null)
   const doctorId = searchParams.get('doctorId')
@@ -21,6 +26,15 @@ const AvailableSlotsPage = () => {
   useEffect(()=>{
     dispatch(getDoctorAvailability({doctorId, date, serviceId}))
   },[date, dispatch, doctorId, serviceId])
+useEffect(() => {
+    if (makeAppointmentSuccess) {
+      toast.success('Appointment booked successfully')
+    }
+    if (makeAppointmentError) {
+      toast.error(makeAppointmentError || 'Failed to book appointment')
+    }
+  }, [makeAppointmentError, makeAppointmentSuccess])
+
 console.log(availability);
 
   const readableDate = useMemo(() => {
@@ -37,6 +51,21 @@ console.log(availability);
 
   if (getDoctorAvailabilityLoading) {
     return <Loading />
+  }
+
+  
+
+  const handleBook = () => {
+    if (!selectedSlot) return
+    const payload = {
+      doctorId: Number(doctorId),
+      serviceId: Number(serviceId),
+      date: date || availability?.date,
+      startTime: selectedSlot.start,
+      endTime: selectedSlot.end,
+      reason: 'Appointment booked via UI'
+    }
+    dispatch(makeAppointment(payload))
   }
 
   return (
@@ -101,9 +130,11 @@ console.log(availability);
             </div>
             <button
               type='button'
+              onClick={handleBook}
+              disabled={makeAppointmentLoading}
               className='inline-flex items-center justify-center rounded-xl border border-transparent bg-gradient-to-r from-[#07332F] to-[#0d4d44] px-5 py-3 text-sm font-semibold text-white shadow-md shadow-[#07332F]/15 transition hover:-translate-y-0.5 hover:shadow-lg focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#07332F]'
             >
-              Book appointment
+              {makeAppointmentLoading ? 'Booking...' : 'Book appointment'}
             </button>
           </div>
         )}

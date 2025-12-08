@@ -30,6 +30,10 @@ const initialState = {
   getDoctorAvailabilityLoading: false,
   getDoctorAvailabilitySuccess: false,
   getDoctorAvailabilityError: null,
+
+  makeAppointmentLoading: false,
+  makeAppointmentSuccess: false,
+  makeAppointmentError: null
 }
 
 export const createDoctor = createAsyncThunk(
@@ -85,6 +89,18 @@ export const getDoctorAvailability = createAsyncThunk(
   }
 )
 
+export const makeAppointment = createAsyncThunk(
+  'doctor/makeAppointment',
+  async (appointmentData, thunkAPI) => {
+    try {
+      const response = await axios.post('/appointment', appointmentData)
+      return response.data.data
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.message)
+    }
+  }
+)
+
 const DoctorSlice = createSlice({
   name: 'doctor',
   initialState,
@@ -113,6 +129,10 @@ const DoctorSlice = createSlice({
       state.getDoctorAvailabilityLoading = false
       state.getDoctorAvailabilitySuccess = false
       state.getDoctorAvailabilityError = null
+
+      state.makeAppointmentLoading = false
+      state.makeAppointmentSuccess = false
+      state.makeAppointmentError = null
     }
   },
   extraReducers: builder => {
@@ -170,6 +190,20 @@ const DoctorSlice = createSlice({
       .addCase(getDoctorAvailability.rejected, (state, action) => {
         state.getDoctorAvailabilityLoading = false
         state.getDoctorAvailabilityError = action.payload
+      })
+
+      .addCase(makeAppointment.pending, state => {
+        state.makeAppointmentLoading = true
+        state.makeAppointmentSuccess = false
+        state.makeAppointmentError = null
+      })
+      .addCase(makeAppointment.fulfilled, state => {
+        state.makeAppointmentLoading = false
+        state.makeAppointmentSuccess = true
+      })
+      .addCase(makeAppointment.rejected, (state, action) => {
+        state.makeAppointmentLoading = false
+        state.makeAppointmentError = action.payload
       })
   }
 })

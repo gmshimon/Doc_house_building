@@ -271,6 +271,22 @@ export class DocterService {
     }
   }
 
+  private convertTo24Hour(time: string) {
+    // Example input: "12:00 PM", "01:00 AM", "09:30 PM"
+    const [t, modifier] = time.split(' '); // "12:00", "PM"
+    let [hours, minutes] = t.split(':');
+
+    if (modifier === 'PM' && hours !== '12') {
+      hours = (parseInt(hours, 10) + 12).toString();
+    }
+
+    if (modifier === 'AM' && hours === '12') {
+      hours = '00';
+    }
+
+    return `${hours.padStart(2, '0')}:${minutes}`;
+  }
+
   private generateRawBlocks(
     open: string,
     close: string,
@@ -301,10 +317,16 @@ export class DocterService {
     bookedSlots: any[],
     date: any,
   ) {
+    console.log('bookedSlots', bookedSlots);
+    console.log('blocks', blocks);
     return blocks.map((block) => {
       const isOverlap = bookedSlots.some((slot) => {
-        const slotStart = new Date(`${date}T${slot.startTime}:00`);
-        const slotEnd = new Date(`${date}T${slot.endTime}:00`);
+        // Convert "12:00 PM" → "12:00"
+        const start24 = this.convertTo24Hour(slot.startTime);
+        const end24 = this.convertTo24Hour(slot.endTime);
+
+        const slotStart = new Date(`${date}T${start24}:00`);
+        const slotEnd = new Date(`${date}T${end24}:00`);
 
         // overlap if times intersect
         return block.start < slotEnd && slotStart < block.end;
@@ -552,7 +574,6 @@ export class DocterService {
           isBooked: true,
         },
       });
-
       // 5. Remove blocked blocks
       const blocksAfterRemoval = this.removeBookedBlocks(
         rawBlocks,

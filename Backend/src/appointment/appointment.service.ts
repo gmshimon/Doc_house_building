@@ -70,15 +70,15 @@ export class AppointmentService {
         throw new BadRequestException("Slot is outside doctor's working hours");
       }
       // OPTIONAL: Validate the service duration matches 1 hour
-      const serviceDuration = 60; // your system uses 1 hour blocks
-      const requestedDuration =
-        (slotEnd.getTime() - slotStart.getTime()) / 60000;
+      //   const serviceDuration = 60; // your system uses 1 hour blocks
+      //   const requestedDuration =
+      //     (slotEnd.getTime() - slotStart.getTime()) / 60000;
 
-      if (requestedDuration !== serviceDuration) {
-        throw new BadRequestException(
-          'Service duration does not match the slot length',
-        );
-      }
+      //   if (requestedDuration !== serviceDuration) {
+      //     throw new BadRequestException(
+      //       'Service duration does not match the slot length',
+      //     );
+      //   }
 
       // 6. Create Slot (booked)
       const newSlot = await this.prisma.slot.create({
