@@ -4,81 +4,70 @@ import { FaPhoneAlt } from 'react-icons/fa'
 
 const Contact = () => {
   return (
-    <section
-      id='contact'
-      className='bg-[#07332F] text-white md:flex py-20 px-10 rounded-lg mt-10 mb-10 font-[Source Sans 3]'
-    >
-      <div className='md:w-3/4 md:mr-4'>
-        <h1 className='text-4xl font-semibold mb-4'>Contact With us</h1>
-        <p className='my-6 text-justify'>
-          Sed ut perspiciatis unde omnis iste natus error sit voluptatem
-          accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae
-          ab illo inve ntore veritatis et quasi.
-        </p>
-        <div className='flex items-center mb-4'>
-          <p className='text-2xl mr-4'>
-            <FaPhoneAlt />
-          </p>
-          <p>+88 01750 14 14 14</p>
-        </div>
-        <div className='flex items-center'>
-          <p className='text-2xl mr-4'>
-            <CiLocationOn />
-          </p>
-          <p>Dhanmondi, Dhaka, Bangladesh</p>
-        </div>
-      </div>
-      <div className='w-full h-full mt-5 md:mt-0'>
-        <div className='grid md:grid-cols-2 gap-x-5 gap-y-7 w-full'>
-          <div className='max-w-sm space-y-3'>
-            <input
-              type='text'
-              className='py-2.5 sm:py-3 px-4 text-black block w-full border-gray-200 rounded-lg sm:text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none  dark:border-neutral-700 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600'
-              placeholder='Name'
-            />
+    <section id='contact' className='w-full mt-16'>
+      <div className='relative overflow-hidden rounded-3xl border border-[#07332F]/10 bg-gradient-to-br from-white via-[#fff5ed] to-[#e8f7f4] px-6 py-10 shadow-xl shadow-[#07332F]/10 md:px-10'>
+        <div className='pointer-events-none absolute -left-10 -top-16 h-48 w-48 rounded-full bg-[#F7A582]/25 blur-3xl' />
+        <div className='pointer-events-none absolute -right-10 bottom-0 h-56 w-56 rounded-full bg-[#07332F]/15 blur-3xl' />
+
+        <div className='relative grid gap-8 lg:grid-cols-2'>
+          <div className='space-y-5'>
+            <p className='inline-flex w-fit items-center gap-2 rounded-full border border-[#07332F]/10 bg-white/80 px-3 py-1 text-xs font-semibold uppercase tracking-[0.14em] text-[#07332F]'>
+              Contact
+            </p>
+            <h2 className='text-4xl font-semibold text-[#07332F]'>Contact with us</h2>
+            <p className='max-w-2xl text-slate-600'>
+              Reach our care team to book, reschedule, or ask a quick question. We keep the
+              lines open so you can plan visits without stress.
+            </p>
+            <div className='space-y-3'>
+              <div className='flex items-center gap-3 rounded-2xl bg-white/90 px-4 py-3 text-[#07332F] shadow-md shadow-[#07332F]/10 backdrop-blur'>
+                <span className='flex h-11 w-11 items-center justify-center rounded-xl bg-[#F7A582]/15 text-lg text-[#F7A582]'>
+                  <FaPhoneAlt />
+                </span>
+                <div>
+                  <p className='text-sm font-semibold text-slate-600'>Call us</p>
+                  <p className='text-lg font-semibold'>+88 01750 14 14 14</p>
+                </div>
+              </div>
+              <div className='flex items-center gap-3 rounded-2xl bg-white/90 px-4 py-3 text-[#07332F] shadow-md shadow-[#07332F]/10 backdrop-blur'>
+                <span className='flex h-11 w-11 items-center justify-center rounded-xl bg-[#07332F]/10 text-xl text-[#07332F]'>
+                  <CiLocationOn />
+                </span>
+                <div>
+                  <p className='text-sm font-semibold text-slate-600'>Visit</p>
+                  <p className='text-lg font-semibold'>Dhanmondi, Dhaka, Bangladesh</p>
+                </div>
+              </div>
+            </div>
           </div>
-          <div className='max-w-sm space-y-3'>
-            <input
-              type='text'
-              className='py-2.5 sm:py-3 px-4 text-black block w-full border-gray-200 rounded-lg sm:text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none  dark:border-neutral-700 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600'
-              placeholder='Email'
-            />
-          </div>
-          <div className='max-w-sm space-y-3'>
-            <input
-              type='text'
-              className='py-2.5 sm:py-3 px-4 text-black block w-full border-gray-200 rounded-lg sm:text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none  dark:border-neutral-700 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600'
-              placeholder='Mobile Number'
-            />
-          </div>
-          <div className='max-w-sm space-y-3'>
-            <input
-              type='text'
-              className='py-2.5 sm:py-3 px-4 text-black block w-full border-gray-200 rounded-lg sm:text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none  dark:border-neutral-700 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600'
-              placeholder='Doctor Name'
-            />
-          </div>
-          <div className='max-w-sm space-y-3'>
-            <input
-              type='date'
-              className='py-2.5 sm:py-3 px-4 text-black block w-full border-gray-200 rounded-lg sm:text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:border-neutral-700 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600'
-              placeholder='Doctor Name'
-            />
-          </div>
-          <div className='max-w-sm space-y-3'>
-            <input
-              type='time'
-              className='py-2.5 sm:py-3 px-4 text-black block w-full border-gray-200 rounded-lg sm:text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:border-neutral-700 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600'
-              placeholder='Doctor Name'
-            />
+
+          <div className='relative rounded-3xl border border-white/70 bg-white/95 p-6 shadow-lg shadow-[#07332F]/10 backdrop-blur'>
+            <div className='grid gap-4 sm:grid-cols-2'>
+              {[
+                { placeholder: 'Name', type: 'text' },
+                { placeholder: 'Email', type: 'email' },
+                { placeholder: 'Mobile number', type: 'tel' },
+                { placeholder: 'Doctor name', type: 'text' },
+                { placeholder: 'Preferred date', type: 'date' },
+                { placeholder: 'Preferred time', type: 'time' }
+              ].map(field => (
+                <div key={field.placeholder} className='space-y-2'>
+                  <input
+                    type={field.type}
+                    placeholder={field.placeholder}
+                    className='w-full rounded-xl border border-[#07332F]/15 bg-white/90 px-4 py-3 text-sm text-[#07332F] placeholder:text-slate-400 shadow-sm focus:border-[#F7A582] focus:ring-2 focus:ring-[#F7A582]/60 focus:outline-none'
+                  />
+                </div>
+              ))}
+            </div>
+            <button
+              type='button'
+              className='mt-6 w-full rounded-xl border border-transparent bg-gradient-to-r from-[#07332F] to-[#0d4d44] px-5 py-3 text-sm font-semibold text-white shadow-md shadow-[#07332F]/15 transition hover:-translate-y-0.5 hover:shadow-lg focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#07332F]'
+            >
+              Book now
+            </button>
           </div>
         </div>
-        <button
-          type='button'
-          className='md:mt-3 mt-6 py-3 px-4 w-full text-center gap-x-2 text-sm font-medium rounded-lg border border-transparent bg-[#F7A582] text-white hover:bg-[#F7A582] focus:outline-hidden focus:[#F7A582] disabled:opacity-50 disabled:pointer-events-none'
-        >
-          Book Now
-        </button>
       </div>
     </section>
   )
