@@ -40,10 +40,10 @@ export class DocterController {
     let imageUrl: string | undefined;
     try {
       // console.log('Received DTO:', createDocterDto);
-      // if (file) {
-      //   imageUrl = await this.cloudinaryService.uploadImage(file, 'doctor');
-      //   createDocterDto.image = imageUrl;
-      // }
+      if (file) {
+        imageUrl = await this.cloudinaryService.uploadImage(file, 'doctor');
+        createDocterDto.image = imageUrl;
+      }
       const result = await this.docterService.create(createDocterDto);
       response.status(200).json({
         status: 'success',
@@ -196,6 +196,31 @@ export class DocterController {
       response.status(400).json({
         status: 'failed',
         message: 'Error fetching doctors',
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
+        error: error.message,
+      });
+    }
+  }
+
+  @Get('/:id/availability')
+  async getDoctorAvailability(
+    @Req() request: Request,
+    @Res() response: Response,
+    @Param('id') id: string,
+    @Query('date') date: string,
+    @Query('serviceId') serviceId: string,
+  ) {
+    try {
+      const result = await this.docterService.getDoctorAvailability(+id);
+      response.status(200).json({
+        status: 'success',
+        message: 'Doctor availability fetched successfully',
+        data: result,
+      });
+    } catch (error) {
+      response.status(400).json({
+        status: 'failed',
+        message: 'Error fetching doctor availability',
         // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
         error: error.message,
       });
