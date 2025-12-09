@@ -3,6 +3,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import {
   BadRequestException,
+  Inject,
   Injectable,
   InternalServerErrorException,
 } from '@nestjs/common';
@@ -10,10 +11,14 @@ import { UpdateDocterDto } from './dto/update-docter.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { Prisma } from '@prisma/client';
 import { CloudinaryService } from 'src/cloudinary/cloudinary.service';
+import { CACHE_MANAGER } from '@nestjs/cache-manager';
+import type { Cache } from 'cache-manager';
+import { REDIS_KEYS } from 'src/Utils/redis_key';
 
 @Injectable()
 export class DocterService {
   constructor(
+    @Inject(CACHE_MANAGER) private cacheManager: Cache,
     private prisma: PrismaService,
     private readonly cloudinaryService: CloudinaryService,
   ) {}
@@ -400,7 +405,7 @@ export class DocterService {
         services: this.normalizeServicesInput(services ?? serviceIds),
         specialties: this.normalizeStringArrayInput(specialties) ?? [],
       };
-
+      await this.cacheManager.del(REDIS_KEYS.DOCTORS_LIST);
       return await this.prisma.doctor.create({
         data: formattedData,
         include: this.doctorInclude,
@@ -425,6 +430,7 @@ export class DocterService {
       if (isDoctorExist.image) {
         await this.cloudinaryService.deleteImage(isDoctorExist.image);
       }
+      await this.cacheManager.del(REDIS_KEYS.SINGLE_DOCTOR_PREFIX + id);
       return await this.prisma.doctor.update({
         where: { id },
         data,
@@ -443,6 +449,11 @@ export class DocterService {
 
   async findAll(name?: string) {
     try {
+      const result = await this.cacheManager.get(REDIS_KEYS.DOCTORS_LIST);
+      if (result) {
+        console.log('Cache hit for doctors list');
+        return result;
+      }
       const doctors = await this.prisma.doctor.findMany({
         where: name
           ? {
@@ -457,6 +468,7 @@ export class DocterService {
           id: 'asc',
         },
       });
+      await this.cacheManager.set(REDIS_KEYS.DOCTORS_LIST, doctors, 3600);
       return doctors;
     } catch (error) {
       throw new InternalServerErrorException('Failed to fetch doctors');
@@ -465,6 +477,13 @@ export class DocterService {
 
   async findOne(id: number) {
     try {
+      const result = await this.cacheManager.get(
+        REDIS_KEYS.SINGLE_DOCTOR_PREFIX + id,
+      );
+      if (result) {
+        console.log(`Cache hit for doctor ID ${id}`);
+        return result;
+      }
       const doctor = await this.prisma.doctor.findUnique({
         where: { id },
         include: this.doctorInclude,
@@ -472,6 +491,11 @@ export class DocterService {
       if (!doctor) {
         throw new BadRequestException(`Doctor with ID ${id} not found`);
       }
+      await this.cacheManager.set(
+        REDIS_KEYS.SINGLE_DOCTOR_PREFIX + id,
+        doctor,
+        3600,
+      );
       return doctor;
     } catch (error) {
       throw new InternalServerErrorException('Failed to find doctor');
@@ -494,14 +518,14 @@ export class DocterService {
           address: true,
         },
       });
-
-      await this.prisma.doctor.delete({
-        where: { id },
-      });
-
       if (doctor?.image) {
         await this.cloudinaryService.deleteImage(doctor.image);
       }
+      await this.prisma.doctor.delete({
+        where: { id },
+      });
+      await this.cacheManager.del(REDIS_KEYS.SINGLE_DOCTOR_PREFIX + id);
+      await this.cacheManager.del(REDIS_KEYS.DOCTORS_LIST);
     } catch (error) {
       console.error('Error deleting doctor', error);
       throw new InternalServerErrorException('Failed to delete doctor');
