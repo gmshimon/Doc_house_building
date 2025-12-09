@@ -23,6 +23,10 @@ const ProfilePage = () => {
   const dispatch = useDispatch()
 
   useEffect(() => {
+      window.scrollTo(0, 0)
+    }, [])
+
+  useEffect(() => {
     if (isUpdateUserSuccess||isUpdateUserImageSuccess) {
       toast.success('Profile updated', {
         position: 'top-right',

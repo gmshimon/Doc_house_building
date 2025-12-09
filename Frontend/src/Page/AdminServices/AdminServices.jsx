@@ -36,7 +36,7 @@ const MetricCard = ({ icon, label, value, helper }) => (
 )
 
 const AdminServices = () => {
-  const { doctors,getDoctorsLoading } = useSelector(state => state.doctors)
+  const { doctors,getDoctorsLoading } = useSelector(state => state.doctor)
   const {
     services,
     getServicesLoading,

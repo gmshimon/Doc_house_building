@@ -108,7 +108,7 @@ const DashboardNavbar = () => {
           <p className='mt-1 text-xs text-white/60'>
             3 new consultations waiting for approval. Keep your queue healthy.
           </p>
-          <button
+          {/* <button
             type='button'
             className='mt-4 inline-flex items-center gap-2 rounded-xl bg-lime-400/90 px-3 py-2 text-xs font-semibold text-[#062E2A] shadow-lg shadow-lime-500/30 transition hover:bg-lime-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-lime-500/70'
           >
@@ -126,7 +126,7 @@ const DashboardNavbar = () => {
               <path d='M5 12h14' />
             </svg>
             Create quick task
-          </button>
+          </button> */}
         </div>
 
         <div className='mt-8 space-y-7'>
