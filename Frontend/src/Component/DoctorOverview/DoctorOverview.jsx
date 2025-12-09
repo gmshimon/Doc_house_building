@@ -1,51 +1,4 @@
-import React from 'react'
-
-const education = [
-  { school: 'American Dental Medical University', degree: 'BDS', years: '1998 - 2003' },
-  { school: 'American Dental Medical University', degree: 'BDS', years: '2003 - 2005' }
-]
-
-const experience = [
-  { place: 'Glowing Smiles Family Dental Clinic', years: '2010 - Present (5 years)' },
-  { place: 'Comfort Care Dental Clinic', years: '2007 - 2010 (3 years)' },
-  { place: 'Dream Smile Dental Practise', years: '2005 - 2007 (2 years)' }
-]
-
-const services = [
-  'Tooth Cleaning',
-  'Root Canal Therapy',
-  'Implants',
-  'Composite Bonding',
-  'Fissure Sealants',
-  'Surgical Extractions'
-]
-
-const awards = [
-  {
-    date: 'July 2019',
-    title: 'Humanitarian Award',
-    desc: 'Recognized for community outreach clinics and free care days for underserved families.'
-  },
-  {
-    date: 'March 2011',
-    title: 'Certificate for International Volunteer Service',
-    desc: 'Led mobile dental missions focused on preventive education and early interventions.'
-  },
-  {
-    date: 'May 2008',
-    title: 'The Dental Professional of The Year Award',
-    desc: 'Honored for clinical excellence and mentorship of junior practitioners.'
-  }
-]
-
-const specializations = [
-  'Children Care',
-  'Dental Care',
-  'Oral and Maxillofacial Surgery',
-  'Orthodontist',
-  'Periodontist',
-  'Orthodontics'
-]
+import React, { useMemo } from 'react'
 
 const SectionCard = ({ title, children }) => (
   <div className='rounded-2xl border border-[#07332F]/10 bg-white/90 p-5 shadow-sm shadow-[#07332F]/10 backdrop-blur'>
@@ -54,77 +7,128 @@ const SectionCard = ({ title, children }) => (
   </div>
 )
 
-const DoctorOverview = () => {
+const DoctorOverview = ({ doctor }) => {
+  const education = useMemo(() => {
+    return (
+      doctor?.education?.map(item => ({
+        school: item.company,
+        degree: item.degree,
+        years: `${item.startDate?.slice(0, 4)} - ${item.endDate?.slice(0, 4)}`
+      })) || []
+    )
+  }, [doctor])
+
+  const experience = useMemo(() => {
+    return (
+      doctor?.experience?.map(item => ({
+        place: item.company,
+        years: `${item.startDate?.slice(0, 4)} - ${item.endDate?.slice(0, 4)}`
+      })) || []
+    )
+  }, [doctor])
+
+  const awards = useMemo(() => {
+    return (
+      doctor?.award?.map(item => ({
+        date: item.year,
+        title: item.title,
+        desc: item.description
+      })) || []
+    )
+  }, [doctor])
+
+  const services = doctor?.services?.map(s => s.name) || []
+  const specializations = doctor?.specialties || []
+
   return (
     <section className='space-y-5'>
       <SectionCard title='About me'>
         <p className='leading-relaxed'>
-          I blend evidence-based care with a calm bedside manner so patients feel supported at
-          every step. My focus is preventive dentistry and minimally invasive treatments that keep
-          long-term comfort and confidence in mind.
+          {doctor?.description ||
+            'I blend evidence-based care with a calm bedside manner so patients feel supported at every step.'}
         </p>
       </SectionCard>
 
       <div className='grid gap-5 lg:grid-cols-2'>
         <SectionCard title='Education'>
-          {education.map(item => (
-            <div key={item.school} className='rounded-xl bg-slate-50 px-3 py-3'>
-              <p className='font-semibold text-[#07332F]'>{item.school}</p>
-              <p className='text-sm text-slate-600'>{item.degree}</p>
-              <p className='text-xs font-semibold text-[#F7A582]'>{item.years}</p>
-            </div>
-          ))}
+          {education.length ? (
+            education.map(item => (
+              <div key={`${item.school}-${item.years}`} className='rounded-xl bg-slate-50 px-3 py-3'>
+                <p className='font-semibold text-[#07332F]'>{item.school}</p>
+                <p className='text-sm text-slate-600'>{item.degree}</p>
+                <p className='text-xs font-semibold text-[#F7A582]'>{item.years}</p>
+              </div>
+            ))
+          ) : (
+            <p className='text-sm text-slate-600'>No education details provided.</p>
+          )}
         </SectionCard>
 
         <SectionCard title='Work & experience'>
-          {experience.map(item => (
-            <div key={item.place} className='flex items-center justify-between rounded-xl bg-slate-50 px-3 py-3'>
-              <div>
-                <p className='font-semibold text-[#07332F]'>{item.place}</p>
-                <p className='text-xs font-semibold text-[#F7A582]'>{item.years}</p>
+          {experience.length ? (
+            experience.map(item => (
+              <div key={`${item.place}-${item.years}`} className='flex items-center justify-between rounded-xl bg-slate-50 px-3 py-3'>
+                <div>
+                  <p className='font-semibold text-[#07332F]'>{item.place}</p>
+                  <p className='text-xs font-semibold text-[#F7A582]'>{item.years}</p>
+                </div>
               </div>
-            </div>
-          ))}
+            ))
+          ) : (
+            <p className='text-sm text-slate-600'>No experience added.</p>
+          )}
         </SectionCard>
       </div>
 
       <div className='grid gap-5 lg:grid-cols-2'>
         <SectionCard title='Services'>
-          <div className='flex flex-wrap gap-2'>
-            {services.map(item => (
-              <span
-                key={item}
-                className='rounded-full border border-[#07332F]/15 bg-slate-50 px-3 py-1 text-xs font-semibold text-[#07332F]'
-              >
-                {item}
-              </span>
-            ))}
-          </div>
+          {services.length ? (
+            <div className='flex flex-wrap gap-2'>
+              {services.map(item => (
+                <span
+                  key={item}
+                  className='rounded-full border border-[#07332F]/15 bg-slate-50 px-3 py-1 text-xs font-semibold text-[#07332F]'
+                >
+                  {item}
+                </span>
+              ))}
+            </div>
+          ) : (
+            <p className='text-sm text-slate-600'>No services linked.</p>
+          )}
         </SectionCard>
 
         <SectionCard title='Specializations'>
-          <div className='grid grid-cols-1 gap-2 sm:grid-cols-2'>
-            {specializations.map(item => (
-              <div key={item} className='rounded-xl bg-slate-50 px-3 py-2 text-sm font-semibold text-[#07332F]'>
-                {item}
-              </div>
-            ))}
-          </div>
+          {specializations.length ? (
+            <div className='grid grid-cols-1 gap-2 sm:grid-cols-2'>
+              {specializations.map(item => (
+                <div key={item} className='rounded-xl bg-slate-50 px-3 py-2 text-sm font-semibold text-[#07332F]'>
+                  {item}
+                </div>
+              ))}
+            </div>
+          ) : (
+            <p className='text-sm text-slate-600'>No specializations listed.</p>
+          )}
         </SectionCard>
       </div>
 
       <SectionCard title='Awards'>
-        <div className='grid gap-3 sm:grid-cols-2 lg:grid-cols-3'>
-          {awards.map(item => (
-            <div key={item.title} className='rounded-xl bg-slate-50 px-3 py-3'>
-              <p className='text-xs font-semibold uppercase tracking-[0.1em] text-[#F7A582]'>
-                {item.date}
-              </p>
-              <p className='mt-1 text-sm font-semibold text-[#07332F]'>{item.title}</p>
-              <p className='mt-1 text-sm text-slate-600'>{item.desc}</p>
-            </div>
-          ))}
-        </div>
+        {awards.length ? (
+          <div className='grid gap-3 sm:grid-cols-2 lg:grid-cols-3'>
+            {awards.map(item => (
+              <div key={item.title} className='rounded-xl bg-slate-50 px-3 py-3'>
+                <p className='text-xs font-semibold uppercase tracking-[0.1em] text-[#F7A582]'>
+                  {item.date}
+                </p>
+                <p className='mt-1 text-sm font-semibold text-[#07332F]'>{item.title}</p>
+                <p className='mt-1 text-sm text-slate-600'>{item.desc}</p>
+              </div>
+            ))}
+          </div>
+        ) : (
+          <p className='text-sm text-slate-600'>No awards listed.</p>
+        )}
       </SectionCard>
     </section>
   )

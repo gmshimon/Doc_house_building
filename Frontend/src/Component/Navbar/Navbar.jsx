@@ -5,6 +5,7 @@ import { logOut } from '../../Redux/Slice/AuthSlice'
 
 const navLinks = [
   { label: 'Home', to: '/' },
+  { label: 'Services', to: '/services' },
   { label: 'Appointment', to: '/appointment' },
   { label: 'Contact', to: '/contact', isHash: true }
 ]
@@ -158,6 +159,15 @@ const Navbar = () => {
                             >
                               Profile
                               <span className='text-[10px] text-white/40'>View</span>
+                            </Link>
+                          </li>
+                          <li>
+                            <Link
+                              to='/my-appointments'
+                              className='flex items-center justify-between rounded-xl px-3 py-2 text-white/80 transition hover:bg-white/10 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-lime-300/70'
+                            >
+                              My Appointments
+                              <span className='text-[10px] text-white/40'>Schedule</span>
                             </Link>
                           </li>
                           <li>

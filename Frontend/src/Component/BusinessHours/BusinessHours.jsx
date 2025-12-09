@@ -1,17 +1,25 @@
 import React from 'react'
 import { FaClock } from 'react-icons/fa'
 
-const hours = [
-  { day: 'Monday', open: '09:00 AM', close: '05:00 PM' },
-  { day: 'Tuesday', open: '09:00 AM', close: '05:00 PM' },
-  { day: 'Wednesday', open: '09:00 AM', close: '05:00 PM' },
-  { day: 'Thursday', open: '09:00 AM', close: '05:00 PM' },
-  { day: 'Friday', open: '09:00 AM', close: '05:00 PM' },
-  { day: 'Saturday', open: '10:00 AM', close: '02:00 PM' },
-  { day: 'Sunday', open: 'Closed', close: '' }
-]
+const BusinessHours = ({ hours }) => {
+  const data =
+    hours && hours.length
+      ? hours.map(item => ({
+          day: item.day,
+          open: item.isClose ? 'Closed' : item.open,
+          close: item.isClose ? '' : item.close,
+          note: item.special_notes
+        }))
+      : [
+          { day: 'Monday', open: '09:00 AM', close: '05:00 PM' },
+          { day: 'Tuesday', open: '09:00 AM', close: '05:00 PM' },
+          { day: 'Wednesday', open: '09:00 AM', close: '05:00 PM' },
+          { day: 'Thursday', open: '09:00 AM', close: '05:00 PM' },
+          { day: 'Friday', open: '09:00 AM', close: '05:00 PM' },
+          { day: 'Saturday', open: '10:00 AM', close: '02:00 PM' },
+          { day: 'Sunday', open: 'Closed', close: '' }
+        ]
 
-const BusinessHours = () => {
   return (
     <section className='space-y-4'>
       <div className='flex items-center gap-3 rounded-2xl border border-[#07332F]/10 bg-white/95 px-4 py-3 shadow-sm shadow-[#07332F]/10 backdrop-blur'>
@@ -28,7 +36,7 @@ const BusinessHours = () => {
 
       <div className='overflow-hidden rounded-2xl border border-[#07332F]/10 bg-white/95 shadow-md shadow-[#07332F]/10 backdrop-blur'>
         <div className='divide-y divide-[#07332F]/10'>
-          {hours.map((hour, index) => {
+          {data.map((hour, index) => {
             const isClosed = hour.open.toLowerCase() === 'closed'
             return (
               <div

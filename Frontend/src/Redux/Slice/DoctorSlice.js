@@ -99,7 +99,7 @@ export const makeAppointment = createAsyncThunk(
   'doctor/makeAppointment',
   async (appointmentData, thunkAPI) => {
     try {
-      const response = await axios.post('/appointment', appointmentData)
+      const response = await axiosSecure.post('/appointment', appointmentData)
       return response.data.data
     } catch (error) {
       return thunkAPI.rejectWithValue(error.message)

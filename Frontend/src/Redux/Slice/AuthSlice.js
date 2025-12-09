@@ -17,31 +17,44 @@ const initialState = {
   adminDetails: null,
   user: null,
   users: [],
+   myAppointments: [],
   isLoading: true,
+
   isLoginLoading: false,
   isLoginError: false,
   isLoginSuccess: false,
+
   isCreateUserLoading: false,
   isCreateUserError: false,
   isCreateUserSuccess: false,
+
   isLoginWithGoogleLoading: false,
   isLoginWithGoogleSuccess: false,
   isLoginWithGoogleError: false,
+
   isGetUserDataLoading: false,
   isGetUserDataSuccess: false,
   isGetUserDataError: false,
+
   isGetUsersLoading: false,
   isGetUsersSuccess: false,
   isGetUsersError: false,
+
   isAdminDataLoading: false,
   isAdminDataSuccess: false,
   isAdminDataError: false,
+
   isUpdateUserLoading: false,
   isUpdateUserSuccess: false,
   isUpdateUserError: false,
+
   isUpdateUserImageLoading: false,
   isUpdateUserImageSuccess: false,
-  isUpdateUserImageError: false
+  isUpdateUserImageError: false,
+
+  getMyAppointmentsLoading: false,
+  getMyAppointmentsSuccess: false,
+  getMyAppointmentsError: null,
 }
 
 export const saveUserData = async userData => {
@@ -139,6 +152,20 @@ export const editUserImage = createAsyncThunk(
   }
 )
 
+export const getMyAppointments = createAsyncThunk(
+  'getMyAppointments',
+  async (_,{rejectWithValue}) => { 
+    try {
+      const response = await axiosSecure.get('/appointment/user')
+    return response.data.data
+    } catch (error) {
+     const message = error.response?.data?.message ||
+        'An error occurred while fetching abstract'
+      return rejectWithValue(message)
+    }
+  }
+)
+
 export const logOut = createAsyncThunk('logOut', async () => {
   const response = await signOut(auth)
   localStorage.removeItem('userToken')
@@ -153,27 +180,38 @@ const AuthSlice = createSlice({
       ;(state.isLoginLoading = false),
         (state.isLoginError = false),
         (state.isLoginSuccess = false),
+
         (state.isCreateUserLoading = false)
       state.isCreateUserError = false
       state.isCreateUserSuccess = false
+
       state.isLoginWithGoogleLoading = false
       state.isLoginWithGoogleSuccess = false
       state.isLoginWithGoogleError = false
+
       state.isGetUserDataLoading = false
       state.isGetUserDataSuccess = false
       state.isGetUserDataError = false
+
       state.isGetUsersLoading = false
       state.isGetUsersSuccess = false
       state.isGetUsersError = false
+
       state.isAdminDataLoading = false
       state.isAdminDataSuccess = false
       state.isAdminDataError = false
+
       state.isUpdateUserLoading = false
       state.isUpdateUserSuccess = false
       state.isUpdateUserError = false
+
       state.isUpdateUserImageLoading = false
       state.isUpdateUserImageSuccess = false
       state.isUpdateUserImageError = false
+
+      state.getMyAppointmentsLoading = false
+      state.getMyAppointmentsSuccess = false
+      state.getMyAppointmentsError = null
     },
     startLoading: (state, action) => {
       state.isLoading = action.payload
@@ -326,6 +364,21 @@ const AuthSlice = createSlice({
       state.isUpdateUserImageLoading = false
       state.isUpdateUserImageSuccess = false
       state.isUpdateUserImageError = true
+      })
+
+      .addCase(getMyAppointments.pending, state => {
+        state.getMyAppointmentsLoading = true
+        state.getMyAppointmentsSuccess = false
+        state.getMyAppointmentsError = null
+      })
+      .addCase(getMyAppointments.fulfilled, (state, action) => {
+        state.getMyAppointmentsLoading = false
+        state.getMyAppointmentsSuccess = true
+        state.myAppointments = action.payload
+      })
+      .addCase(getMyAppointments.rejected, (state, action) => {
+        state.getMyAppointmentsLoading = false
+        state.getMyAppointmentsError = action.payload
       })
   }
 })

@@ -1,4 +1,5 @@
 import React, { useEffect, useMemo, useState } from 'react'
+// eslint-disable-next-line no-unused-vars
 import { motion } from 'framer-motion'
 import { Rating } from '@smastrom/react-rating'
 import '@smastrom/react-rating/style.css'
@@ -8,6 +9,10 @@ import DoctorOverview from '../../Component/DoctorOverview/DoctorOverview'
 import DoctorLocation from '../../Component/DoctorLocation/DoctorLocation'
 import DoctorReview from '../../Component/DoctorReview/DoctorReview'
 import BusinessHours from '../../Component/BusinessHours/BusinessHours'
+import { useParams } from 'react-router-dom'
+import { useDispatch, useSelector } from 'react-redux'
+import { getDoctorById } from '../../Redux/Slice/DoctorSlice'
+import Loading from '../../Component/Loading/Loading'
 
 const tabs = [
   { id: 1, label: 'Overview' },
@@ -16,28 +21,40 @@ const tabs = [
   { id: 4, label: 'Business Hours' }
 ]
 
-const specialties = ['Dental Filling', 'Teeth Whitening', 'Root Canal']
-
 const DoctorProfilePage = () => {
+  const { doctorDetails, getDoctorDetailsLoading } = useSelector(state => state.doctor)
+  const params = useParams()
+  const doctorId = params.id
+
+  console.log('Doctor ID:', doctorId)
   const [activeTab, setActiveTab] = useState(1)
+
+  const dispatch = useDispatch()
 
   useEffect(() => {
     window.scrollTo(0, 0)
   }, [])
 
+  useEffect(() => {
+    dispatch(getDoctorById(doctorId))
+  }, [dispatch, doctorId])
+
   const TabContent = useMemo(() => {
     switch (activeTab) {
       case 2:
-        return <DoctorLocation />
+        return <DoctorLocation doctor={doctorDetails} />
       case 3:
         return <DoctorReview />
       case 4:
-        return <BusinessHours />
+        return <BusinessHours hours={doctorDetails?.business_hour} />
       default:
-        return <DoctorOverview />
+        return <DoctorOverview doctor={doctorDetails} />
     }
-  }, [activeTab])
+  }, [activeTab, doctorDetails])
 
+  if (getDoctorDetailsLoading) {
+    return <Loading />
+  }
   return (
     <section className='mt-20 bg-gradient-to-br from-white via-[#f7f4f1] to-[#e8f7f4] py-10'>
       <motion.div
@@ -55,7 +72,7 @@ const DoctorProfilePage = () => {
           >
             <img
               className='h-[320px] w-[280px] rounded-xl object-cover object-center md:h-[360px] md:w-[320px]'
-              src={docImg}
+              src={doctorDetails?.image?doctorDetails?.image:docImg}
               alt='Doctor portrait'
             />
           </motion.div>
@@ -67,26 +84,34 @@ const DoctorProfilePage = () => {
               animate={{ x: 0, opacity: 1 }}
               transition={{ duration: 0.5, delay: 0.1 }}
             >
-              Dr. Ruby Perrin
+              {doctorDetails?.name}
             </motion.h1>
-            <p className='text-slate-600'>MBBS, MD - General Medicine</p>
+            <p className='text-slate-600'>{doctorDetails.qualification}</p>
             <div className='flex items-center gap-3'>
               <Rating style={{ maxWidth: 150 }} value={4} readOnly />
               <span className='text-sm font-semibold text-[#07332F]'>4.0 / 5</span>
             </div>
             <div className='flex items-center gap-2 text-slate-700'>
               <CiLocationOn className='text-xl text-[#F7A582]' />
-              <p>Dhanmondi, Dhaka, Bangladesh</p>
+              <p>
+                {doctorDetails?.address?.street || 'Address not provided'}
+                {doctorDetails?.address?.city ? `, ${doctorDetails.address.city}` : ''}
+                {doctorDetails?.address?.country ? `, ${doctorDetails.address.country}` : ''}
+              </p>
             </div>
             <div className='flex flex-wrap gap-2 pt-2'>
-              {specialties.map(item => (
-                <span
-                  key={item}
-                  className='rounded-full border border-[#07332F]/15 bg-slate-50 px-3 py-1 text-sm font-semibold text-[#07332F]'
-                >
-                  {item}
-                </span>
-              ))}
+              {doctorDetails?.specialties?.length ? (
+                doctorDetails.specialties.map(item => (
+                  <span
+                    key={item}
+                    className='rounded-full border border-[#07332F]/15 bg-slate-50 px-3 py-1 text-sm font-semibold text-[#07332F]'
+                  >
+                    {item}
+                  </span>
+                ))
+              ) : (
+                <span className='text-sm text-slate-500'>No specialties listed.</span>
+              )}
             </div>
           </div>
         </div>

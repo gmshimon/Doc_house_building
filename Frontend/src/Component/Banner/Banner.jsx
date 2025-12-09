@@ -3,6 +3,7 @@ import { motion } from 'framer-motion'
 import doc_1 from '../../assets/Doc_1.png'
 import doc_2 from '../../assets/Doc_2.png'
 import doc_3 from '../../assets/Doc_3.png'
+import { Link } from 'react-router-dom'
 const Banner = () => {
   return (
     <div className='relative isolate overflow-hidden bg-[#07332F]  py-28  px-6 text-white  lg:px-8 h-screen md:h-full'>
@@ -194,12 +195,25 @@ const Banner = () => {
             Lorem Ipsum is simply dummy text they are printing typesetting has
             been the industry’s stardard.
           </p>
-          <button
-            type='button'
-            className='py-3 px-4 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-transparent bg-[#F7A582] text-white hover:bg-[#f08152] focus:outline-hidden focus:bg-blue-700 focus:outline-hidden focus:bg-[#F7A582] disabled:opacity-50 disabled:pointer-events-none'
+          <Link
+            to='/services'
+            className='inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-[#F7A582] to-[#f08152] px-6 py-3 text-sm font-semibold text-white shadow-lg shadow-black/20 transition hover:-translate-y-0.5 hover:shadow-xl focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#F7A582] disabled:opacity-60'
           >
-            All Services
-          </button>
+            <span>All Services</span>
+            <svg
+              className='h-4 w-4'
+              xmlns='http://www.w3.org/2000/svg'
+              viewBox='0 0 24 24'
+              fill='none'
+              stroke='currentColor'
+              strokeWidth='1.5'
+              strokeLinecap='round'
+              strokeLinejoin='round'
+            >
+              <path d='M5 12h14' />
+              <path d='m12 5 7 7-7 7' />
+            </svg>
+          </Link>
         </div>
         {/* Container to hold the stacked photos */}
         {/* Container to hold the stacked photos (responsive) */}
