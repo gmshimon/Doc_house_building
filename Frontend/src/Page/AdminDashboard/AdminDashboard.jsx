@@ -4,96 +4,86 @@ import { IoPeopleOutline } from 'react-icons/io5'
 import PatientGraph from '../../Component/PatientGraph/PatientGraph'
 import AppointmentGraph from '../../Component/AppointmentGraph/AppointmentGraph'
 
+const stats = [
+  { id: 1, label: 'Doctors', value: 168, icon: CiUser, color: '#FF0034', progress: 55 },
+  { id: 2, label: 'Patients', value: 487, icon: IoPeopleOutline, color: '#7BB13C', progress: 85 },
+  { id: 3, label: 'Appointments', value: 95, icon: CiFileOn, color: '#FFBC34', progress: 75 }
+]
+
 const AdminDashboard = () => {
   return (
-    <section className='pt-10 '>
-      <div className='flex justify-center'>
-      <div className='grid md:grid-cols-3 gap-x-20 gap-y-5'>
-        <div className='bg-white w-[327px] rounded-lg'>
-          <div className='w-full px-6 py-6'>
-            <div className='flex items-center w-full'>
-              <p className='text-4xl bg-[#ff003363] text-[#FF0034] p-2 rounded-xl mr-8'>
-                <CiUser />
-              </p>
-              <h1 className='text-5xl'>168</h1>
-            </div>
-            <div
-              className='flex w-full h-1 bg-gray-200 rounded-full overflow-hidden dark:bg-neutral-700 mt-3'
-              role='progressbar'
-              aria-valuenow='25'
-              aria-valuemin='0'
-              aria-valuemax='100'
-            >
-              <div
-                className='flex flex-col justify-center rounded-full overflow-hidden bg-[#FF0034] text-xs text-white text-center whitespace-nowrap transition duration-500 dark:bg-blue-500'
-                style={{
-                  width: '55%'
-                }}
-              ></div>
-            </div>
-            <p className='text-lg mt-2'>Doctor</p>
+    <section className='bg-gradient-to-br from-white via-[#f7f4f1] to-[#e8f7f4] pb-12 pt-24'>
+      <div className='mx-auto max-w-6xl space-y-7 px-4'>
+        <header className='rounded-3xl border border-[#07332F]/10 bg-white/95 px-6 py-5 shadow-lg shadow-[#07332F]/10 backdrop-blur md:px-8'>
+          <p className='text-xs font-semibold uppercase tracking-[0.14em] text-[#07332F]'>
+            Admin dashboard
+          </p>
+          <div className='mt-2 flex flex-col gap-2 md:flex-row md:items-center md:justify-between'>
+            <h1 className='text-3xl font-semibold text-[#07332F]'>Overview</h1>
+            <p className='text-sm text-slate-600'>
+              Quick glance at platform activity and engagement.
+            </p>
           </div>
-        </div>
-        <div className='bg-white w-[327px] rounded-lg'>
-          <div className='w-full px-6 py-6'>
-            <div className='flex items-center'>
-              <p className='text-4xl bg-[#7ab13c4f] text-[#7BB13C] p-2 rounded-xl mr-8'>
-                <IoPeopleOutline />
-              </p>
-              <h1 className='text-5xl'>487</h1>
-            </div>
-            <div
-              className='flex w-full h-1 bg-gray-200 rounded-full overflow-hidden dark:bg-neutral-700 mt-3'
-              role='progressbar'
-              aria-valuenow='25'
-              aria-valuemin='0'
-              aria-valuemax='100'
-            >
+        </header>
+
+        <div className='grid gap-4 md:grid-cols-3'>
+          {stats.map(stat => {
+            const Icon = stat.icon
+            return (
               <div
-                className='flex flex-col justify-center rounded-full overflow-hidden bg-[#FF0034] text-xs text-white text-center whitespace-nowrap transition duration-500 dark:bg-blue-500'
-                style={{
-                  width: '85%'
-                }}
-              ></div>
+                key={stat.id}
+                className='rounded-2xl border border-[#07332F]/10 bg-white/95 p-5 shadow-md shadow-[#07332F]/10 backdrop-blur'
+              >
+                <div className='flex items-center justify-between'>
+                  <div className='flex items-center gap-3'>
+                    <span
+                      className='flex h-12 w-12 items-center justify-center rounded-2xl text-2xl'
+                      style={{ backgroundColor: `${stat.color}1a`, color: stat.color }}
+                    >
+                      <Icon />
+                    </span>
+                    <div>
+                      <p className='text-xs font-semibold uppercase tracking-[0.12em] text-slate-500'>
+                        {stat.label}
+                      </p>
+                      <p className='text-3xl font-semibold text-[#07332F]'>{stat.value}</p>
+                    </div>
+                  </div>
+                  <span className='rounded-full bg-[#07332F]/5 px-3 py-1 text-xs font-semibold text-[#07332F]'>
+                    {stat.progress}% target
+                  </span>
+                </div>
+                <div className='mt-4 h-2 w-full rounded-full bg-[#07332F]/10'>
+                  <div
+                    className='h-full rounded-full bg-[#F7A582]'
+                    style={{ width: `${stat.progress}%` }}
+                  />
+                </div>
+              </div>
+            )
+          })}
+        </div>
+
+        <div className='grid gap-6 md:grid-cols-2'>
+          <div className='rounded-2xl border border-[#07332F]/10 bg-white/95 p-5 shadow-lg shadow-[#07332F]/10 backdrop-blur'>
+            <div className='flex items-center justify-between border-b border-[#07332F]/10 pb-3'>
+              <h2 className='text-xl font-semibold text-[#07332F]'>Patients</h2>
+              <span className='text-xs font-semibold text-slate-500'>Last 6 months</span>
             </div>
-            <p className='text-lg mt-2'>Patient</p>
+            <div className='mt-4'>
+              <PatientGraph />
+            </div>
           </div>
-        </div>
-        <div className='bg-white w-[327px] rounded-lg'>
-          <div className='w-full px-6 py-6'>
-            <div className='flex items-center'>
-              <p className='text-4xl bg-[#ffbb3449] text-[#FFBC34] p-2 rounded-xl mr-8'>
-                <CiFileOn />
-              </p>
-              <h1 className='text-5xl'>95</h1>
+
+          <div className='rounded-2xl border border-[#07332F]/10 bg-white/95 p-5 shadow-lg shadow-[#07332F]/10 backdrop-blur'>
+            <div className='flex items-center justify-between border-b border-[#07332F]/10 pb-3'>
+              <h2 className='text-xl font-semibold text-[#07332F]'>Appointments</h2>
+              <span className='text-xs font-semibold text-slate-500'>Last 6 months</span>
             </div>
-            <div
-              className='flex w-full h-1 bg-gray-200 rounded-full overflow-hidden dark:bg-neutral-700 mt-3'
-              role='progressbar'
-              aria-valuenow='25'
-              aria-valuemin='0'
-              aria-valuemax='100'
-            >
-              <div
-                className='flex flex-col justify-center rounded-full overflow-hidden bg-[#FF0034] text-xs text-white text-center whitespace-nowrap transition duration-500 dark:bg-blue-500'
-                style={{
-                  width: '75%'
-                }}
-              ></div>
+            <div className='mt-4'>
+              <AppointmentGraph />
             </div>
-            <p className='text-lg mt-2'>Appointment</p>
           </div>
-        </div>
-      </div>
-      </div>
-      <div className='md:flex justify-evenly mt-7'>
-        <div className='md:w-[700px] bg-white rounded-lg p-5'>
-            <h1 className='text-3xl pl-5 border-b pb-2 mb-8'>Patient</h1>
-            <PatientGraph/>
-        </div>
-        <div className='md:w-[700px] bg-white rounded-lg p-5 mt-10 md:mt-0'>
-            <h1 className='text-3xl pl-5 border-b pb-2 mb-8'>Appointment</h1>
-            <AppointmentGraph/>
         </div>
       </div>
     </section>
