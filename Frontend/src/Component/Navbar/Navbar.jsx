@@ -5,6 +5,7 @@ import { logOut } from '../../Redux/Slice/AuthSlice'
 
 const navLinks = [
   { label: 'Home', to: '/' },
+  { label: 'Doctors', to: '/doctors' },
   { label: 'Services', to: '/services' },
   { label: 'Appointment', to: '/appointment' },
   { label: 'Contact', to: '/contact', isHash: true }
