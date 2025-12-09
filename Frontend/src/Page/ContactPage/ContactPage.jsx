@@ -1,11 +1,14 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { FaPhoneAlt } from 'react-icons/fa'
 import { CiLocationOn } from 'react-icons/ci'
 import Contact from '../../Component/Contact/Contact'
 
 const ContactPage = () => {
+    useEffect(() => {
+      window.scrollTo(0, 0)
+    }, [])
   return (
-    <div className='bg-gradient-to-br from-white via-[#f7f4f1] to-[#e8f7f4] py-10'>
+    <div className='bg-gradient-to-br from-white via-[#f7f4f1] to-[#e8f7f4] pb-10 pt-32'>
       <div className='mx-auto flex max-w-5xl flex-col gap-6 px-5 md:px-0'>
         <div className='rounded-3xl border border-[#07332F]/10 bg-white/95 px-6 py-6 shadow-lg shadow-[#07332F]/10 backdrop-blur'>
           <p className='inline-flex items-center gap-2 rounded-full border border-[#07332F]/10 bg-white px-3 py-1 text-xs font-semibold uppercase tracking-[0.14em] text-[#07332F]'>

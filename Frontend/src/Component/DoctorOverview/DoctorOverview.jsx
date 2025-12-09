@@ -52,8 +52,8 @@ const DoctorOverview = ({ doctor }) => {
       <div className='grid gap-5 lg:grid-cols-2'>
         <SectionCard title='Education'>
           {education.length ? (
-            education.map(item => (
-              <div key={`${item.school}-${item.years}`} className='rounded-xl bg-slate-50 px-3 py-3'>
+            education.map((item,index) => (
+              <div key={index} className='rounded-xl bg-slate-50 px-3 py-3'>
                 <p className='font-semibold text-[#07332F]'>{item.school}</p>
                 <p className='text-sm text-slate-600'>{item.degree}</p>
                 <p className='text-xs font-semibold text-[#F7A582]'>{item.years}</p>

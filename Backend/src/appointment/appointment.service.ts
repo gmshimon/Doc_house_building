@@ -126,7 +126,16 @@ export class AppointmentService {
     const appointments = await this.prisma.appointment.findMany({
       where: { userId },
       include: {
-        doctor: true,
+        doctor: {
+          select: {
+            id: true,
+            address: true,
+            name: true,
+            email: true,
+            image: true,
+            specialties: true,
+          },
+        },
         service: true,
         slot: true,
       },
@@ -145,6 +154,7 @@ export class AppointmentService {
         email: a.doctor.email,
         image: a.doctor.image,
         specialties: a.doctor.specialties,
+        address: a.doctor.address,
       },
       service: {
         id: a.service.id,

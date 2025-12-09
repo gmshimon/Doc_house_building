@@ -26,7 +26,6 @@ const DoctorProfilePage = () => {
   const params = useParams()
   const doctorId = params.id
 
-  console.log('Doctor ID:', doctorId)
   const [activeTab, setActiveTab] = useState(1)
 
   const dispatch = useDispatch()
@@ -86,7 +85,7 @@ const DoctorProfilePage = () => {
             >
               {doctorDetails?.name}
             </motion.h1>
-            <p className='text-slate-600'>{doctorDetails.qualification}</p>
+            <p className='text-slate-600'>{doctorDetails?.qualification}</p>
             <div className='flex items-center gap-3'>
               <Rating style={{ maxWidth: 150 }} value={4} readOnly />
               <span className='text-sm font-semibold text-[#07332F]'>4.0 / 5</span>
