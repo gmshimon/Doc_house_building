@@ -19,7 +19,7 @@ import { AuthGuard } from '@nestjs/passport';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { multerOptions } from 'src/upload/multer-options';
 import { CloudinaryService } from 'src/cloudinary/cloudinary.service';
-import { Prisma } from '@prisma/client';
+import { Prisma, User } from '@prisma/client';
 import { type Request, type Response } from 'express';
 
 @Controller('doctor')
@@ -29,7 +29,7 @@ export class DocterController {
     private readonly cloudinaryService: CloudinaryService,
   ) {}
   @Post()
-  // @UseGuards(AuthGuard('jwt'))
+  @UseGuards(AuthGuard('jwt'))
   @UseInterceptors(FileInterceptor('file', multerOptions))
   async create(
     @Req() request: Request,
@@ -39,6 +39,16 @@ export class DocterController {
   ) {
     let imageUrl: string | undefined;
     try {
+      const user = (request as Request & { user?: User }).user;
+
+      if (user?.role !== 'ADMIN') {
+        response.status(403).json({
+          status: 'failed',
+          message: 'Forbidden: You do not have permission to create a doctor',
+        });
+        return;
+      }
+
       if (file) {
         imageUrl = await this.cloudinaryService.uploadImage(file, 'doctor');
         createDocterDto.image = imageUrl;

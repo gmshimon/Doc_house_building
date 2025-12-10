@@ -405,7 +405,10 @@ export class DocterService {
         services: this.normalizeServicesInput(services ?? serviceIds),
         specialties: this.normalizeStringArrayInput(specialties) ?? [],
       };
+
+      // Invalidate doctors list cache
       await this.cacheManager.del(REDIS_KEYS.DOCTORS_LIST);
+
       return await this.prisma.doctor.create({
         data: formattedData,
         include: this.doctorInclude,
@@ -430,7 +433,11 @@ export class DocterService {
       if (isDoctorExist.image) {
         await this.cloudinaryService.deleteImage(isDoctorExist.image);
       }
+
+      // Invalidate caches of doctor
+      await this.cacheManager.del(REDIS_KEYS.DOCTORS_LIST);
       await this.cacheManager.del(REDIS_KEYS.SINGLE_DOCTOR_PREFIX + id);
+
       return await this.prisma.doctor.update({
         where: { id },
         data,
@@ -449,39 +456,50 @@ export class DocterService {
 
   async findAll(name?: string) {
     try {
-      const result = await this.cacheManager.get(REDIS_KEYS.DOCTORS_LIST);
-      if (result) {
-        console.log('Cache hit for doctors list');
-        return result;
+      if (name) {
+        return await this.prisma.doctor.findMany({
+          where: {
+            name: {
+              contains: name,
+              mode: 'insensitive',
+            },
+          },
+          include: this.doctorInclude,
+          orderBy: { id: 'asc' },
+        });
       }
+
+      // ✅ Cache key for full doctor list
+      const cacheKey = REDIS_KEYS.DOCTORS_LIST;
+
+      // 1️⃣ Try to load from Redis
+      const cached = await this.cacheManager.get(cacheKey);
+      if (cached) {
+        console.log('Returning doctors from cache');
+        return cached;
+      }
+
+      // 2️⃣ Fetch from database
       const doctors = await this.prisma.doctor.findMany({
-        where: name
-          ? {
-              name: {
-                contains: name,
-                mode: 'insensitive',
-              },
-            }
-          : undefined,
         include: this.doctorInclude,
-        orderBy: {
-          id: 'asc',
-        },
+        orderBy: { id: 'asc' },
       });
-      await this.cacheManager.set(REDIS_KEYS.DOCTORS_LIST, doctors, 3600);
+
+      // 3️⃣ Store in Redis Cache
+      await this.cacheManager.set(cacheKey, doctors);
       return doctors;
     } catch (error) {
+      console.error(error);
       throw new InternalServerErrorException('Failed to fetch doctors');
     }
   }
 
   async findOne(id: number) {
     try {
-      const result = await this.cacheManager.get(
-        REDIS_KEYS.SINGLE_DOCTOR_PREFIX + id,
-      );
+      const cacheKey = REDIS_KEYS.SINGLE_DOCTOR_PREFIX + id;
+      const result = await this.cacheManager.get(cacheKey);
       if (result) {
-        console.log(`Cache hit for doctor ID ${id}`);
+        console.log('Returning single doctor from cache');
         return result;
       }
       const doctor = await this.prisma.doctor.findUnique({
@@ -491,11 +509,9 @@ export class DocterService {
       if (!doctor) {
         throw new BadRequestException(`Doctor with ID ${id} not found`);
       }
-      await this.cacheManager.set(
-        REDIS_KEYS.SINGLE_DOCTOR_PREFIX + id,
-        doctor,
-        3600,
-      );
+
+      await this.cacheManager.set(cacheKey, doctor);
+
       return doctor;
     } catch (error) {
       throw new InternalServerErrorException('Failed to find doctor');
@@ -518,14 +534,18 @@ export class DocterService {
           address: true,
         },
       });
-      if (doctor?.image) {
-        await this.cloudinaryService.deleteImage(doctor.image);
-      }
+
       await this.prisma.doctor.delete({
         where: { id },
       });
-      await this.cacheManager.del(REDIS_KEYS.SINGLE_DOCTOR_PREFIX + id);
+
+      if (doctor?.image) {
+        await this.cloudinaryService.deleteImage(doctor.image);
+      }
+
+      // Invalidate caches of doctor
       await this.cacheManager.del(REDIS_KEYS.DOCTORS_LIST);
+      await this.cacheManager.del(REDIS_KEYS.SINGLE_DOCTOR_PREFIX + id);
     } catch (error) {
       console.error('Error deleting doctor', error);
       throw new InternalServerErrorException('Failed to delete doctor');
