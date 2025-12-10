@@ -16,8 +16,10 @@ import { SlotsModule } from './slots/slots.module';
 import { ServicesModule } from './services/services.module';
 import { AppointmentModule } from './appointment/appointment.module';
 import { CACHE_MANAGER, CacheModule } from '@nestjs/cache-manager';
+import { ConfigModule } from '@nestjs/config';
 import Redis from 'ioredis';
 import type { Cache } from 'cache-manager';
+import { NotificationModule } from './notification/notification.module';
 
 @Module({
   imports: [
@@ -28,6 +30,7 @@ import type { Cache } from 'cache-manager';
     SlotsModule,
     ServicesModule,
     AppointmentModule,
+    ConfigModule.forRoot({ envFilePath: '.env', isGlobal: true }),
     CacheModule.registerAsync({
       isGlobal: true,
       // eslint-disable-next-line @typescript-eslint/require-await
@@ -73,6 +76,7 @@ import type { Cache } from 'cache-manager';
         };
       },
     }),
+    NotificationModule,
   ],
   controllers: [AppController],
   providers: [AppService, PrismaService],

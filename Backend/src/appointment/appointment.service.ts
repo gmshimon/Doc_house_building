@@ -7,10 +7,15 @@ import {
 } from '@nestjs/common';
 import { CreateAppointmentDto } from './dto/create-appointment.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
+import { NotificationService } from 'src/notification/notification.service';
+import { buildAppointmentEmails } from 'src/notification/email-templates';
 
 @Injectable()
 export class AppointmentService {
-  constructor(private prisma: PrismaService) {}
+  constructor(
+    private prisma: PrismaService,
+    private notificationService: NotificationService,
+  ) {}
 
   async createAppointment(userId: number, dto: CreateAppointmentDto) {
     try {
@@ -104,11 +109,49 @@ export class AppointmentService {
         },
         include: {
           user: true,
-          doctor: true,
+          doctor: {
+            include: { address: true },
+          },
           slot: true,
           service: true,
         },
       });
+
+      const { patientEmail, doctorEmail } = buildAppointmentEmails({
+        appointmentId: appointment.id,
+        doctorName: appointment.doctor.name,
+        doctorEmail: appointment.doctor.email,
+        doctorAddress: (() => {
+          const addr = appointment.doctor.address;
+          if (!addr) return undefined;
+          const parts = [
+            addr.street,
+            addr.city,
+            addr.state,
+            addr.zip,
+            addr.country,
+          ].filter(Boolean);
+          return parts.join(', ') || undefined;
+        })(),
+        patientName: appointment.user.name,
+        patientEmail: appointment.user.email,
+        patientPhone: appointment.user.phone,
+        serviceName: appointment.service.name,
+        slotDate: appointment.slot.date,
+        slotStart: appointment.slot.startTime,
+        slotEnd: appointment.slot.endTime,
+        reason: appointment.reason,
+      });
+
+      try {
+        await Promise.all([
+          this.notificationService.sendEmail(patientEmail),
+          this.notificationService.sendEmail(doctorEmail),
+        ]);
+      } catch (emailError) {
+        // Log and continue; the appointment should still be created even if email fails.
+        console.error('Failed to send appointment notifications', emailError);
+      }
       return appointment;
     } catch (error) {
       throw error;
