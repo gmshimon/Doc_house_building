@@ -1,7 +1,10 @@
 import { Processor, WorkerHost } from '@nestjs/bullmq';
 import { Job } from 'bullmq';
 import { NotificationService } from './notification.service';
-import { buildAppointmentEmails, buildAppointmentReminders } from './email-templates';
+import {
+  buildAppointmentEmails,
+  buildAppointmentReminders,
+} from './email-templates';
 
 @Processor('appointment-emails')
 export class NotificationEmailProcessor extends WorkerHost {
@@ -10,7 +13,6 @@ export class NotificationEmailProcessor extends WorkerHost {
   }
 
   async process(job: Job<any>) {
-
     switch (job.name) {
       case 'send-appointment-emails':
         return this.handleSendAppointmentEmails(job);
@@ -30,11 +32,13 @@ export class NotificationEmailProcessor extends WorkerHost {
   }
 
   private async handleSendAppointmentReminder(job: Job<any>) {
-    const { patientReminder, doctorReminder } = buildAppointmentReminders(job.data);
+    const { patientReminder, doctorReminder } = buildAppointmentReminders(
+      job.data,
+    );
 
-  await Promise.all([
-    this.notificationService.sendEmail(patientReminder),
-    this.notificationService.sendEmail(doctorReminder),
-  ])
+    await Promise.all([
+      this.notificationService.sendEmail(patientReminder),
+      this.notificationService.sendEmail(doctorReminder),
+    ]);
   }
 }

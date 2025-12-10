@@ -114,4 +114,11 @@ export class UserService {
       },
     });
   }
+
+  async fetchAll() {
+    return this.prisma.user.findMany({
+      include: { address: true },
+      orderBy: { id: 'asc' },
+    });
+  }
 }

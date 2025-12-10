@@ -18,6 +18,7 @@ import AdminServices from '../Page/AdminServices/AdminServices'
 import AdminDoctors from '../Page/AdminDoctors/AdminDoctors'
 import EditDoctor from '../Page/AdminDoctors/EditDoctor'
 import DoctorsPage from '../Page/DoctorsPage/DoctorsPage'
+import PrivateRoute from '../Component/PrivateRoute/PrivateRout.jsx'
 
 export const router = createBrowserRouter([
     {
@@ -42,7 +43,11 @@ export const router = createBrowserRouter([
             },
             {
                 path:'/profile',
-                element:<ProfilePage/>
+                element: (
+                  <PrivateRoute>
+                    <ProfilePage/>
+                  </PrivateRoute>
+                )
             },
             {
                 path:'/doctor-profile/:id',
@@ -62,7 +67,11 @@ export const router = createBrowserRouter([
             },
             {
                 path:'/my-appointments',
-                element:<MyAppointments/>
+                element: (
+                  <PrivateRoute>
+                    <MyAppointments/>
+                  </PrivateRoute>
+                )
             },
             {
                 path:'/doctors',
@@ -72,7 +81,11 @@ export const router = createBrowserRouter([
     },
     {
         path:'dashboard/',
-        element:<Dashboard/>,
+        element: (
+          <PrivateRoute allowedRoles={['ADMIN']}>
+            <Dashboard/>
+          </PrivateRoute>
+        ),
         children:[
             {
                 path:'admin-dashboard',

@@ -193,7 +193,7 @@ export function buildAppointmentReminders(data) {
   return {
     patientReminder: {
       to: data.patientEmail,
-      subject: "Reminder: Your Appointment is Coming Up",
+      subject: 'Reminder: Your Appointment is Coming Up',
       html: `
         <p>Hi ${data.patientName},</p>
         <p>This is a reminder for your appointment on 
@@ -203,7 +203,7 @@ export function buildAppointmentReminders(data) {
 
     doctorReminder: {
       to: data.doctorEmail,
-      subject: "Reminder: You Have an Appointment Tomorrow",
+      subject: 'Reminder: You Have an Appointment Tomorrow',
       html: `
         <p>Dear Dr. ${data.doctorName},</p>
         <p>You have an appointment scheduled with ${data.patientName} on 
@@ -212,4 +212,3 @@ export function buildAppointmentReminders(data) {
     },
   };
 }
-

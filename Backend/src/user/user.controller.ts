@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-unsafe-call */
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import {
   Controller,
   Post,
@@ -8,6 +10,8 @@ import {
   Put,
   UseInterceptors,
   UploadedFile,
+  Get,
+  ForbiddenException,
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import type { Request, Response } from 'express';
@@ -110,6 +114,31 @@ export class UserController {
       response.status(400).json({
         status: 'Failed',
         message: error,
+      });
+    }
+  }
+
+  @Get('all')
+  @UseGuards(AuthGuard('jwt'))
+  async getAllUsers(@Req() request: Request, @Res() response: Response) {
+    try {
+      const user = (request as Request & { user?: User }).user;
+      if (!user || user.role !== 'ADMIN') {
+        throw new ForbiddenException('Access denied');
+      }
+
+      const users = await this.userService.fetchAll();
+      response.status(200).json({
+        status: 'Success',
+        message: 'Users fetched successfully',
+        data: users,
+      });
+    } catch (error) {
+      const message =
+        error instanceof Error ? error.message : 'Something went wrong';
+      response.status(400).json({
+        status: 'Failed',
+        message,
       });
     }
   }

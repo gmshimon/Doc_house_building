@@ -17,7 +17,7 @@ const initialState = {
   adminDetails: null,
   user: null,
   users: [],
-   myAppointments: [],
+  myAppointments: [],
   isLoading: true,
 
   isLoginLoading: false,
@@ -109,7 +109,7 @@ export const loginWithGoogle = createAsyncThunk('loginWithGoogle', async () => {
 })
 
 export const getAllUsers = createAsyncThunk('getAllUsers', async () => {
-  const response = await axios.get('/user')
+  const response = await axiosSecure.get('/user/all')
   return response.data.data
 })
 

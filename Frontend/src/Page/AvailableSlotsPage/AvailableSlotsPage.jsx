@@ -49,6 +49,9 @@ useEffect(() => {
         closeOnClick: true,
         pauseOnHover: true,
       })
+      if (doctorId && serviceId && date) {
+      dispatch(checkAppointmentStatus({ doctorId, serviceId, date }))
+    }
       dispatch(reset())
     }
     if (makeAppointmentError) {

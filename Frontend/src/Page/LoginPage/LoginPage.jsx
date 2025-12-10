@@ -7,7 +7,7 @@ import { toast, ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 
 const LoginPage = () => {
-  const { isLoginSuccess, isLoginError, isLoginLoading } = useSelector(
+  const { isLoginSuccess, isLoginError, isLoginLoading, user } = useSelector(
     state => state.authSlice
   )
   const [email, setEmail] = useState('')
@@ -18,7 +18,11 @@ const LoginPage = () => {
 
   useEffect(() => {
     if (isLoginSuccess) {
-      navigate('/')
+      const isAdmin = (user?.role || '').toLowerCase() === 'admin'
+      navigate(isAdmin ? '/dashboard/admin-dashboard' : '/')
+      if (isAdmin) {
+        dispatch(reset())
+      }
     }
     if (isLoginError) {
       toast.error('Invalid credentials', {
@@ -30,7 +34,7 @@ const LoginPage = () => {
       })
       dispatch(reset())
     }
-  }, [dispatch, isLoginError, isLoginSuccess, navigate])
+  }, [dispatch, isLoginError, isLoginSuccess, navigate, user])
 
   const handleSubmit = e => {
     e.preventDefault()
