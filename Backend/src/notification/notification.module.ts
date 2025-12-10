@@ -1,6 +1,9 @@
 import { MailerModule } from '@nestjs-modules/mailer';
 import { Module } from '@nestjs/common';
 import { NotificationService } from './notification.service';
+import { BullModule } from '@nestjs/bullmq';
+import { NotificationQueue } from './notification.queue';
+import { NotificationEmailProcessor } from './notification.processor';
 
 @Module({
   imports: [
@@ -13,8 +16,15 @@ import { NotificationService } from './notification.service';
         },
       },
     }),
+    BullModule.registerQueue({
+      name: 'appointment-emails',
+    }),
   ],
-  providers: [NotificationService],
-  exports: [NotificationService],
+  providers: [
+    NotificationService,
+    NotificationEmailProcessor,
+    NotificationQueue,
+  ],
+  exports: [NotificationService, NotificationQueue],
 })
 export class NotificationModule {}

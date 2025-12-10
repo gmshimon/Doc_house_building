@@ -20,6 +20,7 @@ import { ConfigModule } from '@nestjs/config';
 import Redis from 'ioredis';
 import type { Cache } from 'cache-manager';
 import { NotificationModule } from './notification/notification.module';
+import { BullModule } from '@nestjs/bullmq';
 
 @Module({
   imports: [
@@ -31,6 +32,18 @@ import { NotificationModule } from './notification/notification.module';
     ServicesModule,
     AppointmentModule,
     ConfigModule.forRoot({ envFilePath: '.env', isGlobal: true }),
+    BullModule.forRoot({
+      connection: process.env.REDIS_URL
+        ? {
+            url: process.env.REDIS_URL,
+          }
+        : {
+            host: process.env.REDIS_HOST ?? '127.0.0.1',
+            port: Number(process.env.REDIS_PORT ?? 6379),
+            username: process.env.REDIS_USERNAME,
+            password: process.env.REDIS_PASSWORD,
+          },
+    }),
     CacheModule.registerAsync({
       isGlobal: true,
       // eslint-disable-next-line @typescript-eslint/require-await

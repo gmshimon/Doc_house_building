@@ -188,3 +188,28 @@ export function buildAppointmentEmails(context: AppointmentEmailContext) {
 
   return { patientEmail, doctorEmail };
 }
+
+export function buildAppointmentReminders(data) {
+  return {
+    patientReminder: {
+      to: data.patientEmail,
+      subject: "Reminder: Your Appointment is Coming Up",
+      html: `
+        <p>Hi ${data.patientName},</p>
+        <p>This is a reminder for your appointment on 
+        <strong>${data.slotDate}</strong> at <strong>${data.slotStart}</strong>.</p>
+      `,
+    },
+
+    doctorReminder: {
+      to: data.doctorEmail,
+      subject: "Reminder: You Have an Appointment Tomorrow",
+      html: `
+        <p>Dear Dr. ${data.doctorName},</p>
+        <p>You have an appointment scheduled with ${data.patientName} on 
+        <strong>${data.slotDate}</strong> at <strong>${data.slotStart}</strong>.</p>
+      `,
+    },
+  };
+}
+

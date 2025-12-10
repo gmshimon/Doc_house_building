@@ -325,8 +325,6 @@ export class DocterService {
     bookedSlots: any[],
     date: any,
   ) {
-    console.log('bookedSlots', bookedSlots);
-    console.log('blocks', blocks);
     return blocks.map((block) => {
       const isOverlap = bookedSlots.some((slot) => {
         // Convert "12:00 PM" → "12:00"

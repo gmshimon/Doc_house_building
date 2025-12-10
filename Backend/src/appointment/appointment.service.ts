@@ -7,14 +7,13 @@ import {
 } from '@nestjs/common';
 import { CreateAppointmentDto } from './dto/create-appointment.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
-import { NotificationService } from 'src/notification/notification.service';
-import { buildAppointmentEmails } from 'src/notification/email-templates';
+import { NotificationQueue } from 'src/notification/notification.queue';
 
 @Injectable()
 export class AppointmentService {
   constructor(
     private prisma: PrismaService,
-    private notificationService: NotificationService,
+    private notificationQueue: NotificationQueue,
   ) {}
 
   async createAppointment(userId: number, dto: CreateAppointmentDto) {
@@ -65,11 +64,16 @@ export class AppointmentService {
         throw new BadRequestException('Doctor is not available on this date');
       }
 
+      const openTime24 = this.to24Hour(businessHour.open);
+      const closeTime24 = this.to24Hour(businessHour.close);
+      const slotStartTime24 = this.to24Hour(startTime);
+      const slotEndTime24 = this.to24Hour(endTime);
+
       // check time range
-      const open = new Date(`${date}T${businessHour.open}:00`);
-      const close = new Date(`${date}T${businessHour.close}:00`);
-      const slotStart = new Date(`${date}T${startTime}:00`);
-      const slotEnd = new Date(`${date}T${endTime}:00`);
+      const open = new Date(`${date}T${openTime24}:00`);
+      const close = new Date(`${date}T${closeTime24}:00`);
+      const slotStart = new Date(`${date}T${slotStartTime24}:00`);
+      const slotEnd = new Date(`${date}T${slotEndTime24}:00`);
 
       if (slotStart < open || slotEnd > close) {
         throw new BadRequestException("Slot is outside doctor's working hours");
@@ -117,22 +121,24 @@ export class AppointmentService {
         },
       });
 
-      const { patientEmail, doctorEmail } = buildAppointmentEmails({
+      const doctorAddress = (() => {
+        const addr = appointment.doctor.address;
+        if (!addr) return undefined;
+        const parts = [
+          addr.street,
+          addr.city,
+          addr.state,
+          addr.zip,
+          addr.country,
+        ].filter(Boolean);
+        return parts.join(', ') || undefined;
+      })();
+
+      await this.notificationQueue.enqueueAppointmentEmails({
         appointmentId: appointment.id,
         doctorName: appointment.doctor.name,
         doctorEmail: appointment.doctor.email,
-        doctorAddress: (() => {
-          const addr = appointment.doctor.address;
-          if (!addr) return undefined;
-          const parts = [
-            addr.street,
-            addr.city,
-            addr.state,
-            addr.zip,
-            addr.country,
-          ].filter(Boolean);
-          return parts.join(', ') || undefined;
-        })(),
+        doctorAddress,
         patientName: appointment.user.name,
         patientEmail: appointment.user.email,
         patientPhone: appointment.user.phone,
@@ -143,15 +149,28 @@ export class AppointmentService {
         reason: appointment.reason,
       });
 
-      try {
-        await Promise.all([
-          this.notificationService.sendEmail(patientEmail),
-          this.notificationService.sendEmail(doctorEmail),
-        ]);
-      } catch (emailError) {
-        // Log and continue; the appointment should still be created even if email fails.
-        console.error('Failed to send appointment notifications', emailError);
-      }
+      // Schedule reminder 24 hours before appointment start (defaults to 09:00 if no start time)
+      const startTime24 = this.to24Hour(appointment.slot.startTime) ?? '09:00';
+      const reminderTime = new Date(`${appointment.slot.date}T${startTime24}`);
+      reminderTime.setHours(reminderTime.getHours() - 24);
+
+      await this.notificationQueue.enqueueReminderEmails(
+        {
+          appointmentId: appointment.id,
+          doctorName: appointment.doctor.name,
+          doctorEmail: appointment.doctor.email,
+          doctorAddress,
+          patientName: appointment.user.name,
+          patientEmail: appointment.user.email,
+          patientPhone: appointment.user.phone,
+          serviceName: appointment.service.name,
+          slotDate: appointment.slot.date,
+          slotStart: appointment.slot.startTime,
+          slotEnd: appointment.slot.endTime,
+          reason: appointment.reason,
+        },
+        reminderTime.toISOString(),
+      );
       return appointment;
     } catch (error) {
       throw error;
@@ -256,5 +275,25 @@ export class AppointmentService {
       isBooked: false,
       message: 'No appointment found. You can proceed with booking.',
     };
+  }
+
+  private to24Hour(time?: string | null): string | undefined {
+    if (!time) return undefined;
+    const trimmed = time.trim();
+    const match = trimmed.match(/^(\d{1,2}):(\d{2})(?:\s*([AP]M))?$/i);
+    if (!match) return trimmed;
+
+    let hour = Number(match[1]);
+    const minutes = match[2];
+    const meridiem = match[3]?.toUpperCase();
+
+    if (meridiem === 'AM') {
+      if (hour === 12) hour = 0;
+    } else if (meridiem === 'PM') {
+      if (hour !== 12) hour += 12;
+    }
+
+    const hourStr = hour.toString().padStart(2, '0');
+    return `${hourStr}:${minutes}`;
   }
 }
