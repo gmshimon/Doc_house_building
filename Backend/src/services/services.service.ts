@@ -3,7 +3,11 @@
 /* eslint-disable @typescript-eslint/no-unsafe-call */
 /* eslint-disable @typescript-eslint/no-unsafe-return */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
-import { Injectable, InternalServerErrorException } from '@nestjs/common';
+import {
+  ConflictException,
+  Injectable,
+  InternalServerErrorException,
+} from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { CreateServiceDto } from './dto/create-service.dto';
 import { UpdateServiceDto } from './dto/update-service.dto';
@@ -100,6 +104,16 @@ export class ServicesService {
   }
 
   async remove(id: number) {
+    const appointmentCount = await this.prisma.appointment.count({
+      where: { serviceId: id },
+    });
+
+    if (appointmentCount > 0) {
+      throw new ConflictException(
+        'Cannot delete service because it is referenced by existing appointments.',
+      );
+    }
+
     const result = await this.prisma.service.delete({
       where: { id },
     });

@@ -31,7 +31,7 @@
     "@nestjs/jwt": "^11.0.1",
     "@nestjs/mapped-types": "*",
     "@nestjs/passport": "^11.0.5",
-    "@nestjs/platform-express": "^11.1.8",
+    "@nestjs/platform-express": "^11.1.9",
     "@prisma/client": "^6.19.0",
     "@types/multer": "^2.0.0",
     "bullmq": "^5.65.1",
