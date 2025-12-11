@@ -49,7 +49,7 @@ const EditDoctor = () => {
     doctorDetails,
     getDoctorDetailsLoading,
     getDoctorDetailsError
-  } = useSelector(state => state.doctors)
+  } = useSelector(state => state.doctor)
   const { services } = useSelector(state => state.services)
 
   const [form, setForm] = useState(emptyForm)

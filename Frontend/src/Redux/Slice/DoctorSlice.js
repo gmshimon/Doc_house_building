@@ -46,7 +46,7 @@ export const createDoctor = createAsyncThunk(
   'doctor/createDoctor',
   async (doctorData, thunkAPI) => {
     try {
-      const response = await axios.post('/doctor', doctorData)
+      const response = await axiosSecure.post('/doctor', doctorData)
       return response.data.data
     }
     catch (error) {

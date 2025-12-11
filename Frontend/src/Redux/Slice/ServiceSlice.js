@@ -1,6 +1,7 @@
 /* eslint-disable no-unused-vars */
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import axios from '../../Utilis/axios'
+import axiosSecure from '../../Utilis/axiosSecure'
 const initialState ={
     services: [],
     
@@ -41,7 +42,7 @@ export const createService = createAsyncThunk(
     'service/createService',
     async (serviceData, thunkAPI) => {
         try {
-            const response = await axios.post('/services', serviceData)
+            const response = await axiosSecure.post('/services', serviceData)
             return response.data.data
         }
         catch (error) {
@@ -54,7 +55,7 @@ export const deleteService = createAsyncThunk(
     'service/deleteService',
     async (serviceId, thunkAPI) => {
         try {
-            await axios.delete(`/services/${serviceId}`)
+            await axiosSecure.delete(`/services/${serviceId}`)
             return serviceId
         }
         catch (error) {
@@ -68,7 +69,7 @@ export const updateService = createAsyncThunk(
     async ( {serviceId, serviceData }, thunkAPI) => {
         try {
             console.log('serviceData', serviceData)
-            const response = await axios.put(`/services/${serviceId}`, serviceData)
+            const response = await axiosSecure.put(`/services/${serviceId}`, serviceData)
             return response.data.data
         }
         catch (error) {

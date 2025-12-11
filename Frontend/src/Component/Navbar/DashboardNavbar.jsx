@@ -1,6 +1,8 @@
 import { BriefcaseMedical, ListChecks, Stethoscope, User } from 'lucide-react'
 import { MdDashboard } from 'react-icons/md'
-import { NavLink } from 'react-router-dom'
+import { NavLink, useNavigate } from 'react-router-dom'
+import { useDispatch } from 'react-redux'
+import { logOut } from '../../Redux/Slice/AuthSlice'
 
 const navSections = [
   {
@@ -56,6 +58,18 @@ const navSections = [
 ]
 
 const DashboardNavbar = () => {
+  const dispatch = useDispatch()
+  const navigate = useNavigate()
+
+  const handleProfile = () => {
+    navigate('/profile')
+  }
+
+  const handleSignOut = () => {
+    dispatch(logOut())
+    navigate('/login')
+  }
+
   const baseLinkClass =
     'group relative flex items-center gap-3 rounded-2xl px-4 py-3 text-sm font-medium transition-all duration-200'
   const activeLinkClass =
@@ -211,12 +225,14 @@ const DashboardNavbar = () => {
             <button
               type='button'
               className='h-10 rounded-xl border border-white/15 bg-white/10 text-xs font-semibold text-white/80 transition hover:bg-white/15 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-lime-300/60'
+              onClick={handleProfile}
             >
               View profile
             </button>
             <button
               type='button'
               className='h-10 rounded-xl bg-lime-400/90 text-xs font-semibold text-[#062E2A] shadow-lg shadow-lime-500/30 transition hover:bg-lime-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-lime-500/70'
+              onClick={handleSignOut}
             >
               Sign out
             </button>
