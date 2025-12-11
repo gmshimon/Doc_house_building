@@ -6,8 +6,8 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { CreateAppointmentDto } from './dto/create-appointment.dto';
-import { PrismaService } from 'src/prisma/prisma.service';
-import { NotificationQueue } from 'src/notification/notification.queue';
+import { PrismaService } from '../prisma/prisma.service';
+import { NotificationQueue } from '../notification/notification.queue';
 
 @Injectable()
 export class AppointmentService {

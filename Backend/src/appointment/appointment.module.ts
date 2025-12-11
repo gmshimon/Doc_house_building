@@ -1,5 +1,5 @@
 import { Module } from '@nestjs/common';
-import { NotificationModule } from 'src/notification/notification.module';
+import { NotificationModule } from '../notification/notification.module';
 import { AppointmentService } from './appointment.service';
 import { AppointmentController } from './appointment.controller';
 

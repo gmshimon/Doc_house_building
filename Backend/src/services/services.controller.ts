@@ -4,7 +4,6 @@ import {
   Get,
   Post,
   Body,
-  Patch,
   Param,
   Delete,
   Req,
@@ -23,23 +22,22 @@ import { CreateServiceDto } from './dto/create-service.dto';
 @Controller('services')
 export class ServicesController {
   constructor(private readonly servicesService: ServicesService) {}
-  // TODO: Add auth guard back and admin check
   @Post()
-  // @UseGuards(AuthGuard('jwt'))
+  @UseGuards(AuthGuard('jwt'))
   async create(
     @Req() request: Request,
     @Res() response: Response,
     @Body() createServiceDto: CreateServiceDto,
   ) {
     try {
-      // const user = (request as Request & { user?: User }).user;
+      const user = (request as Request & { user?: User }).user;
 
-      // if (user?.role !== 'ADMIN') {
-      //   return response.status(403).json({
-      //     status: 'failed',
-      //     message: 'Forbidden: You do not have permission to create a service',
-      //   });
-      // }
+      if (user?.role !== 'ADMIN') {
+        return response.status(403).json({
+          status: 'failed',
+          message: 'Forbidden: You do not have permission to create a service',
+        });
+      }
 
       const result = await this.servicesService.create(createServiceDto);
       response.status(201).json({
@@ -71,7 +69,7 @@ export class ServicesController {
     } catch (error) {
       response.status(400).json({
         status: 'failed',
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
         message: error.message,
       });
     }
@@ -83,6 +81,7 @@ export class ServicesController {
   }
 
   @Put(':id')
+  @UseGuards(AuthGuard('jwt'))
   update(
     @Req() request: Request,
     @Res() response: Response,
@@ -90,6 +89,15 @@ export class ServicesController {
     @Body() updateServiceDto: UpdateServiceDto,
   ) {
     try {
+      const user = (request as Request & { user?: User }).user;
+
+      if (user?.role !== 'ADMIN') {
+        return response.status(403).json({
+          status: 'failed',
+          message: 'Forbidden: You do not have permission to create a service',
+        });
+      }
+
       const result = this.servicesService.update(+id, updateServiceDto);
       response.status(200).json({
         status: 'success',

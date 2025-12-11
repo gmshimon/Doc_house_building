@@ -17,7 +17,7 @@ import { UserService } from './user.service';
 import type { Request, Response } from 'express';
 import { Prisma, User } from '@prisma/client';
 import { AuthGuard } from '@nestjs/passport';
-import { multerOptions } from 'src/upload/multer-options';
+import { multerOptions } from '../upload/multer-options';
 import { FileInterceptor } from '@nestjs/platform-express';
 
 @Controller('user')

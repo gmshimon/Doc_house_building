@@ -17,8 +17,8 @@ import { DocterService } from './docter.service';
 import { UpdateDocterDto } from './dto/update-docter.dto';
 import { AuthGuard } from '@nestjs/passport';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { multerOptions } from 'src/upload/multer-options';
-import { CloudinaryService } from 'src/cloudinary/cloudinary.service';
+import { multerOptions } from '../upload/multer-options';
+import { CloudinaryService } from '../cloudinary/cloudinary.service';
 import { Prisma, User } from '@prisma/client';
 import { type Request, type Response } from 'express';
 
@@ -74,7 +74,7 @@ export class DocterController {
   }
 
   @Post('/update-image/:id')
-  // @UseGuards(AuthGuard('jwt'))
+  @UseGuards(AuthGuard('jwt'))
   @UseInterceptors(FileInterceptor('file', multerOptions))
   async updateImage(
     @Req() request: Request,
@@ -84,6 +84,16 @@ export class DocterController {
   ) {
     let imageUrl: string | undefined;
     try {
+      const user = (request as Request & { user?: User }).user;
+
+      if (user?.role !== 'ADMIN') {
+        response.status(403).json({
+          status: 'failed',
+          message: 'Forbidden: You do not have permission to create a doctor',
+        });
+        return;
+      }
+
       const data = {
         image: '',
       };
@@ -164,12 +174,22 @@ export class DocterController {
   }
 
   @Delete(':id')
+  @UseGuards(AuthGuard('jwt'))
   async remove(
     @Req() request: Request,
     @Res() response: Response,
     @Param('id') id: string,
   ) {
     try {
+      const user = (request as Request & { user?: User }).user;
+
+      if (user?.role !== 'ADMIN') {
+        response.status(403).json({
+          status: 'failed',
+          message: 'Forbidden: You do not have permission to create a doctor',
+        });
+        return;
+      }
       await this.docterService.remove(+id);
 
       response.status(200).json({

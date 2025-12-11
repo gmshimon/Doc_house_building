@@ -1,12 +1,13 @@
 /* eslint-disable no-unused-vars */
 import axios from "axios";
 
+const prod = "https://backend-indol-eta-44.vercel.app/"
 
 const local = 'http://localhost:3000'
 
 // Create an Axios instance
 const axiosSecure = axios.create({
-  baseURL: local,
+  baseURL: prod,
 });
 
 // Add a request interceptor to include the token in the headers

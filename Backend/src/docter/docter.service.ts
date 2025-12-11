@@ -8,12 +8,12 @@ import {
   InternalServerErrorException,
 } from '@nestjs/common';
 import { UpdateDocterDto } from './dto/update-docter.dto';
-import { PrismaService } from 'src/prisma/prisma.service';
+import { PrismaService } from '../prisma/prisma.service';
 import { Prisma } from '@prisma/client';
-import { CloudinaryService } from 'src/cloudinary/cloudinary.service';
+import { CloudinaryService } from '../cloudinary/cloudinary.service';
 import { CACHE_MANAGER } from '@nestjs/cache-manager';
 import type { Cache } from 'cache-manager';
-import { REDIS_KEYS } from 'src/Utils/redis_key';
+import { REDIS_KEYS } from '../Utils/redis_key';
 
 @Injectable()
 export class DocterService {

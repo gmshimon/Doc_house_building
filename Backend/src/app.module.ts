@@ -48,10 +48,14 @@ import { BullModule } from '@nestjs/bullmq';
       isGlobal: true,
       // eslint-disable-next-line @typescript-eslint/require-await
       useFactory: async () => {
-        const client = new Redis({
-          host: '127.0.0.1',
-          port: 6379,
-        });
+        const client = process.env.REDIS_URL
+          ? new Redis(process.env.REDIS_URL)
+          : new Redis({
+              host: process.env.REDIS_HOST ?? '127.0.0.1',
+              port: Number(process.env.REDIS_PORT ?? 6379),
+              username: process.env.REDIS_USERNAME,
+              password: process.env.REDIS_PASSWORD,
+            });
 
         const redisStore: any = {
           opts: {},
