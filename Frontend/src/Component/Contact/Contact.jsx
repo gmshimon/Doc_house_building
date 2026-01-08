@@ -9,7 +9,7 @@ const Contact = () => {
         <div className='pointer-events-none absolute -left-10 -top-16 h-48 w-48 rounded-full bg-[#F7A582]/25 blur-3xl' />
         <div className='pointer-events-none absolute -right-10 bottom-0 h-56 w-56 rounded-full bg-[#07332F]/15 blur-3xl' />
 
-        <div className='relative grid gap-8 lg:grid-cols-2'>
+        <div className='relative grid gap-8 lg:grid-cols-1'>
           <div className='space-y-5'>
             <p className='inline-flex w-fit items-center gap-2 rounded-full border border-[#07332F]/10 bg-white/80 px-3 py-1 text-xs font-semibold uppercase tracking-[0.14em] text-[#07332F]'>
               Contact
@@ -41,7 +41,7 @@ const Contact = () => {
             </div>
           </div>
 
-          <div className='relative rounded-3xl border border-white/70 bg-white/95 p-6 shadow-lg shadow-[#07332F]/10 backdrop-blur'>
+          {/* <div className='relative rounded-3xl border border-white/70 bg-white/95 p-6 shadow-lg shadow-[#07332F]/10 backdrop-blur'>
             <div className='grid gap-4 sm:grid-cols-2'>
               {[
                 { placeholder: 'Name', type: 'text' },
@@ -66,7 +66,7 @@ const Contact = () => {
             >
               Book now
             </button>
-          </div>
+          </div> */}
         </div>
       </div>
     </section>

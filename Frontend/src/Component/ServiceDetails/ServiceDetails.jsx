@@ -127,7 +127,7 @@ const ServiceDetails = () => {
                 ))}
               </div>
 
-              <div className='mt-6 flex flex-wrap items-center gap-4'>
+              {/* <div className='mt-6 flex flex-wrap items-center gap-4'>
                 <button
                   type='button'
                   className='inline-flex items-center justify-center rounded-xl border border-transparent bg-gradient-to-r from-[#07332F] to-[#0d4d44] px-5 py-3 text-sm font-semibold text-white shadow-md shadow-[#07332F]/15 transition hover:-translate-y-0.5 hover:shadow-lg focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#07332F]'
@@ -143,7 +143,7 @@ const ServiceDetails = () => {
                 <div className='ml-auto text-sm font-semibold text-[#07332F]'>
                   {currentService.price}
                 </div>
-              </div>
+              </div> */}
             </div>
           </div>
 
