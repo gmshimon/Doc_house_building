@@ -66,7 +66,6 @@ useEffect(() => {
     }
   }, [dispatch, makeAppointmentError, makeAppointmentSuccess])
 
-console.log(availability);
   const isBooked = bookingStatus?.isBooked
   const bookedMessage = bookingStatus?.message
 

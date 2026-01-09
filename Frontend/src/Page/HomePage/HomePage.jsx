@@ -12,7 +12,7 @@ import { reset } from '../../Redux/Slice/AuthSlice'
 
 const HomePage = () => {
   const { isLoginSuccess } = useSelector(state => state.authSlice)
-const dispatch = useDispatch()
+  const dispatch = useDispatch()
   useEffect(() => {
     if (isLoginSuccess) {
       toast.success('Login successful', {

@@ -203,7 +203,7 @@ const ProfilePage = () => {
                       <Pencil className='size-4' />
                       Edit profile
                     </button>
-                    <button
+                    {/* <button
                       type='button'
                       className='inline-flex items-center gap-2 rounded-lg border border-gray-200 px-3 py-2 text-sm font-semibold text-gray-800 transition hover:border-gray-300 hover:bg-gray-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-200'
                     >
@@ -221,7 +221,7 @@ const ProfilePage = () => {
                         <path d='m15 5 7 7-7 7' />
                       </svg>
                       Update password
-                    </button>
+                    </button> */}
                   </div>
                 </div>
               </div>

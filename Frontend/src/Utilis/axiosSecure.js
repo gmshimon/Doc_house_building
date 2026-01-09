@@ -7,7 +7,7 @@ const local = 'http://localhost:3000'
 
 // Create an Axios instance
 const axiosSecure = axios.create({
-  baseURL: prod,
+  baseURL: local,
 });
 
 // Add a request interceptor to include the token in the headers

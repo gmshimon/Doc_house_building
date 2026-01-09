@@ -57,7 +57,7 @@ const navSections = [
   }
 ]
 
-const DashboardNavbar = () => {
+const DashboardNavbar = ({ isOpen = false, onClose = () => {} }) => {
   const dispatch = useDispatch()
   const navigate = useNavigate()
 
@@ -78,7 +78,10 @@ const DashboardNavbar = () => {
     'text-white/70 hover:text-white hover:bg-white/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-lime-300/60'
 
   return (
-    <aside className='relative hidden h-screen w-80 flex-col overflow-hidden border-r border-white/10 bg-[#052823] text-white md:flex'>
+    <aside
+      id='dashboard-mobile-sidebar'
+      className={`relative h-screen w-80 flex-col overflow-hidden border-r border-white/10 bg-[#052823] text-white ${isOpen ? 'flex' : 'hidden'} md:flex`}
+    >
       <div className='pointer-events-none absolute -left-16 top-10 h-40 w-40 rounded-full bg-lime-500/20 blur-3xl' />
       <div className='pointer-events-none absolute -right-24 bottom-24 h-56 w-56 rounded-full bg-teal-500/20 blur-3xl' />
 
@@ -98,7 +101,8 @@ const DashboardNavbar = () => {
           <button
             type='button'
             className='inline-flex size-9 items-center justify-center rounded-xl border border-white/10 bg-white/5 text-white/70 transition hover:text-white hover:shadow-lg hover:shadow-black/20 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-lime-300/70 md:hidden'
-            aria-label='Toggle sidebar'
+            aria-label='Close sidebar'
+            onClick={onClose}
           >
             <svg
               className='size-4'
@@ -110,9 +114,8 @@ const DashboardNavbar = () => {
               strokeLinecap='round'
               strokeLinejoin='round'
             >
-              <path d='M4 6h16' />
-              <path d='M4 12h16' />
-              <path d='M4 18h16' />
+              <path d='M18 6 6 18' />
+              <path d='m6 6 12 12' />
             </svg>
           </button>
         </div>
@@ -158,6 +161,7 @@ const DashboardNavbar = () => {
                       `${baseLinkClass} ${isActive ? activeLinkClass : inactiveLinkClass}`
                     }
                     end={item.to.endsWith('admin-dashboard')}
+                    onClick={onClose}
                   >
                     <span
                       className='flex size-10 items-center justify-center rounded-xl bg-white/5 text-lime-200 transition group-hover:bg-white/10 group-hover:text-lime-100'

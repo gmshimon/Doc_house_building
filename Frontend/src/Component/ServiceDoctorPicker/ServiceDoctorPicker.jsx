@@ -4,24 +4,39 @@ import 'react-calendar/dist/Calendar.css'
 import { useDispatch, useSelector } from 'react-redux'
 import { getServices } from '../../Redux/Slice/ServiceSlice'
 import Loading from '../Loading/Loading'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useSearchParams } from 'react-router-dom'
 
 const placeholderImg =
   'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=facearea&w=256&h=256&q=80'
 
 const ServiceDoctorPicker = () => {
   const navigate = useNavigate()
+  const [searchParams] = useSearchParams()
   const { services, getServicesLoading } = useSelector(state => state.services)
   const [searchTerm, setSearchTerm] = useState('')
   const [selectedServiceId, setSelectedServiceId] = useState(null)
   const [selectedDate, setSelectedDate] = useState(new Date())
   const [selectedDoctorId, setSelectedDoctorId] = useState(null)
+  const initialServiceIdParam = searchParams.get('serviceId')
 
   const dispatch = useDispatch()
 
   useEffect(() => {
     dispatch(getServices())
   }, [dispatch])
+
+  useEffect(() => {
+    if (!initialServiceIdParam || !services.length || selectedServiceId !== null) return
+
+    const matchedService = services.find(
+      service => String(service.id) === initialServiceIdParam
+    )
+
+    if (matchedService) {
+      setSelectedServiceId(matchedService.id)
+      setSelectedDoctorId(null)
+    }
+  }, [initialServiceIdParam, selectedServiceId, services])
   const selectedService = useMemo(
     () => services.find(service => service.id === selectedServiceId) || null,
     [selectedServiceId, services]
@@ -62,7 +77,7 @@ const ServiceDoctorPicker = () => {
     return <Loading />
   }
   return (
-    <div className='grid gap-6 lg:grid-cols-[380px,1fr]'>
+    <div className='grid gap-6 grid-cols-1 lg:grid-cols-[380px,1fr]'>
       <div className='rounded-3xl border border-[#07332F]/10 bg-white/95 p-4 shadow-md shadow-[#07332F]/10 backdrop-blur'>
         <p className='text-xs font-semibold uppercase tracking-[0.12em] text-[#F7A582]'>
           Step 1

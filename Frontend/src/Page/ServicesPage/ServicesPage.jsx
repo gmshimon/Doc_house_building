@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
+import { Link } from 'react-router-dom'
 import { getServices } from '../../Redux/Slice/ServiceSlice'
 import Loading from '../../Component/Loading/Loading'
 import { HiOutlineClock, HiOutlineCurrencyDollar, HiOutlineSparkles } from 'react-icons/hi'
@@ -65,27 +66,37 @@ const ServicesPage = () => {
                 </div>
 
                 {service.doctors?.length ? (
-                  <div className='rounded-xl border border-[#07332F]/10 bg-slate-50 px-3 py-3'>
-                    <p className='text-xs font-semibold uppercase tracking-[0.12em] text-[#07332F]'>
-                      Doctors
-                    </p>
-                    <ul className='mt-2 space-y-1 text-sm text-slate-700'>
-                      {service.doctors.slice(0, 3).map(doc => (
-                        <li key={doc.id} className='flex items-center gap-2'>
-                          <span className='h-1.5 w-1.5 rounded-full bg-[#F7A582]' />
-                          <span className='font-semibold text-[#07332F]'>{doc.name}</span>
-                          {doc.qualification && (
-                            <span className='text-xs text-slate-500'>• {doc.qualification}</span>
-                          )}
-                        </li>
-                      ))}
-                      {service.doctors.length > 3 && (
-                        <li className='text-xs font-semibold text-[#07332F]'>
-                          +{service.doctors.length - 3} more
-                        </li>
-                      )}
-                    </ul>
-                  </div>
+                  <>
+                    <div className='rounded-xl border border-[#07332F]/10 bg-slate-50 px-3 py-3'>
+                      <p className='text-xs font-semibold uppercase tracking-[0.12em] text-[#07332F]'>
+                        Doctors
+                      </p>
+                      <ul className='mt-2 space-y-1 text-sm text-slate-700'>
+                        {service.doctors.slice(0, 3).map(doc => (
+                          <li key={doc.id} className='flex items-center gap-2'>
+                            <span className='h-1.5 w-1.5 rounded-full bg-[#F7A582]' />
+                            <span className='font-semibold text-[#07332F]'>{doc.name}</span>
+                            {doc.qualification && (
+                              <span className='text-xs text-slate-500'>• {doc.qualification}</span>
+                            )}
+                          </li>
+                        ))}
+                        {service.doctors.length > 3 && (
+                          <li className='text-xs font-semibold text-[#07332F]'>
+                            +{service.doctors.length - 3} more
+                          </li>
+                        )}
+                      </ul>
+                    </div>
+                    <div className='mt-auto flex justify-end'>
+                      <Link
+                        to={`/appointment?serviceId=${service.id}`}
+                        className='inline-flex items-center justify-center rounded-xl border border-transparent bg-gradient-to-r from-[#07332F] to-[#0d4d44] px-4 py-3 text-sm font-semibold text-white shadow-md shadow-[#07332F]/15 transition hover:-translate-y-0.5 hover:shadow-lg focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#07332F]'
+                      >
+                        Book this service
+                      </Link>
+                    </div>
+                  </>
                 ) : (
                   <div className='rounded-xl border border-dashed border-[#07332F]/15 bg-slate-50 px-3 py-3 text-xs font-semibold text-slate-500'>
                     No doctors linked to this service yet.

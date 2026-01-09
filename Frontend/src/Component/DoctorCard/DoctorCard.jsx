@@ -58,7 +58,7 @@ const DoctorCard = ({ doctor, onViewProfile }) => {
         <div className='absolute inset-x-0 -top-12 h-32 bg-gradient-to-b from-[#F7A582]/15 to-transparent blur-3xl' />
       </div>
       <div className='relative'>
-        <img className='h-48 w-full object-cover' src={doctor.image || doc3} alt={doctor.name} />
+        <img className='h-80 w-full object-cover' src={doctor.image || doc3} alt={doctor.name} />
         <div className='absolute left-4 top-4 rounded-full bg-[#07332F] px-3 py-1 text-xs font-semibold text-white/90 shadow-md shadow-[#07332F]/20'>
           {experienceYears ? `${experienceYears}+ yrs experience` : 'Experienced clinician'}
         </div>

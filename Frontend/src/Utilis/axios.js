@@ -6,7 +6,7 @@ const prod = "https://backend-indol-eta-44.vercel.app/"
 const local = 'http://localhost:3000'
 
 const instance = axios.create({
-  baseURL : prod,
+  baseURL : local,
 });
 
 export default instance;

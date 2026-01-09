@@ -159,7 +159,7 @@ const Navbar = () => {
                               className='flex items-center justify-between rounded-xl px-3 py-2 text-white/80 transition hover:bg-white/10 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-lime-300/70'
                             >
                               Profile
-                              <span className='text-[10px] text-white/40'>View</span>
+                              {/* <span className='text-[10px] text-white/40'>View</span> */}
                             </Link>
                           </li>
                           <li>
@@ -168,10 +168,10 @@ const Navbar = () => {
                               className='flex items-center justify-between rounded-xl px-3 py-2 text-white/80 transition hover:bg-white/10 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-lime-300/70'
                             >
                               My Appointments
-                              <span className='text-[10px] text-white/40'>Schedule</span>
+                              {/* <span className='text-[10px] text-white/40'>Schedule</span> */}
                             </Link>
                           </li>
-                          <li>
+                          {/* <li>
                             <Link
                               to='/settings'
                               className='flex items-center justify-between rounded-xl px-3 py-2 text-white/80 transition hover:bg-white/10 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-lime-300/70'
@@ -179,7 +179,7 @@ const Navbar = () => {
                               Settings
                               <span className='text-[10px] text-white/40'>Preferences</span>
                             </Link>
-                          </li>
+                          </li> */}
                           <li>
                             <button
                               type='button'
@@ -187,7 +187,7 @@ const Navbar = () => {
                               className='flex w-full items-center justify-between rounded-xl px-3 py-2 text-red-300 transition hover:bg-red-500/10 hover:text-red-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-300/70'
                             >
                               Logout
-                              <span className='text-[10px] text-red-200/70'>See you soon</span>
+                              {/* <span className='text-[10px] text-red-200/70'>See you soon</span> */}
                             </button>
                           </li>
                         </ul>
