@@ -7,6 +7,7 @@ const navLinks = [
   { label: 'Home', to: '/' },
   { label: 'Doctors', to: '/doctors' },
   { label: 'Services', to: '/services' },
+  { label: 'AI Symptom Checker', to: '/ai-symptom-checker' },
   { label: 'Appointment', to: '/appointment' },
   { label: 'Contact', to: '/contact', isHash: true }
 ]

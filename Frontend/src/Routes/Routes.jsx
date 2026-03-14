@@ -19,6 +19,7 @@ import AdminDoctors from '../Page/AdminDoctors/AdminDoctors'
 import EditDoctor from '../Page/AdminDoctors/EditDoctor'
 import DoctorsPage from '../Page/DoctorsPage/DoctorsPage'
 import PrivateRoute from '../Component/PrivateRoute/PrivateRout.jsx'
+import AiSymptomChecker from '../Page/AiSymptomChecker/AiSymptomChecker.jsx'
 
 export const router = createBrowserRouter([
     {
@@ -76,6 +77,12 @@ export const router = createBrowserRouter([
             {
                 path:'/doctors',
                 element:<DoctorsPage/>
+            },
+            {
+                path:'ai-symptom-checker',
+                element: <PrivateRoute>
+                    <AiSymptomChecker/>
+                </PrivateRoute>
             }
         ]
     },
