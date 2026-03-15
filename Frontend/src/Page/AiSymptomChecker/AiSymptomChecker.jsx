@@ -1,18 +1,33 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { useNavigate } from 'react-router-dom'
+import { aiSymptomAnalyze, reset } from '../../Redux/Slice/AISlice'
+import { getServices } from '../../Redux/Slice/ServiceSlice'
+import Loading from '../../Component/Loading/Loading'
 
 const AiSymptomChecker = () => {
+  const dispatch = useDispatch()
+  const navigate = useNavigate()
+
+  const {
+aiSymptomAnalyzeResponse,
+    aiSymptomAnalyzeLoading,
+    aiSymptomAnalyzeError
+  } = useSelector(state => state.AI)
+  const { services, getServicesLoading } = useSelector(state => state.services)
+
   const [formData, setFormData] = useState({
     symptomText: '',
     age: '',
     gender: '',
     duration: ''
   })
-  const [triageNote, setTriageNote] = useState(null)
-  const [status, setStatus] = useState('idle')
 
   useEffect(() => {
     window.scrollTo(0, 0)
-  }, [])
+    dispatch(getServices())
+    return () => dispatch(reset())
+  }, [dispatch])
 
   const handleChange = event => {
     const { name, value } = event.target
@@ -21,29 +36,33 @@ const AiSymptomChecker = () => {
 
   const handleSubmit = event => {
     event.preventDefault()
-    setStatus('submitting')
+    dispatch(aiSymptomAnalyze(formData))
+  }
 
-    const { symptomText, age, gender, duration } = formData
-    const notes = [
-      symptomText && `Key concern: ${symptomText.trim()}.`,
-      duration && `It has lasted ${duration.trim()}.`,
-      age && `Age noted: ${age} years.`,
-      gender && `Gender noted: ${gender}.`
-    ].filter(Boolean)
+  const handleBookCategory = categoryId => {
+    if (!categoryId) return
+    navigate(`/appointment?serviceId=${categoryId}`)
+  }
 
-    setTriageNote({
-      headline: 'Preliminary intake note',
-      bullets:
-        notes.length > 0
-          ? notes
-          : ['Add symptoms to generate a quick handoff note for the care team.']
-    })
-    setStatus('ready')
+  const urgencyTone = {
+    emergency: 'bg-red-50 text-red-700 border-red-200',
+    urgent: 'bg-amber-50 text-amber-700 border-amber-200',
+    routine: 'bg-emerald-50 text-emerald-700 border-emerald-200'
+  }
+
+  const serviceLookup = useMemo(() => {
+    const map = new Map()
+    services?.forEach(service => map.set(String(service.id), service))
+    return map
+  }, [services])
+
+  if (aiSymptomAnalyzeLoading || getServicesLoading) {
+    return <Loading />
   }
 
   return (
     <div className='min-h-screen bg-gradient-to-br from-white via-[#f7f4f1] to-[#e8f7f4] pt-32 pb-16 text-[#07332F]'>
-      <div className='mx-auto flex max-w-6xl flex-col gap-10 px-5'>
+      <div className='mx-auto flex max-w-7xl flex-col gap-10 '>
         <div className='space-y-3'>
           <span className='inline-flex items-center gap-2 rounded-full border border-[#07332F]/10 bg-white px-3 py-1 text-xs font-semibold uppercase tracking-[0.16em] text-[#07332F]'>
             AI Symptom Checker
@@ -75,10 +94,7 @@ const AiSymptomChecker = () => {
                   <span className='mt-0.5 h-2 w-2 rounded-full bg-lime-300' />
                   Quick intake summary you can share with your provider.
                 </li>
-                <li className='flex gap-3 rounded-2xl border border-[#07332F]/10 bg-white px-4 py-3'>
-                  <span className='mt-0.5 h-2 w-2 rounded-full bg-cyan-300' />
-                  We do not give diagnoses—emergencies should go straight to urgent care or 911.
-                </li>
+               
                 <li className='flex gap-3 rounded-2xl border border-[#07332F]/10 bg-white px-4 py-3'>
                   <span className='mt-0.5 h-2 w-2 rounded-full bg-amber-300' />
                   The more detail you share, the better the note for the clinical team.
@@ -87,22 +103,138 @@ const AiSymptomChecker = () => {
 
               <div className='mt-6 rounded-3xl border border-lime-300/30 bg-lime-50 p-4 shadow-inner shadow-lime-200/60'>
                 <p className='text-sm font-semibold text-[#07332F]'>Your AI handoff note</p>
-                {triageNote ? (
-                  <div className='mt-3 space-y-2 text-sm text-[#07332F]'>
-                    <p className='font-semibold'>{triageNote.headline}</p>
-                    <ul className='space-y-1'>
-                      {triageNote.bullets.map((item, index) => (
-                        <li key={index} className='flex gap-2'>
-                          <span className='mt-1 h-1.5 w-1.5 rounded-full bg-lime-300' />
-                          <span>{item}</span>
-                        </li>
-                      ))}
-                    </ul>
+                {aiSymptomAnalyzeResponse ? (
+                  <div className='mt-3 space-y-4 text-sm text-[#07332F]'>
+                    <div className='flex flex-wrap items-center gap-2'>
+                      <p className='font-semibold text-base'>
+                        {aiSymptomAnalyzeResponse.summary || 'Symptom summary generated'}
+                      </p>
+                      {aiSymptomAnalyzeResponse.urgency && (
+                        <span
+                          className={`inline-flex items-center rounded-full border px-3 py-1 text-xs font-semibold uppercase tracking-wide ${
+                            urgencyTone[aiSymptomAnalyzeResponse.urgency] || 'bg-cyan-50 text-cyan-700 border-cyan-200'
+                          }`}
+                        >
+                          {aiSymptomAnalyzeResponse.urgency}
+                        </span>
+                      )}
+                    </div>
+
+                    {Array.isArray(aiSymptomAnalyzeResponse.recommendedCategories) &&
+                      aiSymptomAnalyzeResponse.recommendedCategories.length > 0 && (
+                        <div className='space-y-3'>
+                          <p className='text-xs font-semibold uppercase tracking-[0.14em] text-slate-500'>
+                            Suggested care pathways
+                          </p>
+                          <div className='grid gap-3 md:grid-cols-2'>
+                            {aiSymptomAnalyzeResponse.recommendedCategories.map(category => {
+                              const service =
+                                serviceLookup.get(String(category.id)) || null
+                              return (
+                                <div
+                                  key={category.id || category.name}
+                                  className='flex h-full flex-col gap-3 rounded-2xl border border-[#07332F]/10 bg-white px-4 py-4 shadow-md shadow-[#07332F]/10'
+                                >
+                                  <div className='flex items-start justify-between gap-3'>
+                                    <div>
+                                      <p className='text-sm font-semibold text-[#07332F]'>
+                                        {service?.name || category.name}
+                                      </p>
+                                      {category.id && (
+                                        <p className='text-[11px] font-semibold uppercase tracking-[0.12em] text-[#F7A582]'>
+                                          Service ID: {category.id}
+                                        </p>
+                                      )}
+                                    </div>
+                                    {service?.fee && (
+                                      <span className='rounded-full bg-[#07332F]/10 px-3 py-1 text-xs font-semibold text-[#07332F]'>
+                                        ${service.fee}
+                                      </span>
+                                    )}
+                                  </div>
+                                  <p className='text-sm text-slate-600'>
+                                    {service?.description ||
+                                      'We recommend booking this service to address your symptoms.'}
+                                  </p>
+                                  <div className='flex flex-wrap gap-2 text-xs font-semibold text-[#07332F]'>
+                                    {service?.duration && (
+                                      <span className='inline-flex items-center gap-2 rounded-full bg-[#F7A582]/15 px-3 py-2 text-[#F7A582]'>
+                                        {service.duration} mins
+                                      </span>
+                                    )}
+                                    {service?.doctors && (
+                                      <span className='inline-flex items-center gap-2 rounded-full bg-slate-100 px-3 py-2 text-[#07332F]'>
+                                        {service.doctors.length} doctors
+                                      </span>
+                                    )}
+                                  </div>
+                                  <div className='mt-auto flex justify-end'>
+                                    <button
+                                      type='button'
+                                      onClick={() => handleBookCategory(category.id)}
+                                      className='inline-flex items-center justify-center rounded-xl border border-transparent bg-gradient-to-r from-[#07332F] to-[#0d4d44] px-4 py-2 text-xs font-semibold text-white shadow-md shadow-[#07332F]/15 transition hover:-translate-y-0.5 hover:shadow-lg focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#07332F]'
+                                    >
+                                      Book this service
+                                    </button>
+                                  </div>
+                                </div>
+                              )
+                            })}
+                          </div>
+                        </div>
+                      )}
+
+                    {Array.isArray(aiSymptomAnalyzeResponse.redFlags) && aiSymptomAnalyzeResponse.redFlags.length > 0 && (
+                      <div className='space-y-2'>
+                        <p className='text-xs font-semibold uppercase tracking-[0.14em] text-slate-500'>
+                          Red flags detected
+                        </p>
+                        <ul className='space-y-1'>
+                          {aiSymptomAnalyzeResponse.redFlags.map((flag, index) => (
+                            <li key={index} className='flex gap-2 text-[#07332F]'>
+                              <span className='mt-1 h-1.5 w-1.5 rounded-full bg-red-300' />
+                              <span>{flag}</span>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    )}
+
+                    {aiSymptomAnalyzeResponse.emergencyOverrideTriggered && (
+                      <div
+                        className={`rounded-2xl border px-3 py-2 text-xs font-semibold ${
+                          aiSymptomAnalyzeResponse.emergencyOverrideTriggered.matched
+                            ? 'border-red-200 bg-red-50 text-red-700'
+                            : 'border-emerald-100 bg-white text-emerald-700'
+                        }`}
+                      >
+                        Emergency override{' '}
+                        {aiSymptomAnalyzeResponse.emergencyOverrideTriggered.matched ? 'triggered' : 'not triggered'}
+                        {aiSymptomAnalyzeResponse.emergencyOverrideTriggered.matchedReasons &&
+                          aiSymptomAnalyzeResponse.emergencyOverrideTriggered.matchedReasons.length > 0 && (
+                            <ul className='mt-1 list-disc space-y-1 pl-4 text-slate-700'>
+                              {aiSymptomAnalyzeResponse.emergencyOverrideTriggered.matchedReasons.map((reason, index) => (
+                                <li key={index}>{reason}</li>
+                              ))}
+                            </ul>
+                          )}
+                      </div>
+                    )}
+
+                    {aiSymptomAnalyzeResponse.disclaimer && (
+                      <p className='text-xs text-slate-600'>{aiSymptomAnalyzeResponse.disclaimer}</p>
+                    )}
                   </div>
                 ) : (
                   <p className='mt-2 text-sm text-slate-700'>
                     Submit the form to instantly draft a note you can reference when booking an appointment.
                   </p>
+                )}
+
+                {aiSymptomAnalyzeError && (
+                  <div className='mt-3 rounded-2xl border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-700'>
+                    {aiSymptomAnalyzeError}
+                  </div>
                 )}
               </div>
             </div>
@@ -190,10 +322,10 @@ const AiSymptomChecker = () => {
             <div className='mt-6 flex flex-col gap-3'>
               <button
                 type='submit'
-                disabled={status === 'submitting'}
+                disabled={aiSymptomAnalyzeLoading}
                 className='inline-flex items-center justify-center gap-2 rounded-2xl bg-[#F7A582] px-4 py-3 text-sm font-semibold text-white shadow-lg shadow-[#F7A582]/40 transition hover:bg-[#f7976c] disabled:cursor-not-allowed disabled:opacity-70'
               >
-                {status === 'submitting' ? 'Checking...' : 'Check symptoms'}
+                {aiSymptomAnalyzeLoading ? 'Checking...' : 'Check symptoms'}
               </button>
               <p className='text-xs text-slate-600'>
                 This tool does not replace a medical professional. Call emergency services if your symptoms feel

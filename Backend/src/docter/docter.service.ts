@@ -516,7 +516,9 @@ export class DocterService {
     }
   }
 
-  update(id: number, updateDocterDto: UpdateDocterDto) {
+  async update(id: number, updateDocterDto: UpdateDocterDto) {
+    await this.cacheManager.del(REDIS_KEYS.DOCTORS_LIST);
+    await this.cacheManager.del(REDIS_KEYS.SINGLE_DOCTOR_PREFIX + id);
     return `This action updates a #${id} docter`;
   }
 

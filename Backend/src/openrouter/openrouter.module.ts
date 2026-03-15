@@ -3,5 +3,6 @@ import { OpenrouterService } from './openrouter.service';
 
 @Module({
   providers: [OpenrouterService],
+  exports: [OpenrouterService],
 })
 export class OpenrouterModule {}

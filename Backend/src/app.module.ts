@@ -21,6 +21,8 @@ import Redis from 'ioredis';
 import type { Cache } from 'cache-manager';
 import { NotificationModule } from './notification/notification.module';
 import { BullModule } from '@nestjs/bullmq';
+import { AiSymptomModule } from './ai-symptom/ai-symptom.module';
+import { OpenrouterModule } from './openrouter/openrouter.module';
 
 @Module({
   imports: [
@@ -94,6 +96,8 @@ import { BullModule } from '@nestjs/bullmq';
       },
     }),
     NotificationModule,
+    AiSymptomModule,
+    OpenrouterModule,
   ],
   controllers: [AppController],
   providers: [AppService, PrismaService],

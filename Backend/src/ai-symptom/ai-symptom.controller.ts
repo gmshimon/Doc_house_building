@@ -1,16 +1,6 @@
-import {
-  Controller,
-  Req,
-  Res,
-  Get,
-  Post,
-  Body,
-  Patch,
-  Param,
-  Delete,
-} from '@nestjs/common';
+import { Controller, Req, Res, Post, Body } from '@nestjs/common';
 import { AiSymptomService } from './ai-symptom.service';
-import { AnalyzeSymptomDto } from './dto/analyze-sumptom.dto';
+import { AnalyzeSymptomDto } from './dto/analyze-symptom.dto';
 import type { Request, Response } from 'express';
 @Controller('ai-symptom')
 export class AiSymptomController {
