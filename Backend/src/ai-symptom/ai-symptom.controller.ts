@@ -23,6 +23,7 @@ export class AiSymptomController {
     @Body() data: AnalyzeSymptomDto,
   ) {
     try {
+      console.log('Received symptom analysis request:')
       // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
       const result = await this.aiSymptomService.analyzeSymptom(data);
       response.status(200).json({
