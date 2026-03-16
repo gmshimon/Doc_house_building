@@ -14,7 +14,9 @@ import { AuthGuard } from '@nestjs/passport';
 import type { Request, Response } from 'express';
 import { CreateAppointmentDto } from './dto/create-appointment.dto';
 import { User } from '@prisma/client';
+import { SkipThrottle } from '@nestjs/throttler';
 
+@SkipThrottle()
 @Controller('appointment')
 export class AppointmentController {
   constructor(private readonly appointmentService: AppointmentService) {}

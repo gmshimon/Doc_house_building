@@ -23,6 +23,9 @@ import { NotificationModule } from './notification/notification.module';
 import { BullModule } from '@nestjs/bullmq';
 import { AiSymptomModule } from './ai-symptom/ai-symptom.module';
 import { OpenrouterModule } from './openrouter/openrouter.module';
+import { ThrottlerModule } from '@nestjs/throttler';
+import { APP_GUARD } from '@nestjs/core';
+import { CustomThrottlerGuard } from './custom-throttler.guard';
 
 @Module({
   imports: [
@@ -33,6 +36,12 @@ import { OpenrouterModule } from './openrouter/openrouter.module';
     SlotsModule,
     ServicesModule,
     AppointmentModule,
+    ThrottlerModule.forRoot([
+      {
+        ttl: 60,
+        limit: 5,
+      },
+    ]),
     ConfigModule.forRoot({ envFilePath: '.env', isGlobal: true }),
     BullModule.forRoot({
       connection: process.env.REDIS_URL
@@ -100,7 +109,14 @@ import { OpenrouterModule } from './openrouter/openrouter.module';
     OpenrouterModule,
   ],
   controllers: [AppController],
-  providers: [AppService, PrismaService],
+  providers: [
+    AppService,
+    PrismaService,
+    {
+      provide: APP_GUARD,
+      useClass: CustomThrottlerGuard,
+    },
+  ],
 })
 export class AppModule implements OnModuleInit {
   private readonly logger = new Logger(AppModule.name);

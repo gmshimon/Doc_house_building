@@ -21,7 +21,9 @@ import { multerOptions } from '../upload/multer-options';
 import { CloudinaryService } from '../cloudinary/cloudinary.service';
 import { Prisma, User } from '@prisma/client';
 import { type Request, type Response } from 'express';
+import { SkipThrottle } from '@nestjs/throttler';
 
+@SkipThrottle()
 @Controller('doctor')
 export class DocterController {
   constructor(
