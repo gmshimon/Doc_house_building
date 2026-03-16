@@ -13,6 +13,7 @@ export class AiSymptomController {
     @Body() data: AnalyzeSymptomDto,
   ) {
     try {
+      console.log('Received symptom analysis request:', data);
       const result = await this.aiSymptomService.analyzeSymptom(data);
       response.status(200).json({
         status: 'success',
