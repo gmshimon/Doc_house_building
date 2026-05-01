@@ -1,0 +1,35 @@
+DOCUMENT: General Medical Topics
+SOURCE: Based on NHS (nhs.uk), WHO (who.int), MedlinePlus (medlineplus.gov)
+TOPIC_CATEGORY: general_medicine
+DATE_ADDED: 2025-10-01
+---
+
+SECTION: What is Primary Care
+Primary care is the first point of contact for patients seeking medical help. A general practitioner (GP) or family doctor handles a wide range of health concerns, from minor illnesses to chronic disease management. Primary care doctors also coordinate referrals to specialists when needed. Regular visits to a GP help with preventive care, vaccinations, routine blood tests, and early detection of disease.
+
+SECTION: Importance of Regular Health Check-ups
+Regular health check-ups allow doctors to detect problems early before symptoms appear. Adults are advised to have a general health check every 1 to 2 years. Check-ups typically include blood pressure measurement, cholesterol levels, blood sugar tests, BMI assessment, and a review of lifestyle habits such as smoking, alcohol intake, and physical activity. Early detection of conditions like hypertension, diabetes, and high cholesterol significantly reduces the risk of serious complications.
+
+SECTION: Understanding Blood Pressure
+Blood pressure is the force of blood pushing against the walls of arteries. It is measured in millimetres of mercury (mmHg) and recorded as two numbers: systolic pressure (when the heart beats) over diastolic pressure (when the heart rests). A normal blood pressure reading is below 120/80 mmHg. High blood pressure, also called hypertension, is a reading consistently above 140/90 mmHg. Hypertension increases the risk of heart disease, stroke, and kidney problems. It is often called the silent killer because it has no obvious symptoms.
+
+SECTION: Understanding Cholesterol
+Cholesterol is a fatty substance found in the blood. There are two main types: LDL (low-density lipoprotein), often called bad cholesterol, and HDL (high-density lipoprotein), called good cholesterol. High levels of LDL cholesterol can build up in artery walls, increasing the risk of heart attack and stroke. A healthy total cholesterol level is below 5 mmol/L. Diet, exercise, smoking, and genetics all influence cholesterol levels. Statins are commonly prescribed to lower cholesterol when lifestyle changes are not enough.
+
+SECTION: Understanding Blood Sugar and Diabetes
+Blood sugar, or blood glucose, is the main sugar found in blood. It comes from the food we eat and is the body's primary source of energy. Normal fasting blood sugar is between 4.0 and 5.9 mmol/L. Diabetes is a condition where blood sugar levels are too high. Type 1 diabetes is an autoimmune condition where the body does not produce insulin. Type 2 diabetes occurs when the body does not produce enough insulin or does not use it properly. Symptoms of high blood sugar include frequent urination, increased thirst, fatigue, and blurred vision.
+
+SECTION: Body Mass Index (BMI)
+BMI is a measure of body fat based on height and weight. It is calculated by dividing weight in kilograms by height in metres squared. A BMI below 18.5 is considered underweight. A BMI between 18.5 and 24.9 is considered healthy. A BMI between 25 and 29.9 is considered overweight. A BMI of 30 or above is classified as obese. While BMI is a useful screening tool, it does not directly measure body fat and should be used alongside other assessments such as waist circumference.
+
+SECTION: Importance of Hydration
+The human body is made up of approximately 60% water. Water is essential for regulating body temperature, transporting nutrients, flushing out waste, and lubricating joints. Adults should aim to drink around 6 to 8 glasses of water per day, equivalent to about 1.5 to 2 litres. Dehydration can cause headaches, fatigue, dizziness, dark urine, and difficulty concentrating. Severe dehydration is a medical emergency. Hydration needs increase with physical activity, hot weather, illness, and pregnancy.
+
+SECTION: Sleep and Health
+Sleep is essential for physical and mental health. Adults need between 7 and 9 hours of sleep per night. During sleep, the body repairs tissues, strengthens the immune system, and consolidates memory. Chronic sleep deprivation is linked to increased risk of obesity, type 2 diabetes, cardiovascular disease, and depression. Poor sleep hygiene, stress, caffeine, and screen time before bed are common causes of sleep problems. Conditions like insomnia and sleep apnoea should be evaluated by a doctor.
+
+SECTION: Vaccinations and Immunisation
+Vaccines protect individuals and communities from infectious diseases by training the immune system to recognise and fight specific pathogens. Core vaccines recommended for adults include influenza (annual), tetanus booster (every 10 years), and COVID-19 vaccines. Additional vaccines may be recommended based on age, occupation, travel, or underlying health conditions. Vaccination is one of the most effective public health interventions and has led to the eradication or significant reduction of diseases like smallpox, polio, and measles.
+
+SECTION: When to See a Doctor
+You should see a doctor if you experience any of the following: symptoms that persist for more than a week, sudden unexplained weight loss, chest pain or pressure, shortness of breath, blood in urine or stool, persistent headaches, high fever above 39 degrees Celsius, or any symptom that causes significant concern. Do not wait for symptoms to become severe. Early medical consultation leads to better outcomes. In emergencies such as chest pain, difficulty breathing, or signs of stroke, call emergency services immediately.

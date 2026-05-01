@@ -1,0 +1,41 @@
+DOCUMENT: Common Symptoms Guide
+SOURCE: Based on NHS (nhs.uk), Mayo Clinic (mayoclinic.org), MedlinePlus (medlineplus.gov)
+TOPIC_CATEGORY: symptoms
+DATE_ADDED: 2025-10-01
+---
+
+SECTION: Fever
+A fever is a temporary increase in body temperature, usually caused by an illness. A normal body temperature is around 37 degrees Celsius. A fever is generally defined as a temperature of 38 degrees Celsius or higher. Common causes include infections (bacterial or viral), inflammatory conditions, and heat exhaustion. Symptoms accompanying fever include sweating, chills, headache, muscle aches, and fatigue. Most fevers in adults resolve within a few days with rest and fluids. You should seek medical attention if your fever exceeds 39.5 degrees Celsius, lasts more than 3 days, or is accompanied by a stiff neck, severe headache, rash, or difficulty breathing.
+
+SECTION: Headache
+A headache is pain or discomfort in the head or neck area. There are several types of headaches. Tension headaches are the most common and cause a dull, aching pressure around the forehead or back of the head. Migraines are more severe headaches often accompanied by nausea, vomiting, and sensitivity to light and sound, and may be preceded by visual disturbances called aura. Cluster headaches are intense headaches that occur in groups or clusters, typically around one eye. Common triggers include stress, dehydration, lack of sleep, skipping meals, and bright lights. Most headaches can be managed with over-the-counter pain relief and rest. Seek immediate medical help if you experience a sudden severe headache, a headache following a head injury, or a headache with fever and stiff neck.
+
+SECTION: Fatigue
+Fatigue is a feeling of persistent tiredness, weakness, or low energy that does not improve with rest. It is different from ordinary tiredness after physical exertion. Common causes of fatigue include poor sleep, anaemia, thyroid disorders, diabetes, depression, and chronic infections. Lifestyle factors such as physical inactivity, poor diet, excessive alcohol, and dehydration also contribute. If fatigue is prolonged, unexplained, or accompanied by other symptoms like weight loss, night sweats, or breathlessness, it should be evaluated by a doctor. Chronic fatigue syndrome is a complex condition characterised by extreme fatigue lasting more than 6 months.
+
+SECTION: Cough
+A cough is a reflex action to clear the airways of mucus, irritants, or foreign particles. Acute coughs last less than 3 weeks and are commonly caused by upper respiratory infections such as the common cold or flu. Subacute coughs last 3 to 8 weeks and often follow a respiratory infection. Chronic coughs last more than 8 weeks and may indicate conditions such as asthma, gastroesophageal reflux disease (GERD), postnasal drip, or chronic obstructive pulmonary disease (COPD). A cough producing blood, or accompanied by shortness of breath, chest pain, or unexplained weight loss, requires urgent medical attention.
+
+SECTION: Shortness of Breath
+Shortness of breath, or dyspnoea, is the sensation of not being able to get enough air. It can occur suddenly or develop gradually. Common causes include physical exertion, anxiety, asthma, respiratory infections, anaemia, and heart or lung conditions. Sudden severe shortness of breath is a medical emergency and may indicate a pulmonary embolism, heart attack, or severe asthma attack. Breathlessness that worsens when lying flat or wakes you from sleep may indicate heart failure. Any new or unexplained shortness of breath should be assessed by a doctor.
+
+SECTION: Chest Pain
+Chest pain can have many causes, ranging from minor issues to life-threatening emergencies. Cardiac causes include heart attack, angina, and pericarditis. Non-cardiac causes include acid reflux, muscle strain, costochondritis (inflammation of rib cartilage), anxiety, and pneumonia. Heart attack chest pain is typically described as a tight, heavy, squeezing sensation that may spread to the left arm, jaw, or back, and is often accompanied by sweating, nausea, and shortness of breath. Any unexplained chest pain should be treated as a potential emergency and evaluated immediately. Do not drive yourself to the hospital if you suspect a heart attack.
+
+SECTION: Nausea and Vomiting
+Nausea is the sensation of wanting to vomit, while vomiting is the forceful expulsion of stomach contents. Common causes include gastroenteritis (stomach bug), food poisoning, motion sickness, pregnancy, medications, migraines, and inner ear disorders. Most cases of nausea and vomiting resolve within 1 to 2 days with rest and clear fluids. Signs that require medical attention include vomiting blood, vomiting lasting more than 2 days, signs of dehydration (dry mouth, dark urine, dizziness), severe abdominal pain, or vomiting after a head injury.
+
+SECTION: Abdominal Pain
+Abdominal pain refers to pain felt anywhere from below the chest to the groin. It can be acute (sudden) or chronic (long-lasting). The location of the pain often suggests its cause. Upper right pain may indicate gallbladder or liver issues. Upper left pain may relate to the stomach or spleen. Lower right pain may suggest appendicitis or ovarian issues. Lower left pain is associated with the colon or ovaries. Central pain around the navel may relate to the small intestine or appendix. Severe, sudden abdominal pain, pain with fever, or pain accompanied by blood in the stool requires urgent evaluation.
+
+SECTION: Dizziness
+Dizziness is a term used to describe feelings of lightheadedness, unsteadiness, or a spinning sensation (vertigo). Common causes include dehydration, low blood pressure, inner ear problems, anaemia, anxiety, and medication side effects. Vertigo, the spinning sensation, is often caused by benign paroxysmal positional vertigo (BPPV), labyrinthitis, or Meniere's disease. Dizziness that occurs with chest pain, fainting, severe headache, difficulty speaking, or weakness in the limbs may indicate a serious condition such as stroke and requires emergency care.
+
+SECTION: Back Pain
+Back pain is one of the most common reasons people visit a doctor. It can affect the upper, middle, or lower back. Most back pain is mechanical, meaning it is related to the muscles, ligaments, or joints of the spine and is not caused by a serious condition. Common causes include muscle strain, poor posture, prolonged sitting, herniated disc, and osteoarthritis. Risk factors include age, physical inactivity, obesity, and heavy lifting. Most back pain improves within a few weeks with gentle movement, over-the-counter pain relief, and physiotherapy. Red flag symptoms that require urgent review include back pain after trauma, pain with bladder or bowel dysfunction, unexplained weight loss, or pain that is constant and worsening.
+
+SECTION: Skin Rash
+A skin rash is a change in the skin's appearance, texture, or colour. Rashes can be caused by allergies, infections, autoimmune conditions, heat, or medications. Common types include eczema (dry, itchy, inflamed skin), contact dermatitis (reaction to a substance touching the skin), hives (raised, itchy welts often caused by an allergic reaction), psoriasis (scaly, thick patches), and ringworm (fungal infection). Most rashes are not serious and respond to topical treatments. However, a rash with breathing difficulty may indicate a severe allergic reaction (anaphylaxis), which is a medical emergency. A rash that does not fade when pressed (non-blanching), especially with fever, may indicate meningitis.
+
+SECTION: Joint Pain
+Joint pain, or arthralgia, refers to discomfort, aches, or soreness in any of the body's joints. Common causes include osteoarthritis (wear and tear), rheumatoid arthritis (autoimmune), gout (uric acid crystal buildup), injury, and infections. Osteoarthritis typically affects weight-bearing joints like knees and hips and worsens with activity. Rheumatoid arthritis tends to affect multiple joints symmetrically and is associated with morning stiffness lasting more than an hour. Gout most commonly affects the big toe and causes sudden, severe pain and swelling. Joint pain with fever, rapid swelling, or inability to bear weight requires prompt medical assessment.
